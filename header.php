@@ -73,10 +73,27 @@
 						</li>
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<i class="fas fa-fw fa-pallet"></i>
-								<span>Inventory</span>
+								<i class="fas fa-fw fa-user"></i>
+								<span>Customers</span>
 							</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="selectcustomers.php">Select</a>
+								<a class="dropdown-item" href="#">Insert</a>
+								<a class="dropdown-item" href="#">Update</a>
+							</div>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fas fa-fw fa-pallet"></i>
+								<span>Orders</span>
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<h6 class="dropdown-header">Orders:</h6>
+								<a class="dropdown-item" href="#">Select</a>
+								<a class="dropdown-item" href="insertorders.php">Insert</a>
+								<a class="dropdown-item" href="#">Update</a>
+								<div class="dropdown-divider"></div>
+								<h6 class="dropdown-header">Order Details:</h6>
 								<a class="dropdown-item" href="#">Select</a>
 								<a class="dropdown-item" href="#">Insert</a>
 								<a class="dropdown-item" href="#">Update</a>
