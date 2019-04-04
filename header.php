@@ -48,9 +48,9 @@
 								<a class="dropdown-item" href="insertmenuitems.php">Insert</a>
 								<a class="dropdown-item" href="#">Update</a>
 								<div class="dropdown-divider"></div>
-								<h6 class="dropdown-header">Menu Categories:</h6>
+								<h6 class="dropdown-header">Menu Types:</h6>
 								<a class="dropdown-item" href="#">Select</a>
-								<a class="dropdown-item" href="#">Insert</a>
+								<a class="dropdown-item" href="insertmenutypes.php">Insert</a>
 								<a class="dropdown-item" href="#">Update</a>
 							</div>
 						</li>
