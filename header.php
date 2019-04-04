@@ -66,7 +66,7 @@
 								<a class="dropdown-item" href="#">Update</a>
 								<div class="dropdown-divider"></div>
 								<h6 class="dropdown-header">Employee Types:</h6>
-								<a class="dropdown-item" href="#">Select</a>
+								<a class="dropdown-item" href="selectemployeetypes.php">Select</a>
 								<a class="dropdown-item" href="insertemployeetypes.php">Insert</a>
 								<a class="dropdown-item" href="#">Update</a>
 							</div>
