@@ -16,7 +16,6 @@
 			<table class="table table-bordered" id="selectmenuitemsTable" width="100%" cellspacing="0">
 				<thead>
 					<tr>
-						<th>Key</th>
 						<th>Name</th>
 						<th>Type</th>
 						<th>Price</th>
@@ -31,7 +30,7 @@
 					$result->execute();
 						while ( $row = $result-> fetch() )
 							{
-								echo '<tr><td>' . $row['menuitemkey'] . '</td><td> ' . $row['menuitemname'] .
+								echo '<tr><td> ' . $row['menuitemname'] .
 								'</td><td> ' . $row['menutypename'] . '</td><td> ' . $row['menuitemprice'] . '</td>
 								<td> ' . $row['menuitemcount'] . '</td><td> ' . $row['menuitemdesc'] . '</td>';
 							}
