@@ -30,22 +30,33 @@
 				</div>
 			</div>
 		</form>
-		<?php if (isset($_POST['insert'])) {
-			try {
-				$sqlnewtype = "INSERT into employeetype(employeetypename, employeetypedescription)
-				VALUES (:bvname, :bvdescription)";
+		<?php
+		if (isset($_POST['insert'])) {
+			// Data cleansing
+			$formfield['name'] = $_POST['name'];
+			$formfield['description'] = $_POST['description'];
 
-				$result = $db->prepare($sqlnewtype);
-				$result->bindValue('bvname', $_POST['name']);
-				$result->bindValue('bvdescription', $_POST['description']);
-				$result->execute();
+			// If a field is empty...
+			if (empty($formfield['name']) || empty($formfield['description'])) {
+				// One or more fields are empty
+				echo '<br /><p class="text-warning">Insert failed: one or more fields are empty.</p>';
+			} else {
+				// Attempt to insert
+				try {
+					$sqlnewtype = "INSERT into employeetype(employeetypename, employeetypedescription)
+					VALUES (:bvname, :bvdescription)";
 
-				echo '<br /><p class="text-success font-weight-bold">Insert successful.</p>';
-			} catch (Exception $e) {
-				echo '<br /><p class="text-danger font-weight-bold">Insert failed.</p>';
+					$result = $db->prepare($sqlnewtype);
+					$result->bindValue('bvname', $formfield['name']);
+					$result->bindValue('bvdescription', $formfield['description']);
+					$result->execute();
+
+					echo '<br /><p class="text-success font-weight-bold">Insert successful.</p>';
+				} catch (Exception $e) {
+					echo '<br /><p class="text-danger font-weight-bold">Insert failed.</p>';
+				}
 			}
 		}
-		?>
 	</div>
 </div>
 <?php

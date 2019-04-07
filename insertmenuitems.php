@@ -53,24 +53,40 @@
 				</div>
 			</div>
 		</form>
-		<?php if (isset($_POST['insert'])) {
-			try {
-				$sqlnewitem = "INSERT into menuitem(menutypekey, menuitemname, menuitemprice, menuitemcount, menuitemdesc)
-				VALUES (:bvtype, :bvname, :bvprice, :bvcount, :bvdescription)";
+		<?php
+			// Insert button pressed
+			if (isset($_POST['insert'])) {
+				// Data cleansing
+				$formfield['type'] = $_POST['type'];
+				$formfield['name'] = $_POST['name'];
+				$formfield['price'] = $_POST['price'];
+				$formfield['count'] = $_POST['count'];
 
-				$result = $db->prepare($sqlnewitem);
-				$result->bindValue('bvtype', $_POST['type']);
-				$result->bindValue('bvname', $_POST['name']);
-				$result->bindValue('bvprice', $_POST['price']);
-				$result->bindValue('bvcount', $_POST['count']);
-				$result->bindValue('bvdescription', $_POST['description']);
-				$result->execute();
+				// If a field is empty...
+				if (empty($formfield['type']) || empty($formfield['name']) ||
+						empty($formfield['price']) || empty($formfield['count'])) {
+							// One or more fields are empty
+							echo '<br /><p class="text-warning">Insert failed: one or more fields are empty.</p>';
+				} else {
+					// Attempt to insert
+					try {
+						$sqlnewitem = "INSERT into menuitem(menutypekey, menuitemname, menuitemprice, menuitemcount, menuitemdesc)
+						VALUES (:bvtype, :bvname, :bvprice, :bvcount, :bvdescription)";
 
-				echo '<br /><p class="text-success font-weight-bold">Insert successful.</p>';
-			} catch (Exception $e) {
-				echo '<br /><p class="text-danger font-weight-bold">Insert failed.</p>';
+						$result = $db->prepare($sqlnewitem);
+						$result->bindValue('bvtype', $formfield['type']);
+						$result->bindValue('bvname', $formfield['name']);
+						$result->bindValue('bvprice', $formfield['price']);
+						$result->bindValue('bvcount', $formfield['count']);
+						$result->bindValue('bvdescription', $_POST['description']);
+						$result->execute();
+
+						echo '<br /><p class="text-success font-weight-bold">Insert successful.</p>';
+					} catch (Exception $e) {
+						echo '<br /><p class="text-danger font-weight-bold">Insert failed.</p>';
+					}
+				}
 			}
-		}
 		?>
 	</div>
 </div>
