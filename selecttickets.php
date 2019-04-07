@@ -5,11 +5,11 @@
 	if ($_SESSION['signedin'] == 1) {
 ?>
 <ol class="breadcrumb">
-	<li class="breadcrumb-item"><a href="#">Orders</a></li>
+	<li class="breadcrumb-item"><a href="#">Tickets</a></li>
 	<li class="breadcrumb-item active">Select</li>
 </ol>
 <div class="card">
-	<div class="card-header">Select Orders</div>
+	<div class="card-header">Select Tickets</div>
 	<div class="card-body">
 		<div class="table-responsive">
 			<table class="table table-bordered" id="selectordersTable" width="100%" cellspacing="0">
@@ -17,26 +17,25 @@
 					<tr>
 						<th>Date</th>
 						<th>Time</th>
+						<th>Type</th>
 						<th>Customer</th>
-						<th>Employee</th>
 						<th></th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php
-					$sqlselecto = "SELECT * FROM orders
-												 INNER JOIN customer ON orders.customerkey = customer.customerkey
-												 INNER JOIN employee ON orders.employeekey = employee.employeekey
-												 ORDER BY orderkey ASC";
-					$result = $db->prepare($sqlselecto);
+					$sqlselectt = "SELECT * FROM tickets
+												 INNER JOIN customer ON tickets.customerkey = customer.customerkey
+												 ORDER BY ticketkey ASC";
+					$result = $db->prepare($sqlselectt);
 					$result->execute();
 					while ( $row = $result-> fetch() ) {
-						echo '<tr><td>' . $row['orderdate'] . '</td><td> ' . $row['ordertime'] .
-						'</td><td> ' . $row['customeremail'] . '</td><td> ' . $row['employeeusername'] . '</td>
+						echo '<tr><td>' . $row['ticketdate'] . '</td><td> ' . $row['tickettime'] .
+						'</td><td> ' . $row['tickettype'] . '</td><td> ' . $row['customeremail'] . '</td>
 						<td>
-							<form name="selectorderform" method="post" action="selectorderdetails.php">
-								<input type="hidden" name="orderkey" value="' . $row['orderkey'] . '"/>
-								<input type="submit" name="selectordersubmit" value="Select"/>
+							<form name="selectticketform" method="post" action="selectticketdetails.php">
+								<input type="hidden" name="ticketkey" value="' . $row['ticketkey'] . '"/>
+								<input type="submit" name="selectticketsubmit" value="Select"/>
 							</form>
 						</td>';
 					}
