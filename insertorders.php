@@ -6,7 +6,6 @@
 ?>
 <ol class="breadcrumb">
 	<li class="breadcrumb-item"><a href="#">Orders</a></li>
-	<li class="breadcrumb-item"><a href="#">Orders</a></li>
 	<li class="breadcrumb-item active">Insert</li>
 </ol>
 
@@ -21,7 +20,7 @@
 				$time = date('h:i:s');
 
 				//enter data into database
-				$sqlinsert = 'INSERT INTO orderentry (customerusername, orderdate, ordertime, employeekey)
+				$sqlinsert = 'INSERT INTO orders (customerkey, orderdate, ordertime, employeekey)
 								VALUES (:bvcu, :bvdate, :bvtime, :bvem)';
 				$stmtinsert = $db->prepare($sqlinsert);
 				$stmtinsert->bindvalue(':bvcu', $_POST['customerkey']);
@@ -30,7 +29,7 @@
 				$stmtinsert->bindvalue(':bvem', $_SESSION['employeekey']);
 				$stmtinsert->execute();
 
-				$sqlmax = "SELECT MAX(orderkey) AS maxid from orderentry";
+				$sqlmax = "SELECT MAX(orderkey) AS maxid from orders";
 				$resultmax = $db->prepare($sqlmax);
 				$resultmax->execute();
 				$rowmax = $resultmax->fetch();
@@ -38,7 +37,7 @@
 			?>
 			<p>Selection successful. Please proceed to enter items.</p>
 			<form method="post" action="insertorderdetails.php">
-				<input type="hidden" name="orderid" value = "<?php echo $maxid; ?>" />
+				<input type="hidden" name="orderkey" value = "<?php echo $maxid; ?>" />
 				<input type="submit" name="ordersubmit" value="Proceed" />
 			</form>
 		<?php } else { ?>

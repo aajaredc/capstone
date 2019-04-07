@@ -6,7 +6,6 @@
 ?>
 <ol class="breadcrumb">
 	<li class="breadcrumb-item"><a href="#">Employees</a></li>
-	<li class="breadcrumb-item"><a href="#">Employees</a></li>
 	<li class="breadcrumb-item active">Insert</li>
 </ol>
 <div class="card">
@@ -112,7 +111,7 @@
 							$resultet->execute();
 
 							while ($rowet = $resultet->fetch()) {
-								echo '<option value="'. $rowet['usertypekey'] . '">' . $rowet['employeetypename'] . '</option>';
+								echo '<option value="'. $rowet['employeetypekey'] . '">' . $rowet['employeetypename'] . '</option>';
 							}
 							?>
 						</select>
@@ -130,6 +129,7 @@
 						<div id="password2-invalid-feedback" class="invalid-feedback">Passwords do not match</div>
 					</div>
 				</div>
+				<p id="passwordtip" class="mt-3 text-danger">Passwords must contain an uppercase, lowercase, digit, and 8 characters.</p>
 				<br />
 				<div class="row">
 					<div class="col-12">
@@ -156,56 +156,73 @@
 			$formfield['password1'] = $_POST['password1'];
 			$formfield['password2'] = $_POST['password2'];
 
-			// If the two passwords are the same
-			if ($formfield['password1'] == $formfield['password2']) {
-				// Options...
-				$options = [
-					'cost' => 12,
-					'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
-				];
-				// Generate an encrypted password
-				$encpass = password_hash($formfield['password1'], PASSWORD_BCRYPT, $options);
+			// If there's an empty field
+			if (empty($formfield['username']) || empty($formfield['typekey']) ||
+					empty($formfield['firstname']) || empty($formfield['lastname']) ||
+					empty($formfield['phone']) || empty($formfield['address']) ||
+					empty($formfield['city']) || empty($formfield['state']) ||
+					empty($formfield['zip']) || empty($formfield['email']) ||
+					empty($formfield['password1']) || empty($formfield['password2'])) {
+						echo '<br /><p class="text-warning">Insert failed: one or more fields are empty.</p>';
+			} else {
+				// If the two passwords are the same
+				if ($formfield['password1'] == $formfield['password2']) {
+					// If the password is invalid
+					if(strlen($formfield['password1']) < 8
+						 && !preg_match("#[0-9]+#", $formfield['password1'])
+					   && !preg_match("#[a-z]+#", $formfield['password1'])
+					 	 && !preg_match("#[A-Z]+#", $formfield['password1'])
+				 		 && !preg_match("#\W+#", $formfield['password1'])) {
+						echo '<br /><p class="text-warning">Insert failed: password is invalid.</p>';
+					} else {
+						// Options...
+						$options = [
+							'cost' => 12,
+							'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
+						];
+						// Generate an encrypted password
+						$encpass = password_hash($formfield['password1'], PASSWORD_BCRYPT, $options);
+
+						// Try to insert
+						try {
+							// SQL statement
+							$sqlnewemployee = "INSERT into
+								employee(employeeusername, employeetypekey, employeefirstname, employeelastname,
+												 employeephone, employeeaddress, employeecity, employeestate,
+												 employeezip, employeeemail, employeepassword)
+								VALUES(:bvusername, :bvtypekey, :bvfirstname, :bvlastname,
+											 :bvphone, :bvaddress, :bvcity, :bvstate,
+											 :bvzip, :bvemail, :bvpassword)";
+
+							// Execution
+							$result = $db->prepare($sqlnewemployee);
+							$result->bindValue('bvusername', $formfield['username']);
+							$result->bindValue('bvtypekey', $formfield['typekey']);
+							$result->bindValue('bvfirstname', $formfield['firstname']);
+							$result->bindValue('bvlastname', $formfield['lastname']);
+							$result->bindValue('bvphone', $formfield['phone']);
+							$result->bindValue('bvaddress', $formfield['address']);
+							$result->bindValue('bvcity', $formfield['city']);
+							$result->bindValue('bvstate', $formfield['state']);
+							$result->bindValue('bvzip', $formfield['zip']);
+							$result->bindValue('bvemail', $formfield['email']);
+							$result->bindValue('bvpassword', $encpass);
+							$result->execute();
+
+							// Success
+							echo '<br /><p class="text-success font-weight-bold">Insert successful.</p>';
+						} catch (Exception $e) {
+							// Exception error
+							echo '<br /><p class="text-danger font-weight-bold">' . $e->getMessage() . '</p>';
+						}
+					}
+				}
 			}
-
-			// If one or more fields are empty...
-			try {
-				// SQL statement
-				$sqlnewemployee = "INSERT into
-					employee(employeeusername, employeetypekey, employeefirstname, employeelastname,
-										employeephone, employeeaddress, employeecity, employeestate,
-										employeezip, employeeemail, employeepassword)
-					VALUES(:bvusername, :bvtypekey, :bvfirstname, :bvlastname,
-								 :bvphone, :bvaddress, :bvcity, :bvstate,
-								 :bvzip, :bvemail, :bvpassword)";
-
-				// Execution
-				$result = $db->prepare($sqlnewemployee);
-				$result->bindValue('bvusername', $formfield['username']);
-				$result->bindValue('bvtypekey', $formfield['typekey']);
-				$result->bindValue('bvfirstname', $formfield['firstname']);
-				$result->bindValue('bvlastname', $formfield['lastname']);
-				$result->bindValue('bvphone', $formfield['phone']);
-				$result->bindValue('bvaddress', $formfield['address']);
-				$result->bindValue('bvcity', $formfield['city']);
-				$result->bindValue('bvstate', $formfield['state']);
-				$result->bindValue('bvzip', $formfield['zip']);
-				$result->bindValue('bvemail', $formfield['email']);
-				$result->bindValue('bvpassword', $encpass);
-				$result->execute();
-
-				// Success
-				echo '<br /><p class="text-success font-weight-bold">Insert successful.</p>';
-			} catch (Exception $e) {
-				// Exception error
-				echo '<br /><p class="text-danger font-weight-bold">' . $e->getMessage() . '</p>';
-			}
-
-
 		}
 		?>
 	</div>
 </div>
-<script type="text/javascript" src="scripts/matchingpasswords.js"></script>
+<script type="text/javascript" src="scripts/passwordvalidator.js"></script>
 <?php
 }
 else {

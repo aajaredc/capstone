@@ -4,11 +4,11 @@
 
 	if ($_SESSION['signedin'] == 1) {
 
-		$formfield['fforderid'] = $_POST['orderid'];
+		$formfield['fforderkey'] = $_POST['orderkey'];
 		$formfield['ffmenuitemkey'] = $_POST['menuitemkey'];
 		$formfield['fforderitemprice'] = $_POST['orderitemprice'];
 
-		if (isset($_POST['OIEnter']))
+		if (isset($_POST['ODEnter']))
 		{
 			$sqlinsert = 'INSERT INTO orderdetail (orderkey, menuitemkey,
 					orderdetailprice) VALUES (:bvorderkey, :bvprodid, :bvorderitemprice)';
@@ -17,7 +17,7 @@
 				$stmtinsert = $db->prepare($sqlinsert);
 				//Binds our associative array variables to the bound
 				//variables in the sql statement
-				$stmtinsert->bindvalue(':bvorderkey', $formfield['fforderid']);
+				$stmtinsert->bindvalue(':bvorderkey', $formfield['fforderkey']);
 				$stmtinsert->bindvalue(':bvprodid', $formfield['ffmenuitemkey']);
 				//1
 				$stmtinsert->bindvalue(':bvorderitemprice', $formfield['fforderitemprice']);
@@ -48,140 +48,149 @@
 		}
 ?>
 
-<!-- Menu Items Selection -->
-<div class="card" style="margin-bottom: 1rem;">
-	<div class="card-header">Select Items for Order Number <?php echo $formfield['fforderid']; ?></div>
-	<div class="card-body">
-		<div class="table-responsive">
-			<table class="table table-bordered" id="selectmenuitemsTable" width="100%" cellspacing="0">
-				<thead>
+<?php if(isset($_POST['submitorder'])) { ?>
+	<!-- Order Successful -->
+	<div class="card">
+		<div class="card-header">Order Successful</div>
+		<div class="card-body">
+			<p>Order successful! :)</p>
+		</div>
+	</div>
+<?php } else { ?>
+	<!-- Menu Items Selection -->
+	<div class="card" style="margin-bottom: 1rem;">
+		<div class="card-header">Select Items for Order Number <?php echo $formfield['fforderkey']; ?></div>
+		<div class="card-body">
+			<div class="table-responsive">
+				<table id="selectmenuitemsTable" width="100%" cellspacing="0">
+					<?php
+						$sqlselectc = "SELECT * from menutype";
+						$resultc = $db->prepare($sqlselectc);
+						$resultc->execute();
+						echo '<tr>';
+						while ($rowc = $resultc->fetch()) {
+							echo '<th valign="top" align="center">' . $rowc['menutypename'] . '<br />';
+							echo '<table>';
+							$sqlselectp = "SELECT * from menuitem WHERE menutypekey = :bvtypekey";
+							$resultp = $db->prepare($sqlselectp);
+							$resultp->bindvalue(':bvtypekey', $rowc['menutypekey']);
+							$resultp->execute();
+
+							while ($rowp = $resultp->fetch()) {
+								echo '<tr><td>';
+								echo '<form action = "' . $_SEVER['PHP_SELF'] . '" method="post">';
+								echo '<input type="hidden" name="orderkey" value="' . $formfield['fforderkey'] . '" />';
+								echo '<input type="hidden" name="menuitemkey" value="' . $rowp['menuitemkey'] . '" />';
+								echo '<input type="hidden" name="orderitemprice" value="' . $rowp['menuitemprice'] . '" />';
+								echo '<input style="width: 100%;" type="submit" name="ODEnter" value="' .$rowp['menuitemname'] . '"/>';
+								echo '</form>';
+								echo '</td></tr>';
+							}
+							echo '</table></th>';
+						}
+						echo '</tr>';
+					?>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<!-- Order Details -->
+	<div class="card">
+		<div class="card-header">Order Details</div>
+		<div class="card-body">
+			<div class="table-responsive">
+				<table class="table table-bordered" id="orderdetailsTable" width="100%" cellspacing="0">
 					<tr>
-						<th>Name</th>
-						<th>Type</th>
+						<th>Item</th>
 						<th>Price</th>
-						<th>Count</th>
-						<th>Description</th>
+						<th>Notes</th>
+						<th></th>
 						<th></th>
 					</tr>
-				</thead>
-				<tbody>
 					<?php
-					$sqlselecti = "SELECT * FROM menuitem INNER JOIN menutype ON menuitem.menutypekey = menutype.menutypekey ORDER BY menuitemkey ASC";
-					$result = $db->prepare($sqlselecti);
-					$result->execute();
-						while ( $row = $result-> fetch() )
-							{
-								echo '<tr><td> ' . $row['menuitemname'] .
-								'</td><td> ' . $row['menutypename'] . '</td><td> ' . $row['menuitemprice'] . '</td>
-								<td> ' . $row['menuitemcount'] . '</td><td> ' . $row['menuitemdesc'] . '</td>
-								<td>
-									<form method="post" action="'. $_SERVER['PHP_SELF']. '">
-										<input type = "hidden" name = "orderid" value = "'. $formfield['fforderid'] .'">
-										<input type = "hidden" name = "menuitemkey" value = "'. $row['menuitemkey'] .'">
-										<input type = "hidden" name = "orderitemprice" value = "'. $row['menuitemprice'] .'">
-										<input type="submit" name="OIEnter" value="Add Item"/>
-									</form>
-								</td>';
-							}
-							echo '</tr>';
-					?>
-				</tbody>
-			</table>
-		</div>
-	</div>
-</div>
+						$sqlselecto = 'SELECT *
+													 FROM orderdetail
+													 INNER JOIN menuitem ON menuitem.menuitemkey=orderdetail.menuitemkey
+													 WHERE orderkey=:bvorderkey';
+						$resulto = $db->prepare($sqlselecto);
+						$resulto->bindValue(':bvorderkey', $formfield['fforderkey']);
+						$resulto->execute();
 
-<!-- Order Details -->
-<div class="card">
-	<div class="card-header">Order Details</div>
-	<div class="card-body">
-		<div class="table-responsive">
-			<table class="table table-bordered" id="orderdetailsTable" width="100%" cellspacing="0">
+						$ordertotal = 0;
+
+						while ($rowo = $resulto->fetch()){
+						$ordertotal = $ordertotal + $rowo['orderdetailprice'];
+
+						echo '<tr><td style="vertical-align: middle;">' . $rowo['menuitemname'] . '</td><td style="vertical-align: middle;">' . $rowo['orderdetailprice'] . '</td>';
+						echo '<td style="vertical-align: middle;">' . $rowo['orderdetailnote'] . '</td><td>';
+						echo '<form action = "' . $_SERVER['PHP_SELF'] . '" method = "post">';
+						echo '<input type = "hidden" name = "orderkey" value = "'. $formfield['fforderkey'] .'">';
+						echo '<input type = "hidden" name = "orderitemid" value = "'. $rowo['orderdetailkey'] .'">';
+						echo '<input type="submit" name="NoteEntry" value="Update">';
+						echo '</form></td><td>';
+						echo '<form action = "' . $_SERVER['PHP_SELF'] . '" method = "post">';
+						echo '<input type = "hidden" name = "orderkey" value = "'. $formfield['fforderkey'] .'">';
+						echo '<input type = "hidden" name = "orderdetailkey" value = "'. $rowo['orderdetailkey'] .'">';
+						echo '<input type="submit" name="DeleteItem" value="Delete">';
+						echo '</form></td></tr>';
+						}
+					?>
 				<tr>
-					<th>Item</th>
-					<th>Price</th>
-					<th>Notes</th>
-					<th></th>
-					<th></th>
+					<th>Total:</th>
+					<th><?php echo $ordertotal; ?></th>
 				</tr>
-				<?php
-					$sqlselecto = "SELECT * FROM orderdetail WHERE orderkey=:bvorderkey";
-					$resulto = $db->prepare($sqlselecto);
-					$resulto->bindValue(':bvorderkey', $formfield['fforderid']);
-					$resulto->execute();
+				</table>
 
-					$ordertotal = 0;
+				<table class="table table-bordered">
+					<?php
+						if (isset($_POST['NoteEntry']))
+						{
+						$sqlselectoi = "SELECT orderdetail.*, menuitem.menuitemname
+							from orderdetail, menuitem
+							WHERE menuitem.menuitemkey = orderdetail.menuitemkey
+							AND orderdetail.orderkey = :bvorderkey
+							AND orderdetail.orderdetailKey = :bvorderitemid";
+						$resultoi = $db->prepare($sqlselectoi);
+						$resultoi->bindValue(':bvorderkey', $formfield['fforderkey']);
+						$resultoi->bindvalue(':bvorderitemid', $_POST['orderitemid']);
+						$resultoi->execute();
+						$rowoi = $resultoi->fetch();
 
-					while ($rowo = $resulto->fetch() )
-					{
-					$ordertotal = $ordertotal + $rowo['orderdetailprice'];
-
-					echo '<tr><td>' . $rowo['menuitemkey'] . '</td><td>' . $rowo['orderdetailprice'] . '</td>';
-					echo '<td>' . $rowo['orderdetailnote'] . '</td><td>';
-					echo '<form action = "' . $_SERVER['PHP_SELF'] . '" method = "post">';
-					echo '<input type = "hidden" name = "orderid" value = "'. $formfield['fforderid'] .'">';
-					echo '<input type = "hidden" name = "orderitemid" value = "'. $rowo['orderdetailkey'] .'">';
-					echo '<input type="submit" name="NoteEntry" value="Update">';
-					echo '</form></td><td>';
-					echo '<form action = "' . $_SERVER['PHP_SELF'] . '" method = "post">';
-					echo '<input type = "hidden" name = "orderid" value = "'. $formfield['fforderid'] .'">';
-					echo '<input type = "hidden" name = "orderdetailkey" value = "'. $rowo['orderdetailkey'] .'">';
-					echo '<input type="submit" name="DeleteItem" value="Delete">';
-					echo '</form></td></tr>';
-					}
-				?>
-			<tr>
-				<th>Total:</th>
-				<th><?php echo $ordertotal; ?></th>
-			</tr>
-			</table>
-
-			<table class="table table-bordered">
-				<?php
-					if (isset($_POST['NoteEntry']))
-					{
-					$sqlselectoi = "SELECT orderdetail.*, menuitem.menuitemname
-						from orderdetail, menuitem
-						WHERE menuitem.menuitemkey = orderdetail.menuitemkey
-						AND orderdetail.orderkey = :bvorderid
-						AND orderdetail.orderdetailKey = :bvorderitemid";
-					$resultoi = $db->prepare($sqlselectoi);
-					$resultoi->bindValue(':bvorderid', $formfield['fforderid']);
-					$resultoi->bindvalue(':bvorderitemid', $_POST['orderitemid']);
-					$resultoi->execute();
-					$rowoi = $resultoi->fetch();
-
-					echo '
-					<form action = "' . $_SERVER['PHP_SELF'] . '" method = "post">
-						<table class="table table-bordered">
-							<tr>
-								<th>Price</th>
-								<td><input type = "text" name ="newprice" value="'. $rowoi['orderdetailprice'] . '"></td>
-							</tr>
-							<tr>
-								<th>Notes</th>
-								<td><input type="text" name="newnote" value ="'. $rowoi['orderdetailnote'] . '"></td>
-							</tr>
-							<tr>
-								<td>
-									<input type = "hidden" name = "orderid" value = "'. $formfield['fforderid'] .'">
-									<input type = "hidden" name = "orderitemid" value = "'. $rowoi['orderdetailkey'] .'" >
-									<input type="submit" name="UpdateItem" value="Update"/>
-								</td>
-							</tr>
-						</table>
-					</form>
-					';
-					}
-					?>
-			</table>
+						echo '
+						<form action = "' . $_SERVER['PHP_SELF'] . '" method = "post">
+							<table class="table table-bordered">
+								<tr>
+									<th>Price</th>
+									<td><input type = "text" name ="newprice" value="'. $rowoi['orderdetailprice'] . '"></td>
+								</tr>
+								<tr>
+									<th>Notes</th>
+									<td><input type="text" name="newnote" value ="'. $rowoi['orderdetailnote'] . '"></td>
+								</tr>
+								<tr>
+									<td>
+										<input type = "hidden" name = "orderkey" value = "'. $formfield['fforderkey'] .'">
+										<input type = "hidden" name = "orderitemid" value = "'. $rowoi['orderdetailkey'] .'" >
+										<input type="submit" name="UpdateItem" value="Update"/>
+									</td>
+								</tr>
+							</table>
+						</form>
+						';
+						}
+						?>
+				</table>
+			</div>
+			<form name="ordersubmitform" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+				<button name="submitorder" type="submit" class="btn btn-primary">Submit</button>
+			</form>
 		</div>
 	</div>
-</div>
+<?php } ?>
 
 <script>
 $(document).ready( function () {
-		$('#selectmenuitemsTable').DataTable();
 		$('#orderdetails').DataTable();
 } );
 </script>
