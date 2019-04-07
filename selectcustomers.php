@@ -15,7 +15,6 @@
 			<table class="table table-bordered" id="selectcustomersTable" width="100%" cellspacing="0">
 				<thead>
 					<tr>
-						<th>Username</th>
 						<th>First Name</th>
 						<th>Last Name</th>
 						<th>Phone</th>
@@ -33,7 +32,7 @@
 					$result->execute();
 						while ( $row = $result-> fetch() )
 							{
-								echo '<tr><td>' . $row['customerusername'] . '</td><td> ' . $row['customerfirstname'] .
+								echo '<tr><td> ' . $row['customerfirstname'] .
 								'</td><td> ' . $row['customerlastname'] . '</td><td> ' . $row['customerphone'] .
 								'</td><td> ' . $row['customeraddress'] . '</td><td> ' . $row['customercity'] .
 								'</td><td> ' . $row['customerstate'] . '</td><td> ' . $row['customerzip'] .
