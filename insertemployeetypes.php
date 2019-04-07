@@ -12,14 +12,14 @@
 <div class="card">
 	<div class="card-header">Insert Employee Types</div>
 	<div class="card-body">
-		<form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+		<form class="was-validated" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 			<div>
 				<div class="row">
 					<div class="col-3 col-md-3">
-						<input name="name" type="text" class="form-control" placeholder="Name">
+						<input name="name" type="text" class="form-control" placeholder="Name" required>
 					</div>
 					<div class="col-9 col-md-9">
-						<input name="description" type="text" class="form-control" placeholder="Description">
+						<input name="description" type="text" class="form-control" placeholder="Description" required>
 					</div>
 				</div>
 				<br />

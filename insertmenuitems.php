@@ -12,15 +12,15 @@
 <div class="card">
 	<div class="card-header">Insert Menu Items</div>
 	<div class="card-body">
-		<form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+		<form class="was-validated" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 			<div>
 				<div class="row">
 					<div class="col-3 col-md-5">
-						<input name="name" type="text" class="form-control" placeholder="Name">
+						<input name="name" type="text" class="form-control" placeholder="Name" required>
 					</div>
 					<div class="col-3 col-md-3">
-						<select name="type" class="form-control">
-							<option value="" selected>Type</option>
+						<select name="type" class="form-control" required>
+							<option disabled selected>Type</option>
 							<?php
 							$sqlselectt = "SELECT * FROM menutype";
 							$resultt = $db->prepare($sqlselectt);
@@ -32,15 +32,15 @@
 							?>
 						</select>
 					</div>
-					<div class="col-3 col-md-2">
+					<div class="col-3 col-md-2" required>
 						<input name="price" type="text" class="form-control" placeholder="Price">
 					</div>
-					<div class="col-3 col-md-2">
+					<div class="col-3 col-md-2" required>
 						<input name="count" type="text" class="form-control" placeholder="Count">
 					</div>
 				</div>
 				<br />
-				<div class="row">
+				<div class="row" required>
 					<div class="col-12">
 						<input name="description" type="text" class="form-control" placeholder="Description">
 					</div>
