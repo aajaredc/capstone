@@ -32,17 +32,17 @@
 							?>
 						</select>
 					</div>
-					<div class="col-3 col-md-2" required>
-						<input name="price" type="text" class="form-control" placeholder="Price">
+					<div class="col-3 col-md-2">
+						<input name="price" type="text" class="form-control" placeholder="Price" required>
 					</div>
-					<div class="col-3 col-md-2" required>
-						<input name="count" type="text" class="form-control" placeholder="Count">
+					<div class="col-3 col-md-2">
+						<input name="count" type="text" class="form-control" placeholder="Count" required>
 					</div>
 				</div>
 				<br />
-				<div class="row" required>
+				<div class="row">
 					<div class="col-12">
-						<input name="description" type="text" class="form-control" placeholder="Description">
+						<input name="description" type="text" class="form-control" placeholder="Description" required>
 					</div>
 				</div>
 				<br />
