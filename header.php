@@ -27,6 +27,9 @@
 		<!-- Navigation -->
 	  <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 			<a class="navbar-brand mr-1" href="#">Dashboard</a>
+			<span class="navbar-text ml-2 mr-auto">
+				<i id="sidebar-toggle" class="fas fa-fw fa-bars" style="font-size: 1.25em"></i>
+			</span>
 			<?php if ($_SESSION['signedin'] == 1) { ?>
 				<span class="navbar-text ml-auto">
 					Welcome, <?php echo $_SESSION['employeefirstname']; ?>. <a href="signout.php">Sign Out</a>
@@ -35,7 +38,7 @@
 	  </nav>
 
 		<div id="main-wrapper">
-			<ul class="sidebar navbar-nav">
+			<ul id="sidebar" style="display: flex;" class="sidebar navbar-nav">
 					<?php if ($_SESSION['signedin'] == 1) { ?>
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -108,5 +111,6 @@
 						</li>
 					<?php } ?>
 			</ul>
+			<script type="text/javascript" src="scripts/sidebar.js"></script>
 			<div id="wrapper">
 				<div class="container-fluid">
