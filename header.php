@@ -52,7 +52,7 @@
 								<a class="dropdown-item" href="#">Update</a>
 								<div class="dropdown-divider"></div>
 								<h6 class="dropdown-header">Menu Types:</h6>
-								<a class="dropdown-item" href="#">Select</a>
+								<a class="dropdown-item" href="selectmenutypes.php">Select</a>
 								<a class="dropdown-item" href="insertmenutypes.php">Insert</a>
 								<a class="dropdown-item" href="#">Update</a>
 							</div>
