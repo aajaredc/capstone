@@ -75,7 +75,7 @@
 							echo '<p>Login successful. If you are not automatically redirected, <a href="insertmenuitems">click here</a>.</p>';
 
 						} else {
-							echo '<p>The email or password is incorrect.</p>';
+							echo '<p>The username or password is incorrect.</p>';
 						}
 					}
 				}
