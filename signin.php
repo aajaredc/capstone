@@ -63,6 +63,7 @@
 						// Sign in successful
 						if (password_verify($formfield['ffpassword'], $confirmedpw)) {
 							// Create session variables
+							$_SESSION['employeekey'] = $row['employeekey'];	//key
 							$_SESSION['employeeusername'] = $row['employeeusername'];	//username
 							$_SESSION['employeefirstname'] = $row['employeefirstname'];	//firstname
 							$_SESSION['employeetypekey'] = $row['employeetypekey'];	//typekey
