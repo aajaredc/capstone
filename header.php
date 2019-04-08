@@ -49,7 +49,7 @@
 								<h6 class="dropdown-header">Menu Items:</h6>
 								<a class="dropdown-item" href="selectmenuitems.php">Select</a>
 								<a class="dropdown-item" href="insertmenuitems.php">Insert</a>
-								<a class="dropdown-item" href="#">Update</a>
+								<a class="dropdown-item" href="updatemenuitems.php">Update</a>
 								<div class="dropdown-divider"></div>
 								<h6 class="dropdown-header">Menu Types:</h6>
 								<a class="dropdown-item" href="selectmenutypes.php">Select</a>
@@ -101,6 +101,18 @@
 							<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								<i class="fas fa-fw fa-pallet"></i>
 								<span>Tickets</span>
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<h6 class="dropdown-header">Tickets:</h6>
+								<a class="dropdown-item" href="selecttickets.php">Select</a>
+								<a class="dropdown-item" href="">Insert</a>
+								<a class="dropdown-item" href="#">Update</a>
+							</div>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fas fa-fw fa-arrow"></i>
+								<span>Locations</span>
 							</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<h6 class="dropdown-header">Tickets:</h6>
