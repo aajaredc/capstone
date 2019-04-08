@@ -99,7 +99,7 @@
 						</li>
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<i class="fas fa-fw fa-pallet"></i>
+								<i class="fas fa-fw fa-receipt"></i>
 								<span>Tickets</span>
 							</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -111,13 +111,18 @@
 						</li>
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<i class="fas fa-fw fa-arrow"></i>
+								<i class="fas fa-fw fa-location-arrow"></i>
 								<span>Locations</span>
 							</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<h6 class="dropdown-header">Tickets:</h6>
-								<a class="dropdown-item" href="selecttickets.php">Select</a>
-								<a class="dropdown-item" href="">Insert</a>
+								<h6 class="dropdown-header">Locations:</h6>
+								<a class="dropdown-item" href="">Select</a>
+								<a class="dropdown-item" href="insertlocations.php">Insert</a>
+								<a class="dropdown-item" href="#">Update</a>
+								<div class="dropdown-divider"></div>
+								<h6 class="dropdown-header">Tables:</h6>
+								<a class="dropdown-item" href="">Select</a>
+								<a class="dropdown-item" href="inserttables.php">Insert</a>
 								<a class="dropdown-item" href="#">Update</a>
 							</div>
 						</li>
