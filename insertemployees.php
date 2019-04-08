@@ -16,25 +16,36 @@
 				<div class="row">
 					<div class="col-4 col-md-2">
 						<input name="firstname" type="text" class="form-control" placeholder="First Name" required>
-						<div class="valid-feedback">Looks good!</div>
+						<div class="valid-feedback">Valid first name</div>
+						<div class="invalid-feedback">Invalid first name</div>
 					</div>
 					<div class="col-4 col-md-2">
 						<input name="lastname" type="text" class="form-control" placeholder="Last Name" required>
+						<div class="valid-feedback">Valid last name</div>
+						<div class="invalid-feedback">Invalid last name</div>
 					</div>
 					<div class="col-4 col-md-2">
 						<input name="phone" type="text" class="form-control" placeholder="Phone" required>
+						<div class="valid-feedback">Valid phone</div>
+						<div class="invalid-feedback">Invalid phone</div>
 					</div>
 					<div class="col-4 col-md-2">
 						<input name="email" type="text" class="form-control" placeholder="Email" required>
+						<div class="valid-feedback">Valid email</div>
+						<div class="invalid-feedback">Invalid email</div>
 					</div>
 				</div>
 				<br />
 				<div class="row">
 					<div class="col-5 col-md-3">
 						<input name="address" type="text" class="form-control" placeholder="Address" required>
+						<div class="valid-feedback">Valid address</div>
+						<div class="invalid-feedback">Invalid address</div>
 					</div>
 					<div class="col-3 col-md-2">
 						<input name="city" type="text" class="form-control" placeholder="City" required>
+						<div class="valid-feedback">Valid city</div>
+						<div class="invalid-feedback">Invalid city</div>
 					</div>
 					<div class="col-2 col-md-2">
 						<select name="state" class="form-control" required>
@@ -91,15 +102,20 @@
 							<option value="WI">Wisconsin</option>
 							<option value="WY">Wyoming</option>
 						</select>
+						<div class="valid-feedback">Valid state</div>
+						<div class="invalid-feedback">Invalid state</div>
 					</div>
 					<div class="col-2 col-md-1">
 						<input name="zip" type="text" class="form-control" placeholder="ZIP" required>
+						<div class="valid-feedback">Valid zip</div>
+						<div class="invalid-feedback">Invalid zip</div>
 					</div>
 				</div>
 				<br />
 				<div class="row">
 					<div class="col-4 col-md-2">
 						<input name="username" type="text" class="form-control" placeholder="Username" required>
+						<div class="valid-feedback">Valid username</div>
 						<div class="invalid-feedback">Invalid username</div>
 					</div>
 					<div class="col-4 col-md-2">
@@ -115,12 +131,15 @@
 							}
 							?>
 						</select>
+						<div class="valid-feedback">Valid user type</div>
+						<div class="invalid-feedback">Invalid user type</div>
 					</div>
 				</div>
 				<br />
 				<div class="row">
 					<div class="col-4 col-md-2">
 						<input id="password1" name="password1" type="text" class="form-control" placeholder="Password" required>
+						<div class="valid-feedback">Valid password</div>
 						<div id="password1-feedback" class="invalid-feedback">Invalid password</div>
 					</div>
 					<div class="col-4 col-md-2">

@@ -66,7 +66,7 @@
 								<h6 class="dropdown-header">Employees:</h6>
 								<a class="dropdown-item" href="selectemployees.php">Select</a>
 								<a class="dropdown-item" href="insertemployees.php">Insert</a>
-								<a class="dropdown-item" href="#">Update</a>
+								<a class="dropdown-item" href="updateemployees.php">Update</a>
 								<div class="dropdown-divider"></div>
 								<h6 class="dropdown-header">Employee Types:</h6>
 								<a class="dropdown-item" href="selectemployeetypes.php">Select</a>
@@ -82,7 +82,7 @@
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<a class="dropdown-item" href="selectcustomers.php">Select</a>
 								<a class="dropdown-item" href="insertcustomers.php">Insert</a>
-								<a class="dropdown-item" href="#">Update</a>
+								<a class="dropdown-item" href="updatecustomers.php">Update</a>
 							</div>
 						</li>
 						<li class="nav-item dropdown">
