@@ -54,7 +54,7 @@
 								<h6 class="dropdown-header">Menu Types:</h6>
 								<a class="dropdown-item" href="selectmenutypes.php">Select</a>
 								<a class="dropdown-item" href="insertmenutypes.php">Insert</a>
-								<a class="dropdown-item" href="#">Update</a>
+								<a class="dropdown-item" href="updatemenutypes.php">Update</a>
 							</div>
 						</li>
 						<li class="nav-item dropdown">

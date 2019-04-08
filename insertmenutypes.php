@@ -17,9 +17,13 @@
 				<div class="row">
 					<div class="col-3 col-md-3">
 						<input name="name" type="text" class="form-control" placeholder="Name" required>
+						<div class="valid-feedback">Valid name</div>
+						<div class="invalid-feedback">Invalid name</div>
 					</div>
 					<div class="col-9 col-md-9">
 						<input name="description" type="text" class="form-control" placeholder="Description" required>
+						<div class="valid-feedback">Valid description</div>
+						<div class="invalid-feedback">Invalid description</div>
 					</div>
 				</div>
 				<br />
