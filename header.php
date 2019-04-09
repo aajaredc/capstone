@@ -118,6 +118,19 @@
 						</li>
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fas fa-fw fa-clock"></i>
+								<span>Schedules</span>
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<h6 class="dropdown-header">Schedules:</h6>
+								<a class="dropdown-item" href="selectschedules.php">Select</a>
+								<a class="dropdown-item" href="insertschedules.php">Insert</a>
+								<a class="dropdown-item" href="updateschedules.php">Update</a>
+								<a class="dropdown-item" href="deleteschedules.php">Delete</a>
+							</div>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								<i class="fas fa-fw fa-location-arrow"></i>
 								<span>Locations</span>
 							</a>

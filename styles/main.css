@@ -33,3 +33,7 @@ body {
 	padding-bottom: 80px;
 	overflow-x: hidden;
 }
+
+td {
+	vertical-align: middle !important;
+}
