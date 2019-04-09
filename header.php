@@ -50,11 +50,13 @@
 								<a class="dropdown-item" href="selectmenuitems.php">Select</a>
 								<a class="dropdown-item" href="insertmenuitems.php">Insert</a>
 								<a class="dropdown-item" href="updatemenuitems.php">Update</a>
+								<a class="dropdown-item" href="deletemenuitems.php">Delete</a>
 								<div class="dropdown-divider"></div>
 								<h6 class="dropdown-header">Menu Types:</h6>
 								<a class="dropdown-item" href="selectmenutypes.php">Select</a>
 								<a class="dropdown-item" href="insertmenutypes.php">Insert</a>
 								<a class="dropdown-item" href="updatemenutypes.php">Update</a>
+								<a class="dropdown-item" href="deletemenutypes.php">Delete</a>
 							</div>
 						</li>
 						<li class="nav-item dropdown">
@@ -67,11 +69,13 @@
 								<a class="dropdown-item" href="selectemployees.php">Select</a>
 								<a class="dropdown-item" href="insertemployees.php">Insert</a>
 								<a class="dropdown-item" href="updateemployees.php">Update</a>
+								<a class="dropdown-item" href="deleteemployees.php">Delete</a>
 								<div class="dropdown-divider"></div>
 								<h6 class="dropdown-header">Employee Types:</h6>
 								<a class="dropdown-item" href="selectemployeetypes.php">Select</a>
 								<a class="dropdown-item" href="insertemployeetypes.php">Insert</a>
 								<a class="dropdown-item" href="#">Update</a>
+								<a class="dropdown-item" href="deleteemployeetypes.php">Delete</a>
 							</div>
 						</li>
 						<li class="nav-item dropdown">
@@ -83,6 +87,7 @@
 								<a class="dropdown-item" href="selectcustomers.php">Select</a>
 								<a class="dropdown-item" href="insertcustomers.php">Insert</a>
 								<a class="dropdown-item" href="updatecustomers.php">Update</a>
+								<a class="dropdown-item" href="deletecustomers.php">Delete</a>
 							</div>
 						</li>
 						<li class="nav-item dropdown">
@@ -95,6 +100,7 @@
 								<a class="dropdown-item" href="selectorders.php">Select</a>
 								<a class="dropdown-item" href="insertorders.php">Insert</a>
 								<a class="dropdown-item" href="#">Update</a>
+								<a class="dropdown-item" href="deleteorders.php">Delete</a>
 							</div>
 						</li>
 						<li class="nav-item dropdown">
@@ -107,6 +113,7 @@
 								<a class="dropdown-item" href="selecttickets.php">Select</a>
 								<a class="dropdown-item" href="">Insert</a>
 								<a class="dropdown-item" href="#">Update</a>
+								<a class="dropdown-item" href="deletetickets.php">Delete</a>
 							</div>
 						</li>
 						<li class="nav-item dropdown">
@@ -119,11 +126,13 @@
 								<a class="dropdown-item" href="selectlocations.php">Select</a>
 								<a class="dropdown-item" href="insertlocations.php">Insert</a>
 								<a class="dropdown-item" href="updatelocations.php">Update</a>
+								<a class="dropdown-item" href="deletelocations.php">Delete</a>
 								<div class="dropdown-divider"></div>
 								<h6 class="dropdown-header">Tables:</h6>
 								<a class="dropdown-item" href="selecttables.php">Select</a>
 								<a class="dropdown-item" href="inserttables.php">Insert</a>
 								<a class="dropdown-item" href="updatetables.php">Update</a>
+								<a class="dropdown-item" href="deletetables.php">Delete</a>
 							</div>
 						</li>
 					<?php } ?>
