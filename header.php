@@ -123,7 +123,7 @@
 								<h6 class="dropdown-header">Tables:</h6>
 								<a class="dropdown-item" href="selecttables.php">Select</a>
 								<a class="dropdown-item" href="inserttables.php">Insert</a>
-								<a class="dropdown-item" href="#">Update</a>
+								<a class="dropdown-item" href="updatetables.php">Update</a>
 							</div>
 						</li>
 					<?php } ?>
