@@ -20,8 +20,8 @@
 				$time = date('h:i:s');
 
 				//enter data into database
-				$sqlinsert = 'INSERT INTO orders (customerkey, orderdate, ordertime, employeekey)
-								VALUES (:bvcu, :bvdate, :bvtime, :bvem)';
+				$sqlinsert = 'INSERT INTO orders (customerkey, orderdate, ordertime, employeekey, ordercomplete)
+								VALUES (:bvcu, :bvdate, :bvtime, :bvem, 0)';
 				$stmtinsert = $db->prepare($sqlinsert);
 				$stmtinsert->bindvalue(':bvcu', $_POST['customerkey']);
 				$stmtinsert->bindvalue(':bvdate', $date);

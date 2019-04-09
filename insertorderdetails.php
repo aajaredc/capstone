@@ -53,6 +53,45 @@
 	<div class="card">
 		<div class="card-header">Order Successful</div>
 		<div class="card-body">
+			<?php
+			// Begin removing items from inventory
+			$sqlupdate = 'UPDATE menuitem
+										SET menuitemcount=:bvcount
+										WHERE menuitemkey=:bvkey';
+
+			$sqlselecto = 'SELECT *
+										 FROM orderdetail
+										 WHERE orderkey=:bvorderkey';
+			$resulto = $db->prepare($sqlselecto);
+			$resulto->bindValue(':bvorderkey', $formfield['fforderkey']);
+			$resulto->execute();
+
+			$sqlselectm = 'SELECT *
+										 FROM menuitem
+										 WHERE menuitemkey=:bvkey';
+
+			$orderdetailcount = 0;
+			$itemcount = 0;
+			$itemkey = 0;
+
+			while ($rowo = $resulto->fetch()) {
+				echo 'update that item<br />';
+				$itemkey = $rowo['menuitemkey'];
+				$resultm = $db->prepare($sqlselectm);
+				$resultm->bindValue(':bvkey', $itemkey);
+				$resultm->execute();
+				while ($rowm = $resultm->fetch()) {
+					echo 'updating menuitemkey ' . $itemkey . '<br />';
+					$itemcount = $rowm['menuitemcount'];
+				}
+				$orderdetailcount = $itemcount - 1;
+
+				$resultu = $db->prepare($sqlupdate);
+				$resultu->bindValue('bvcount', $orderdetailcount);
+				$resultu->bindValue('bvkey', $itemkey);
+				$resultu->execute();
+			}
+			?>
 			<p>Order successful! :)</p>
 		</div>
 	</div>
@@ -183,6 +222,7 @@
 				</table>
 			</div>
 			<form name="ordersubmitform" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+				<input name="orderkey" type="hidden" value="<?php echo $formfield['fforderkey']; ?>"/>
 				<button name="submitorder" type="submit" class="btn btn-primary">Submit</button>
 			</form>
 		</div>
