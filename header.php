@@ -118,7 +118,7 @@
 								<h6 class="dropdown-header">Locations:</h6>
 								<a class="dropdown-item" href="selectlocations.php">Select</a>
 								<a class="dropdown-item" href="insertlocations.php">Insert</a>
-								<a class="dropdown-item" href="#">Update</a>
+								<a class="dropdown-item" href="updatelocations.php">Update</a>
 								<div class="dropdown-divider"></div>
 								<h6 class="dropdown-header">Tables:</h6>
 								<a class="dropdown-item" href="selecttables.php">Select</a>
