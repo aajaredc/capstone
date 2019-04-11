@@ -37,3 +37,22 @@ body {
 td {
 	vertical-align: middle !important;
 }
+
+/** View for smaller screens **/
+@media only screen and (max-width: 1280px) {
+	.sidebar {
+		width: 120px !important;
+	}
+
+	.nav-link {
+		text-align: center !important;
+	}
+
+	.dropdown-toggle::after {
+		display: none;
+	}
+
+	span {
+    display: block;
+	}
+}

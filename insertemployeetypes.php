@@ -5,8 +5,8 @@
 	if ($_SESSION['signedin'] == 1) {
 ?>
 <ol class="breadcrumb">
-	<li class="breadcrumb-item"><a href="#">Employees</a></li>
-	<li class="breadcrumb-item"><a href="#">Employee Types</a></li>
+	<li class="breadcrumb-item">Employees</li>
+	<li class="breadcrumb-item">Employee Types</li>
 	<li class="breadcrumb-item active">Insert</li>
 </ol>
 <div class="card">
@@ -46,51 +46,51 @@
 							<tbody>
 								<tr>
 									<th>Select</th>
-									<td><input name="selectmenuitems" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="selectmenutypes" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="selectemployees" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="selectemployeetypes" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="selectcustomers" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="selectorders" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="selecttickets" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="selectlocations" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="selecttables" class="form-check-input" type="checkbox" value="1"></td>
+									<td><input name="selectmenuitems" type="checkbox" value="1"></td>
+									<td><input name="selectmenutypes" type="checkbox" value="1"></td>
+									<td><input name="selectemployees" type="checkbox" value="1"></td>
+									<td><input name="selectemployeetypes" type="checkbox" value="1"></td>
+									<td><input name="selectcustomers" type="checkbox" value="1"></td>
+									<td><input name="selectorders" type="checkbox" value="1"></td>
+									<td><input name="selecttickets" type="checkbox" value="1"></td>
+									<td><input name="selectlocations" type="checkbox" value="1"></td>
+									<td><input name="selecttables" type="checkbox" value="1"></td>
 								</tr>
 								<tr>
 									<th>Insert</th>
-									<td><input name="insertmenuitems" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="insertmenutypes" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="insertemployees" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="insertemployeetypes" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="insertcustomers" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="insertorders" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="inserttickets" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="insertlocations" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="inserttables" class="form-check-input" type="checkbox" value="1"></td>
+									<td><input name="insertmenuitems" type="checkbox" value="1"></td>
+									<td><input name="insertmenutypes" type="checkbox" value="1"></td>
+									<td><input name="insertemployees" type="checkbox" value="1"></td>
+									<td><input name="insertemployeetypes" type="checkbox" value="1"></td>
+									<td><input name="insertcustomers" type="checkbox" value="1"></td>
+									<td><input name="insertorders" type="checkbox" value="1"></td>
+									<td><input name="inserttickets" type="checkbox" value="1"></td>
+									<td><input name="insertlocations" type="checkbox" value="1"></td>
+									<td><input name="inserttables" type="checkbox" value="1"></td>
 								</tr>
 								<tr>
 									<th>Update</th>
-									<td><input name="updatemenuitems" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="updatemenutypes" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="updateemployees" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="updateemployeetypes" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="updatecustomers" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="updateorders" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="updatetickets" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="updatelocations" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="updatetables" class="form-check-input" type="checkbox" value="1"></td>
+									<td><input name="updatemenuitems" type="checkbox" value="1"></td>
+									<td><input name="updatemenutypes" type="checkbox" value="1"></td>
+									<td><input name="updateemployees" type="checkbox" value="1"></td>
+									<td><input name="updateemployeetypes" type="checkbox" value="1"></td>
+									<td><input name="updatecustomers" type="checkbox" value="1"></td>
+									<td><input name="updateorders" type="checkbox" value="1"></td>
+									<td><input name="updatetickets" type="checkbox" value="1"></td>
+									<td><input name="updatelocations" type="checkbox" value="1"></td>
+									<td><input name="updatetables" type="checkbox" value="1"></td>
 								</tr>
 								<tr>
 									<th>Delete</th>
-									<td><input name="deletemenuitems" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="deletemenutypes" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="deleteemployees" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="deleteemployeetypes" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="deletecustomers" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="deleteorders" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="deletetickets" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="deletelocations" class="form-check-input" type="checkbox" value="1"></td>
-									<td><input name="deletetables" class="form-check-input" type="checkbox" value="1"></td>
+									<td><input name="deletemenuitems" type="checkbox" value="1"></td>
+									<td><input name="deletemenutypes" type="checkbox" value="1"></td>
+									<td><input name="deleteemployees" type="checkbox" value="1"></td>
+									<td><input name="deleteemployeetypes" type="checkbox" value="1"></td>
+									<td><input name="deletecustomers" type="checkbox" value="1"></td>
+									<td><input name="deleteorders" type="checkbox" value="1"></td>
+									<td><input name="deletetickets" type="checkbox" value="1"></td>
+									<td><input name="deletelocations" type="checkbox" value="1"></td>
+									<td><input name="deletetables" type="checkbox" value="1"></td>
 								</tr>
 							</tbody>
 						</table>

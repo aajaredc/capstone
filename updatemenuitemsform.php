@@ -25,12 +25,12 @@
 		<form class="was-validated" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 			<div>
 				<div class="row">
-					<div class="col-3 col-md-5">
+					<div class="col-12 col-md-6 mb-3">
 						<input name="name" type="text" class="form-control" placeholder="Name" value="<?php echo $formfield['name']; ?>" required>
 						<div class="valid-feedback">Valid name</div>
 						<div class="invalid-feedback">Invalid name</div>
 					</div>
-					<div class="col-3 col-md-3">
+					<div class="col-12 col-md-4 mb-3">
 						<select name="type" class="form-control" required>
 							<option disabled selected>Type</option>
 							<?php
@@ -48,7 +48,7 @@
 						<div class="valid-feedback">Valid type</div>
 						<div class="invalid-feedback">Invalid type</div>
 					</div>
-					<div class="col-3 col-md-2">
+					<div class="col-12 col-md-4 mb-3">
 						<div class="input-group">
 							<div class="input-group-prepend">
 								<div class="input-group-text">$</div>
@@ -58,21 +58,19 @@
 							<div class="invalid-feedback">Invalid price</div>
 						</div>
 					</div>
-					<div class="col-3 col-md-2">
+					<div class="col-12 col-md-3 mb-3">
 						<input name="count" type="text" class="form-control" placeholder="Count" value="<?php echo $formfield['count']; ?>" required>
 						<div class="valid-feedback">Valid count</div>
 						<div class="invalid-feedback">Invalid count</div>
 					</div>
 				</div>
-				<br />
 				<div class="row">
-					<div class="col-12">
+					<div class="col-12 mb-3">
 						<input name="description" type="text" class="form-control" placeholder="Description" value="<?php echo $formfield['description']; ?>" required>
 						<div class="valid-feedback">Valid description</div>
 						<div class="invalid-feedback">Invalid description</div>
 					</div>
 				</div>
-				<br />
 				<div class="row">
 					<div class="col-12">
 						<input type="hidden" name="menuitemkey" value="<?php echo $formfield['menuitemkey']; ?>"/>

@@ -5,8 +5,8 @@
 	if ($_SESSION['signedin'] == 1) {
 ?>
 <ol class="breadcrumb">
-	<li class="breadcrumb-item"><a href="#">Menu</a></li>
-	<li class="breadcrumb-item"><a href="#">Menu Items</a></li>
+	<li class="breadcrumb-item">Menu</li>
+	<li class="breadcrumb-item">Menu Items</li>
 	<li class="breadcrumb-item active">Insert</li>
 </ol>
 <div class="card">
@@ -15,12 +15,12 @@
 		<form class="was-validated" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 			<div>
 				<div class="row">
-					<div class="col-3 col-md-5">
+					<div class="col-12 col-md-6 mb-3">
 						<input name="name" type="text" class="form-control" placeholder="Name" required>
 						<div class="valid-feedback">Valid name</div>
 						<div class="invalid-feedback">Invalid name</div>
 					</div>
-					<div class="col-3 col-md-3">
+					<div class="col-12 col-md-4 mb-3">
 						<select name="type" class="form-control" required>
 							<option disabled selected>Type</option>
 							<?php
@@ -36,7 +36,7 @@
 						<div class="valid-feedback">Valid type</div>
 						<div class="invalid-feedback">Invalid type</div>
 					</div>
-					<div class="col-3 col-md-2">
+					<div class="col-12 col-md-4 mb-3">
 						<div class="input-group">
 							<div class="input-group-prepend">
 								<div class="input-group-text">$</div>
@@ -46,21 +46,19 @@
 							<div class="invalid-feedback">Invalid price</div>
 						</div>
 					</div>
-					<div class="col-3 col-md-2">
+					<div class="col-12 col-md-3 mb-3">
 						<input name="count" type="text" class="form-control" placeholder="Count" required>
 						<div class="valid-feedback">Valid count</div>
 						<div class="invalid-feedback">Invalid count</div>
 					</div>
 				</div>
-				<br />
 				<div class="row">
-					<div class="col-12">
+					<div class="col-12 mb-3">
 						<input name="description" type="text" class="form-control" placeholder="Description" required>
 						<div class="valid-feedback">Valid description</div>
 						<div class="invalid-feedback">Invalid description</div>
 					</div>
 				</div>
-				<br />
 				<div class="row">
 					<div class="col-12">
 						<button name="insert" type="submit" class="btn btn-primary">Submit</button>

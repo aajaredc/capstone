@@ -15,39 +15,36 @@
 			<form class="was-validated" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 				<div class="row">
 					<!-- Date -->
-					<div class="col-12 col-md-3">
+					<div class="col-12 col-md-6 mb-3">
 						<input name="date" type="date" class="form-control" required>
 						<div class="valid-feedback">Valid date</div>
 						<div class="invalid-feedback">Invalid date</div>
 					</div>
 				</div>
-				<br />
 				<div class="row">
 					<!-- Start time -->
-					<div class="col-6 col-md-2">
+					<div class="col-12 col-md-6 col-sm-12 mb-3">
 						<input name="starttime" type="time" class="form-control" required>
 						<div class="valid-feedback">Valid start time</div>
 						<div class="invalid-feedback">Invalid start time</div>
 					</div>
 					<!-- End time -->
-					<div class="col-6 col-md-2">
+					<div class="col-12 col-md-6 col-sm-12 mb-3">
 						<input name="endtime" type="time" class="form-control" required>
 						<div class="valid-feedback">Valid end time</div>
 						<div class="invalid-feedback">Invalid end time</div>
 					</div>
 				</div>
-				<br />
 				<div class="row">
 					<!-- repeat 7 days -->
-					<div class="col-6 col-md-6">
+					<div class="col-12 col-sm-auto col-md-auto mb-3">
 						<input name="repeat" type="checkbox" value="1">
 						<label>Repeat for 7 days</label>
 					</div>
 				</div>
-				<br />
 				<div class="row">
 					<!-- Submission -->
-					<div class="col-12 col-md-12">
+					<div class="col-12 col-md-12 mb-3">
 						<input type="hidden" name="employeekey" value="<?php echo $_POST['employeekey']; ?>"/>
 						<button name="insertschedule" type="submit" class="btn btn-primary">Submit</button>
 					</div>
@@ -72,14 +69,24 @@
 					try {
 						$sqlnewtype = "INSERT into schedules(scheduledate, schedulestart,
 							scheduleend, employeekey)
-						VALUES (:bvdate, :bvstart, :bvend, bvemployee)";
+						VALUES (:bvdate, :bvstart, :bvend, :bvemployee)";
 
 						$result = $db->prepare($sqlnewtype);
 						$result->bindValue('bvdate', $formfield['date']);
 						$result->bindValue('bvstart', $formfield['starttime']);
 						$result->bindValue('bvend', $formfield['endtime']);
-						$result->bindValue('bvemployeekey', $formfield['employeekey']);
-						$result->execute();
+						$result->bindValue('bvemployee', $formfield['employeekey']);
+
+						if (empty($formfield['repeat'])) {
+							$result->execute();
+						} else {
+							$date = $formfield['date'];
+							for ($i = 0; $i < 7; $i++) {
+								$result->bindValue('bvdate', $date);
+								$result->execute();
+								$date = date('Y-m-d', strtotime($date . ' +1 day'));
+							}
+						}
 
 						echo '
 						<br />

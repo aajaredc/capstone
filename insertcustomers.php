@@ -5,7 +5,7 @@
 	if ($_SESSION['signedin'] == 1) {
 ?>
 <ol class="breadcrumb">
-	<li class="breadcrumb-item"><a href="#">Customers</a></li>
+	<li class="breadcrumb-item">Customers</li>
 	<li class="breadcrumb-item active">Insert</li>
 </ol>
 <div class="card">
@@ -14,40 +14,39 @@
 		<form class="was-validated" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 			<div>
 				<div class="row">
-					<div class="col-4 col-md-2">
+					<div class="col-12 col-md-4 mb-3">
 						<input name="firstname" type="text" class="form-control" placeholder="First Name" required>
 						<div class="valid-feedback">Valid first name</div>
 						<div class="invalid-feedback">Invalid first name</div>
 					</div>
-					<div class="col-4 col-md-2">
+					<div class="col-12 col-md-4 mb-3">
 						<input name="lastname" type="text" class="form-control" placeholder="Last Name" required>
 						<div class="valid-feedback">Valid last name</div>
 						<div class="invalid-feedback">Invalid last name</div>
 					</div>
-					<div class="col-4 col-md-2">
+					<div class="col-12 col-md-4 mb-3">
 						<input name="phone" type="text" class="form-control" placeholder="Phone" required>
 						<div class="valid-feedback">Valid phone</div>
 						<div class="invalid-feedback">Invalid phone</div>
 					</div>
-					<div class="col-4 col-md-2">
+					<div class="col-12 col-md-6 mb-3">
 						<input name="email" type="text" class="form-control" placeholder="Email" required>
 						<div class="valid-feedback">Valid email</div>
 						<div class="invalid-feedback">Invalid email</div>
 					</div>
-				</div>
-				<br />
-				<div class="row">
-					<div class="col-5 col-md-3">
+					<div class="col-12 col-md-6 mb-3">
 						<input name="address" type="text" class="form-control" placeholder="Address" required>
 						<div class="valid-feedback">Valid address</div>
 						<div class="invalid-feedback">Invalid address</div>
 					</div>
-					<div class="col-3 col-md-2">
+				</div>
+				<div class="row">
+					<div class="col-12 col-md-4 mb-3">
 						<input name="city" type="text" class="form-control" placeholder="City" required>
 						<div class="valid-feedback">Valid city</div>
 						<div class="invalid-feedback">Invalid city</div>
 					</div>
-					<div class="col-2 col-md-2">
+					<div class="col-6 col-md-4 mb-3">
 						<select name="state" class="form-control" required>
 							<option disabled selected>State</option>
 							<option value="AL">Alabama</option>
@@ -105,29 +104,27 @@
 						<div class="valid-feedback">Valid state</div>
 						<div class="invalid-feedback">Invalid state</div>
 					</div>
-					<div class="col-2 col-md-1">
+					<div class="col-6 col-md-4 mb-3">
 						<input name="zip" type="text" class="form-control" placeholder="ZIP" required>
 						<div class="valid-feedback">Valid zip</div>
 						<div class="invalid-feedback">Invalid zip</div>
 					</div>
 				</div>
-				<br />
 				<div class="row">
-					<div class="col-4 col-md-2">
+					<div class="col-12 col-md-6 mb-3">
 						<input id="password1" name="password1" type="text" class="form-control" placeholder="Password" required>
 						<div class="valid-feedback">Valid password</div>
 						<div id="password1-feedback" class="invalid-feedback">Invalid password</div>
 					</div>
-					<div class="col-4 col-md-2">
+					<div class="col-12 col-md-6 mb-3">
 						<input id="password2" name="password2" type="text" class="form-control" placeholder="Confirm Password" required>
 						<div id="password2-valid-feedback" class="valid-feedback">Passwords match</div>
 						<div id="password2-invalid-feedback" class="invalid-feedback">Passwords do not match</div>
 					</div>
 				</div>
-				<p id="passwordtip" class="mt-3 text-danger">Passwords must contain an uppercase, lowercase, digit, and 8 characters.</p>
-				<br />
+				<p id="passwordtip" class="mt-3 text-danger mb-3">Passwords must contain an uppercase, lowercase, digit, and 8 characters.</p>
 				<div class="row">
-					<div class="col-12">
+					<div class="col-12 mb-3">
 						<button name="insertcustomer" type="submit" class="btn btn-primary">Submit</button>
 					</div>
 				</div>
