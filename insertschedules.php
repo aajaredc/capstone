@@ -3,6 +3,11 @@
 	require_once 'header.php';
 
 	if ($_SESSION['signedin'] == 1) {
+
+		// This function gets the weekdate of a given date
+		function getWeekday($date) {
+			return date('w', strtotime($date));
+		}
 ?>
 <ol class="breadcrumb">
 	<li class="breadcrumb-item">Schedules</li>
@@ -13,33 +18,125 @@
 	<div class="card-body">
 		<?php if (isset($_POST['selectsubmit']) || isset($_POST['insertschedule'])) { ?>
 			<form class="was-validated" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+				<!-- Week -->
+				<p class="mb-1">Select Week</p>
 				<div class="row">
-					<!-- Date -->
 					<div class="col-12 col-md-6 mb-3">
-						<input name="date" type="date" class="form-control" required>
-						<div class="valid-feedback">Valid date</div>
-						<div class="invalid-feedback">Invalid date</div>
+						<input name="start" type="date" class="form-control" required>
+						<div class="valid-feedback">Valid week</div>
+						<div class="invalid-feedback">Invalid week</div>
 					</div>
 				</div>
+				<!-- sunday -->
+				<p class="mb-1">Sunday</p>
 				<div class="row">
 					<!-- Start time -->
 					<div class="col-12 col-md-6 col-sm-12 mb-3">
-						<input name="starttime" type="time" class="form-control" required>
+						<input name="sundaystart" type="time" class="form-control" >
 						<div class="valid-feedback">Valid start time</div>
 						<div class="invalid-feedback">Invalid start time</div>
 					</div>
 					<!-- End time -->
 					<div class="col-12 col-md-6 col-sm-12 mb-3">
-						<input name="endtime" type="time" class="form-control" required>
+						<input name="sundayend" type="time" class="form-control" >
 						<div class="valid-feedback">Valid end time</div>
 						<div class="invalid-feedback">Invalid end time</div>
 					</div>
 				</div>
+				<!-- Monday -->
+				<p class="mb-1">Monday</p>
 				<div class="row">
-					<!-- repeat 7 days -->
-					<div class="col-12 col-sm-auto col-md-auto mb-3">
-						<input name="repeat" type="checkbox" value="1">
-						<label>Repeat for 7 days</label>
+					<!-- Start time -->
+					<div class="col-12 col-md-6 col-sm-12 mb-3">
+						<input name="mondaystart" type="time" class="form-control" >
+						<div class="valid-feedback">Valid start time</div>
+						<div class="invalid-feedback">Invalid start time</div>
+					</div>
+					<!-- End time -->
+					<div class="col-12 col-md-6 col-sm-12 mb-3">
+						<input name="mondayend" type="time" class="form-control" >
+						<div class="valid-feedback">Valid end time</div>
+						<div class="invalid-feedback">Invalid end time</div>
+					</div>
+				</div>
+				<!-- tuesday -->
+				<p class="mb-1">Tuesday</p>
+				<div class="row">
+					<!-- Start time -->
+					<div class="col-12 col-md-6 col-sm-12 mb-3">
+						<input name="tuesdaystart" type="time" class="form-control" >
+						<div class="valid-feedback">Valid start time</div>
+						<div class="invalid-feedback">Invalid start time</div>
+					</div>
+					<!-- End time -->
+					<div class="col-12 col-md-6 col-sm-12 mb-3">
+						<input name="tuesdayend" type="time" class="form-control" >
+						<div class="valid-feedback">Valid end time</div>
+						<div class="invalid-feedback">Invalid end time</div>
+					</div>
+				</div>
+				<!-- wednesday -->
+				<p class="mb-1">Wednesday</p>
+				<div class="row">
+					<!-- Start time -->
+					<div class="col-12 col-md-6 col-sm-12 mb-3">
+						<input name="wednesdaystart" type="time" class="form-control" >
+						<div class="valid-feedback">Valid start time</div>
+						<div class="invalid-feedback">Invalid start time</div>
+					</div>
+					<!-- End time -->
+					<div class="col-12 col-md-6 col-sm-12 mb-3">
+						<input name="wednesdayend" type="time" class="form-control" >
+						<div class="valid-feedback">Valid end time</div>
+						<div class="invalid-feedback">Invalid end time</div>
+					</div>
+				</div>
+				<!-- thursday -->
+				<p class="mb-1">Thursday</p>
+				<div class="row">
+					<!-- Start time -->
+					<div class="col-12 col-md-6 col-sm-12 mb-3">
+						<input name="thursdaystart" type="time" class="form-control" >
+						<div class="valid-feedback">Valid start time</div>
+						<div class="invalid-feedback">Invalid start time</div>
+					</div>
+					<!-- End time -->
+					<div class="col-12 col-md-6 col-sm-12 mb-3">
+						<input name="thursdayend" type="time" class="form-control" >
+						<div class="valid-feedback">Valid end time</div>
+						<div class="invalid-feedback">Invalid end time</div>
+					</div>
+				</div>
+				<!-- friday -->
+				<p class="mb-1">Friday</p>
+				<div class="row">
+					<!-- Start time -->
+					<div class="col-12 col-md-6 col-sm-12 mb-3">
+						<input name="fridaystart" type="time" class="form-control" >
+						<div class="valid-feedback">Valid start time</div>
+						<div class="invalid-feedback">Invalid start time</div>
+					</div>
+					<!-- End time -->
+					<div class="col-12 col-md-6 col-sm-12 mb-3">
+						<input name="fridayend" type="time" class="form-control" >
+						<div class="valid-feedback">Valid end time</div>
+						<div class="invalid-feedback">Invalid end time</div>
+					</div>
+				</div>
+				<!-- saturday -->
+				<p class="mb-1">Saturday</p>
+				<div class="row">
+					<!-- Start time -->
+					<div class="col-12 col-md-6 col-sm-12 mb-3">
+						<input name="saturdaystart" type="time" class="form-control" >
+						<div class="valid-feedback">Valid start time</div>
+						<div class="invalid-feedback">Invalid start time</div>
+					</div>
+					<!-- End time -->
+					<div class="col-12 col-md-6 col-sm-12 mb-3">
+						<input name="saturdayend" type="time" class="form-control" >
+						<div class="valid-feedback">Valid end time</div>
+						<div class="invalid-feedback">Invalid end time</div>
 					</div>
 				</div>
 				<div class="row">
@@ -53,49 +150,102 @@
 			<?php
 			if (isset($_POST['insertschedule'])) {
 				// Data cleansing
-				$formfield['date'] = $_POST['date'];
-				$formfield['starttime'] = $_POST['starttime'];
-				$formfield['endtime'] = $_POST['endtime'];
-				$formfield['repeat'] = $_POST['repeat'];
+				$formfield['start'] = $_POST['start'];
 				$formfield['employeekey'] = $_POST['employeekey'];
 
-				// If a field is empty...
-				if (empty($formfield['date']) || empty($formfield['starttime']) ||
-				 		empty($formfield['endtime']) || empty($formfield['employeekey'])){
-					// One or more fields are empty
-					echo '<br /><p class="text-warning">Insert failed: one or more fields are empty.</p>';
+				$formfield['sundaystart'] = $_POST['sundaystart'];
+				$formfield['sundayend'] = $_POST['sundayend'];
+
+				$formfield['mondaystart'] = $_POST['mondaystart'];
+				$formfield['mondayend'] = $_POST['mondayend'];
+
+				$formfield['tuesdaystart'] = $_POST['tuesdaystart'];
+				$formfield['tuesdayend'] = $_POST['tuesdayend'];
+
+				$formfield['wednesdaystart'] = $_POST['wednesdaystart'];
+				$formfield['wednesdayend'] = $_POST['wednesdayend'];
+
+				$formfield['thursdaystart'] = $_POST['thursdaystart'];
+				$formfield['thursdayend'] = $_POST['thursdayend'];
+
+				$formfield['fridaystart'] = $_POST['fridaystart'];
+				$formfield['fridayend'] = $_POST['fridayend'];
+
+				$formfield['saturdaystart'] = $_POST['saturdaystart'];
+				$formfield['saturdayend'] = $_POST['saturdayend'];
+				
+				// Check if the weekday is 0 (sunday)
+				if (getWeekday($formfield['start']) != 0) {
+					// If the week day is not sunday, then make it sunday
+					$startdate = date('Y-m-d', (strtotime('-' . getWeekday($formfield['start']) . ' day', strtotime($formfield['start']))));
 				} else {
+					// The day the schedule starts is already sunday
+					$startdate = $formfield['start'];
+				}
+
+				// Check if that week has not yet been used for this employee
+				try {
+					$sql = 'SELECT *
+									FROM schedules
+									WHERE schedulestart=:bvschedulestart
+									AND employeekey=:bvemployeekey';
+
+					$s = $db->prepare($sql);
+					$s->bindValue(':bvschedulestart', $startdate);
+					$s->bindValue(':bvemployeekey', $formfield['employeekey']);
+					$s->execute();
+					$count = $s->rowCount();
+				} catch (PDOException $e) {
+					echo $e->getMessage();
+					exit();
+				}
+
+				// Proceed only if this employee already has a schedule for this week
+				if ($count < 1) {
 					// Attempt to insert
 					try {
-						$sqlnewtype = "INSERT into schedules(scheduledate, schedulestart,
-							scheduleend, employeekey)
-						VALUES (:bvdate, :bvstart, :bvend, :bvemployee)";
+						// statement
+						$sqlinsert = 'INSERT INTO schedules(employeekey, schedulestart, sundaystart,
+													sundayend, mondaystart, mondayend, tuesdaystart, tuesdayend,
+													wednesdaystart, wednesdayend, thursdaystart, thursdayend,
+													fridaystart, fridayend, saturdaystart, saturdayend)
+													VALUES(:bvemployeekey, :bvschedulestart, :bvsundaystart,
+													:bvsundayend, :bvmondaystart, :bvmondayend, :bvtuesdaystart, :bvtuesdayend,
+													:bvwednesdaystart, :bvwednesdayend, :bvthursdaystart, :bvthursdayend,
+													:bvfridaystart, :bvfridayend, :bvsaturdaystart, :bvsaturdayend)';
 
-						$result = $db->prepare($sqlnewtype);
-						$result->bindValue('bvdate', $formfield['date']);
-						$result->bindValue('bvstart', $formfield['starttime']);
-						$result->bindValue('bvend', $formfield['endtime']);
-						$result->bindValue('bvemployee', $formfield['employeekey']);
+						// Prepare and execute
+						$result = $db->prepare($sqlinsert);
+						$result->bindValue('bvemployeekey', $formfield['employeekey']);
+						$result->bindValue('bvschedulestart', $startdate);
+						$result->bindValue('bvsundaystart', $formfield['sundaystart']);
+						$result->bindValue('bvsundayend', $formfield['sundayend']);
+						$result->bindValue('bvmondaystart', $formfield['mondaystart']);
+						$result->bindValue('bvmondayend', $formfield['mondayend']);
+						$result->bindValue('bvtuesdaystart', $formfield['tuesdaystart']);
+						$result->bindValue('bvtuesdayend', $formfield['tuesdayend']);
+						$result->bindValue('bvwednesdaystart', $formfield['wednesdaystart']);
+						$result->bindValue('bvwednesdayend', $formfield['wednesdayend']);
+						$result->bindValue('bvthursdaystart', $formfield['thursdaystart']);
+						$result->bindValue('bvthursdayend', $formfield['thursdayend']);
+						$result->bindValue('bvfridaystart', $formfield['fridaystart']);
+						$result->bindValue('bvfridayend', $formfield['fridayend']);
+						$result->bindValue('bvsaturdaystart', $formfield['saturdaystart']);
+						$result->bindValue('bvsaturdayend', $formfield['saturdayend']);
+						$result->execute();
 
-						if (empty($formfield['repeat'])) {
-							$result->execute();
-						} else {
-							$date = $formfield['date'];
-							for ($i = 0; $i < 7; $i++) {
-								$result->bindValue('bvdate', $date);
-								$result->execute();
-								$date = date('Y-m-d', strtotime($date . ' +1 day'));
-							}
-						}
-
-						echo '
-						<br />
-						<p class="text-success font-weight-bold">Insert successful.</p>
-						<p><a href="insertschedules.php">Back</a></p>';
+						// Success
+						echo '<br /><p class="text-success font-weight-bold">Insert successful.</p>';
 					} catch (Exception $e) {
-						echo '<br /><p class="text-danger font-weight-bold">Insert failed.</p>';
-						echo '<p class="text-danger font-weight-bold">' . $e->getMessage() . '</p>';
+						// An error occured
+						echo '<br />
+									<p class="text-danger font-weight-bold">Insert failed.</p>
+									<p class="text-danger">' . $e->getMessage() . '</p>';
 					}
+				} else {
+					// An employee already has a schedule for this week
+					echo '<br />
+								<p class="text-danger">A schedule for this week already exists.</p>';
 				}
 			}
 			?>

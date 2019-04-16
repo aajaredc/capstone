@@ -25,7 +25,8 @@
 				<tbody>
 					<?php
 					$sqlselecto = 'SELECT *
-												 FROM orderdetail, menuitem
+												 FROM orderdetail
+												 INNER JOIN menuitem ON orderdetail.menuitemkey = menuitem.menuitemkey
 												 WHERE orderkey = :bvorderkey';
 					$result = $db->prepare($sqlselecto);
 					$result->bindValue('bvorderkey', $_POST['orderkey']);
@@ -47,10 +48,10 @@ $(document).ready( function () {
 } );
 </script>
 <?php
-}
+} else {
 	echo '<p>This page can not be viewed.</p>';
 }
-else {
+} else {
 	echo '<p>You are not signed in. Click <a href="signin.php">here</a> to sign in.</p>';
 }
 	require_once 'footer.php';

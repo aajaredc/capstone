@@ -25,7 +25,8 @@
 				<tbody>
 					<?php
 					$sqlselecto = 'SELECT *
-												 FROM ticketdetail, menuitem
+												 FROM ticketdetail
+												 INNER JOIN menuitem ON ticketdetail.menuitemkey = menuitem.menuitemkey
 												 WHERE ticketkey = :bvticketkey';
 					$result = $db->prepare($sqlselecto);
 					$result->bindValue('bvticketkey', $_POST['ticketkey']);

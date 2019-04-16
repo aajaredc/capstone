@@ -41,9 +41,12 @@
 				if (isset($_POST['signin-submit'])) {
 					$formfield['ffusername'] = trim($_POST['username']);
 					$formfield['ffpassword'] = trim($_POST['password']);
-
+					// make sure the schedule can not have duplicate start dates
 					try {
-						$sql = 'SELECT * FROM employee WHERE employeeusername = :bvusername';
+						$sql = 'SELECT * FROM employee
+						INNER JOIN employeetype ON employee.employeetypekey = employeetype.employeetypekey
+						WHERE employee.employeeusername = :bvusername';
+
 						$s = $db->prepare($sql);
 						$s->bindValue(':bvusername', $formfield['ffusername']);
 						$s->execute();
@@ -67,6 +70,7 @@
 							$_SESSION['employeeusername'] = $row['employeeusername'];	//username
 							$_SESSION['employeefirstname'] = $row['employeefirstname'];	//firstname
 							$_SESSION['employeetypekey'] = $row['employeetypekey'];	//typekey
+							$_SESSION['permission'] = $row['employeetypepermission'];	//permission
 							$_SESSION['signedin'] = 1;	//signed in
 
 							// Redirect accordingly
@@ -83,5 +87,6 @@
 
 			</div>
 		</div>
+		<script>alert('Username: emp\nPassword: Password1')</script>
 	</body>
 </html>

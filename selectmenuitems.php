@@ -2,7 +2,7 @@
 	session_start();
 	require_once 'header.php';
 
-	if ($_SESSION['signedin'] == 1) {
+if ($_SESSION['signedin'] == 1 && preg_match('/1......................................./', $_SESSION['permission'])) {
 ?>
 <ol class="breadcrumb">
 	<li class="breadcrumb-item"><a href="#">Menu</a></li>
@@ -49,6 +49,7 @@ $(document).ready( function () {
 <?php
 }
 else {
+	echo $_SESSION['permission'] . '<br />';
 	echo '<p>You are not signed in. Click <a href="signin.php">here</a> to sign in.</p>';
 }
 	require_once 'footer.php';

@@ -99,7 +99,7 @@
 								<h6 class="dropdown-header">Orders:</h6>
 								<a class="dropdown-item" href="selectorders.php">Select</a>
 								<a class="dropdown-item" href="insertorders.php">Insert</a>
-								<a class="dropdown-item" href="#">Update</a>
+								<a class="dropdown-item" href="updateorders.php">Update</a>
 								<a class="dropdown-item" href="deleteorders.php">Delete</a>
 							</div>
 						</li>
@@ -111,7 +111,6 @@
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<h6 class="dropdown-header">Tickets:</h6>
 								<a class="dropdown-item" href="selecttickets.php">Select</a>
-								<a class="dropdown-item" href="">Insert</a>
 								<a class="dropdown-item" href="#">Update</a>
 								<a class="dropdown-item" href="deletetickets.php">Delete</a>
 							</div>
@@ -127,6 +126,8 @@
 								<a class="dropdown-item" href="insertschedules.php">Insert</a>
 								<a class="dropdown-item" href="updateschedules.php">Update</a>
 								<a class="dropdown-item" href="deleteschedules.php">Delete</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="viewschedule.php">My Schedule</a>
 							</div>
 						</li>
 						<li class="nav-item dropdown">
