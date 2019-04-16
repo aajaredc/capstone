@@ -31,8 +31,6 @@
 							<td>
 								<form name="updateemployeetypesselectionform" method="post" action="updateemployeetypesform.php">
 									<input type="hidden" name="employeetypekey" value="' . $row['employeetypekey'] . '"/>
-									<input type="hidden" name="name" value="' . $row['employeetypename'] . '"/>
-									<input type="hidden" name="description" value="' . $row['employeetypedescription'] . '"/>
 									<input type="submit" name="updateemployeetypeselection" value="Update"/>
 								</form>
 							</td>';

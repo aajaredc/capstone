@@ -116,14 +116,16 @@
 							$resultp->execute();
 
 							while ($rowp = $resultp->fetch()) {
-								echo '<tr><td>';
-								echo '<form action = "' . $_SEVER['PHP_SELF'] . '" method="post">';
-								echo '<input type="hidden" name="orderkey" value="' . $formfield['fforderkey'] . '" />';
-								echo '<input type="hidden" name="menuitemkey" value="' . $rowp['menuitemkey'] . '" />';
-								echo '<input type="hidden" name="orderitemprice" value="' . $rowp['menuitemprice'] . '" />';
-								echo '<input style="width: 100%;" type="submit" name="ODEnter" value="' .$rowp['menuitemname'] . '"/>';
-								echo '</form>';
-								echo '</td></tr>';
+								if ($rowp['menuitemcount'] > 0) {
+									echo '<tr><td>';
+									echo '<form action = "' . $_SEVER['PHP_SELF'] . '" method="post">';
+									echo '<input type="hidden" name="orderkey" value="' . $formfield['fforderkey'] . '" />';
+									echo '<input type="hidden" name="menuitemkey" value="' . $rowp['menuitemkey'] . '" />';
+									echo '<input type="hidden" name="orderitemprice" value="' . $rowp['menuitemprice'] . '" />';
+									echo '<input style="width: 100%;" type="submit" name="ODEnter" value="' .$rowp['menuitemname'] . '"/>';
+									echo '</form>';
+									echo '</td></tr>';
+								}
 							}
 							echo '</table></th>';
 						}

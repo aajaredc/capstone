@@ -157,7 +157,8 @@
 			// Echo for testing
 			$permission = trim($permission);
 			echo '<p>' .$permission. '</p>';
-
+			$perm = str_replace("0", ".", $permission);
+			echo $perm . '<br />';
 
 			if (preg_match('/.1................................../', $permission)) {
 					echo '<p>true</p>';
