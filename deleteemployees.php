@@ -3,13 +3,6 @@
 	require_once 'header.php';
 
 	if ($_SESSION['signedin'] == 1) {
-		if (isset($_POST['deletesubmit'])) {
-			$sqldelete = 'DELETE FROM employee
-										WHERE employeekey=:bvkey';
-			$deleteresult = $db->prepare($sqldelete);
-			$deleteresult->bindValue('bvkey', $_POST['employeekey']);
-			$deleteresult->execute();
-		}
 ?>
 <ol class="breadcrumb">
 	<li class="breadcrumb-item">Employees</li>
@@ -18,6 +11,31 @@
 <div class="card">
 	<div class="card-header">Delete Employees</div>
 	<div class="card-body">
+		<?php
+			if (isset($_POST['deletesubmit'])) {
+				try {
+					// Delete employee
+					$sqldelete = 'DELETE FROM employee
+												WHERE employeekey=:bvkey';
+					$deleteresult = $db->prepare($sqldelete);
+					$deleteresult->bindValue('bvkey', $_POST['employeekey']);
+					$deleteresult->execute();
+
+					// Delete schedules
+					$sqldelete = 'DELETE FROM schedules
+												WHERE employeekey=:bvkey';
+					$deleteresult = $db->prepare($sqldelete);
+					$deleteresult->bindValue('bvkey', $_POST['employeekey']);
+					$deleteresult->execute();
+
+					// Success
+					echo '<div class="alert alert-success" role="alert">Delete successful</div>';
+				} catch (Exception $e) {
+					// An error occured
+					echo '<div class="alert alert-danger" role="alert"><strong>Delete failed: </strong>' . $e->getMessage() . '</div>';
+				}
+			}
+		?>
 		<div class="table-responsive">
 			<table class="table table-bordered" id="selectemployeesTable" width="100%" cellspacing="0">
 				<thead>

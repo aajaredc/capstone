@@ -21,6 +21,9 @@
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
  		<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
 		<link type="text/css" href="styles/main.css" rel="stylesheet">
+
+		<!-- Icon -->
+		<link rel="icon" href="images/logo-transparent.png">
 	</head>
 
 	<body>
@@ -96,11 +99,12 @@
 								<span>Orders</span>
 							</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<h6 class="dropdown-header">Orders:</h6>
 								<a class="dropdown-item" href="selectorders.php">Select</a>
 								<a class="dropdown-item" href="insertorders.php">Insert</a>
 								<a class="dropdown-item" href="updateorders.php">Update</a>
 								<a class="dropdown-item" href="deleteorders.php">Delete</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="closeorders.php">Current Orders</a>
 							</div>
 						</li>
 						<li class="nav-item dropdown">

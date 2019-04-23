@@ -3,16 +3,6 @@
 	require_once 'header.php';
 
 	if ($_SESSION['signedin'] == 1) {
-		// If delete button is pressed
-		if (isset($_POST['deletesubmit'])) {
-			// Create delete statement
-			$sqldelete = 'DELETE FROM menutype
-										WHERE menutypekey=:bvkey';
-			// Prepare and execute
-			$deleteresult = $db->prepare($sqldelete);
-			$deleteresult->bindValue('bvkey', $_POST['menutypekey']);
-			$deleteresult->execute();
-		}
 ?>
 <ol class="breadcrumb">
 	<li class="breadcrumb-item">Menu</li>
@@ -22,6 +12,32 @@
 <div class="card">
 	<div class="card-header">Delete Menu Types</div>
 	<div class="card-body">
+		<?php
+		// If delete button is pressed
+		if (isset($_POST['deletesubmit'])) {
+			try {
+				// Delete menu type
+				$sqldelete = 'DELETE FROM menutype
+											WHERE menutypekey=:bvkey';
+				$deleteresult = $db->prepare($sqldelete);
+				$deleteresult->bindValue('bvkey', $_POST['menutypekey']);
+				$deleteresult->execute();
+
+				// Delete all menu items with that menu type
+				$sqldelete = 'DELETE FROM menuitem
+											WHERE menutypekey=:bvkey';
+				$deleteresult = $db->prepare($sqldelete);
+				$deleteresult->bindValue('bvkey', $_POST['menutypekey']);
+				$deleteresult->execute();
+
+				// Success
+				echo '<div class="alert alert-success" role="alert">Delete successful</div>';
+			} catch (Exception $e) {
+				// An error occured
+				echo '<div class="alert alert-danger" role="alert"><strong>Delete failed: </strong>' . $e->getMessage() . '</div>';
+			}
+		}
+		?>
 		<div class="table-responsive">
 			<table class="table table-bordered" id="selectmenutypesTable" width="100%" cellspacing="0">
 				<thead>

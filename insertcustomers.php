@@ -11,6 +11,82 @@
 <div class="card">
 	<div class="card-header">Insert Customers</div>
 	<div class="card-body">
+		<?php
+		// If submit button is pressed
+		if (isset($_POST['insertcustomer'])) {
+			// Data cleansing
+			$formfield['firstname'] = $_POST['firstname'];
+			$formfield['lastname'] = $_POST['lastname'];
+			$formfield['phone'] = $_POST['phone'];
+			$formfield['address'] = $_POST['address'];
+			$formfield['city'] = $_POST['city'];
+			$formfield['state'] = $_POST['state'];
+			$formfield['zip'] = $_POST['zip'];
+			$formfield['email'] = $_POST['email'];
+			$formfield['password1'] = $_POST['password1'];
+			$formfield['password2'] = $_POST['password2'];
+
+			// If there's an empty field
+			if (empty($formfield['firstname']) || empty($formfield['lastname']) ||
+					empty($formfield['phone']) || empty($formfield['address']) ||
+					empty($formfield['city']) || empty($formfield['state']) ||
+					empty($formfield['zip']) || empty($formfield['email']) ||
+					empty($formfield['password1']) || empty($formfield['password2'])) {
+						echo '<div class="alert alert-warning" role="alert"><strong>Insert failed: </strong>one or more fields are empty.</div>';
+			} else {
+				// If the two passwords are the same
+				if ($formfield['password1'] == $formfield['password2']) {
+					// If the password is invalid
+					if(strlen($formfield['password1']) < 8
+						 && !preg_match("#[0-9]+#", $formfield['password1'])
+						 && !preg_match("#[a-z]+#", $formfield['password1'])
+						 && !preg_match("#[A-Z]+#", $formfield['password1'])
+						 && !preg_match("#\W+#", $formfield['password1'])) {
+						echo '<br /><p class="text-warning">Insert failed: password is invalid.</p>';
+					} else {
+						// Options...
+						$options = [
+							'cost' => 12,
+							'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
+						];
+						// Generate an encrypted password
+						$encpass = password_hash($formfield['password1'], PASSWORD_BCRYPT, $options);
+
+						// Try to insert
+						try {
+							// SQL statement
+							$sqlnewcustomer = "INSERT into
+								customer(customerfirstname, customerlastname,
+												 customerphone, customeraddress, customercity, customerstate,
+												 customerzip, customeremail, customerpassword)
+								VALUES(:bvfirstname, :bvlastname,
+											 :bvphone, :bvaddress, :bvcity, :bvstate,
+											 :bvzip, :bvemail, :bvpassword)";
+
+							// Execution
+							$result = $db->prepare($sqlnewcustomer);
+							$result->bindValue('bvfirstname', $formfield['firstname']);
+							$result->bindValue('bvlastname', $formfield['lastname']);
+							$result->bindValue('bvphone', $formfield['phone']);
+							$result->bindValue('bvaddress', $formfield['address']);
+							$result->bindValue('bvcity', $formfield['city']);
+							$result->bindValue('bvstate', $formfield['state']);
+							$result->bindValue('bvzip', $formfield['zip']);
+							$result->bindValue('bvemail', $formfield['email']);
+							$result->bindValue('bvpassword', $encpass);
+							$result->execute();
+
+							// Success
+							echo '<div class="alert alert-success" role="alert">Insert successful</div>';
+						} catch (Exception $e) {
+							// Exception error
+							echo '<br /><p class="text-danger font-weight-bold">' . $e->getMessage() . '</p>';
+						}
+					}
+				}
+			}
+		}
+		?>
 		<form class="was-validated" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 			<div>
 				<div class="row">
@@ -130,85 +206,6 @@
 				</div>
 			</div>
 		</form>
-
-		<?php
-		// If submit button is pressed
-		if (isset($_POST['insertcustomer'])) {
-			// Data cleansing
-			$formfield['firstname'] = $_POST['firstname'];
-			$formfield['lastname'] = $_POST['lastname'];
-			$formfield['phone'] = $_POST['phone'];
-			$formfield['address'] = $_POST['address'];
-			$formfield['city'] = $_POST['city'];
-			$formfield['state'] = $_POST['state'];
-			$formfield['zip'] = $_POST['zip'];
-			$formfield['email'] = $_POST['email'];
-			$formfield['password1'] = $_POST['password1'];
-			$formfield['password2'] = $_POST['password2'];
-
-			// If there's an empty field
-			if (empty($formfield['firstname']) || empty($formfield['lastname']) ||
-					empty($formfield['phone']) || empty($formfield['address']) ||
-					empty($formfield['city']) || empty($formfield['state']) ||
-					empty($formfield['zip']) || empty($formfield['email']) ||
-					empty($formfield['password1']) || empty($formfield['password2'])) {
-						echo '<br /><p class="text-warning">Insert failed: one or more fields are empty.</p>';
-			} else {
-				// If the two passwords are the same
-				if ($formfield['password1'] == $formfield['password2']) {
-					// If the password is invalid
-					if(strlen($formfield['password1']) < 8
-						 && !preg_match("#[0-9]+#", $formfield['password1'])
-					   && !preg_match("#[a-z]+#", $formfield['password1'])
-					 	 && !preg_match("#[A-Z]+#", $formfield['password1'])
-				 		 && !preg_match("#\W+#", $formfield['password1'])) {
-						echo '<br /><p class="text-warning">Insert failed: password is invalid.</p>';
-					} else {
-						// Options...
-						$options = [
-							'cost' => 12,
-							'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
-						];
-						// Generate an encrypted password
-						$encpass = password_hash($formfield['password1'], PASSWORD_BCRYPT, $options);
-
-						// Try to insert
-						try {
-							// SQL statement
-							$sqlnewcustomer = "INSERT into
-								customer(customerfirstname, customerlastname,
-												 customerphone, customeraddress, customercity, customerstate,
-												 customerzip, customeremail, customerpassword)
-								VALUES(:bvfirstname, :bvlastname,
-											 :bvphone, :bvaddress, :bvcity, :bvstate,
-											 :bvzip, :bvemail, :bvpassword)";
-
-							// Execution
-							$result = $db->prepare($sqlnewcustomer);
-							$result->bindValue('bvfirstname', $formfield['firstname']);
-							$result->bindValue('bvlastname', $formfield['lastname']);
-							$result->bindValue('bvphone', $formfield['phone']);
-							$result->bindValue('bvaddress', $formfield['address']);
-							$result->bindValue('bvcity', $formfield['city']);
-							$result->bindValue('bvstate', $formfield['state']);
-							$result->bindValue('bvzip', $formfield['zip']);
-							$result->bindValue('bvemail', $formfield['email']);
-							$result->bindValue('bvpassword', $encpass);
-							$result->execute();
-
-							// Success
-							echo '<br /><p class="text-success font-weight-bold">Insert successful.</p>';
-						} catch (Exception $e) {
-							// Exception error
-							echo '<br /><p class="text-danger font-weight-bold">' . $e->getMessage() . '</p>';
-						}
-					}
-				}
-			}
-
-
-		}
-		?>
 	</div>
 </div>
 <script type="text/javascript" src="scripts/passwordvalidator.js"></script>

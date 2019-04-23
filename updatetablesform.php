@@ -20,6 +20,41 @@
 <div class="card">
 	<div class="card-header">Update Tables</div>
 	<div class="card-body">
+		<?php
+			// Update button pressed
+			if (isset($_POST['update'])) {
+				// If a field is empty...
+				if (empty($formfield['name']) || empty($formfield['locationkey']) ||
+						empty($formfield['description'])) {
+							// One or more fields are empty
+							echo '<br /><p class="text-warning">Update failed: one or more fields are empty.</p>';
+				} else {
+					// Attempt to Update
+					try {
+						// statement
+						$sqlupdate = 'UPDATE tables
+													SET locationkey=:bvlocation, tablename=:bvname,
+															tabledescription=:bvdescription
+													WHERE tablekey=:bvtablekey';
+
+						// Prepare and execute
+						$result = $db->prepare($sqlupdate);
+						$result->bindValue('bvlocation', $formfield['locationkey']);
+						$result->bindValue('bvname', $formfield['name']);
+						$result->bindValue('bvdescription', $formfield['description']);
+						$result->bindValue('bvtablekey', $formfield['tablekey']);
+						$result->execute();
+
+						// Success
+						echo '<div class="alert alert-success" role="alert">Update successful. <a href="updatetables.php">Back</a></div>';
+					} catch (Exception $e) {
+						// An error occured
+						echo '<br /><p class="text-danger font-weight-bold">Update failed.</p>';
+						echo '<br /><p class="text-danger font-weight-bold">' .$e->getMessage() . '</p>';
+					}
+				}
+			}
+		?>
 		<form class="was-validated" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 			<div>
 				<div class="row">
@@ -68,41 +103,6 @@
 				</div>
 			</div>
 		</form>
-		<?php
-			// Update button pressed
-			if (isset($_POST['update'])) {
-				// If a field is empty...
-				if (empty($formfield['name']) || empty($formfield['locationkey']) ||
-						empty($formfield['description'])) {
-							// One or more fields are empty
-							echo '<br /><p class="text-warning">Update failed: one or more fields are empty.</p>';
-				} else {
-					// Attempt to Update
-					try {
-						// statement
-						$sqlupdate = 'UPDATE tables
-													SET locationkey=:bvlocation, tablename=:bvname,
-															tabledescription=:bvdescription
-													WHERE tablekey=:bvtablekey';
-
-						// Prepare and execute
-						$result = $db->prepare($sqlupdate);
-						$result->bindValue('bvlocation', $formfield['locationkey']);
-						$result->bindValue('bvname', $formfield['name']);
-						$result->bindValue('bvdescription', $formfield['description']);
-						$result->bindValue('bvtablekey', $formfield['tablekey']);
-						$result->execute();
-
-						// Success
-						echo '<br /><p class="text-success font-weight-bold">Update successful.</p>';
-					} catch (Exception $e) {
-						// An error occured
-						echo '<br /><p class="text-danger font-weight-bold">Update failed.</p>';
-						echo '<br /><p class="text-danger font-weight-bold">' .$e->getMessage() . '</p>';
-					}
-				}
-			}
-		?>
 	</div>
 </div>
 <?php

@@ -40,8 +40,21 @@
 
 							echo '<tr><td> ' . $date .
 							'</td><td> ' . date('l', strtotime($date)) . '</td>
-							<td> ' . date("g:i a", strtotime($row[strtolower(date('l', strtotime($date))) . 'start'])) . '</td>
-							<td> ' . date("g:i a", strtotime($row[strtolower(date('l', strtotime($date))) . 'end'])) . '</td></tr>';
+							<td> ';
+
+							// Prevent null values from appearing
+							if (is_null($row[strtolower(date('l', strtotime($date))) . 'start'])) {
+								echo '';
+							} else {
+								echo date("g:i a", strtotime($row[strtolower(date('l', strtotime($date))) . 'start']));
+							}
+							echo '</td><td>';
+							if (is_null($row[strtolower(date('l', strtotime($date))) . 'end'])) {
+								echo '';
+							} else {
+								echo date("g:i a", strtotime($row[strtolower(date('l', strtotime($date))) . 'end']));
+							}
+							echo '</td></tr>';
 
 						}
 					}

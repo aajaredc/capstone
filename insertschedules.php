@@ -16,6 +16,119 @@
 <div class="card">
 	<div class="card-header">Insert Schedules</div>
 	<div class="card-body">
+		<?php
+		if (isset($_POST['insertschedule'])) {
+			// Data cleansing
+			$formfield['start'] = $_POST['start'];
+			$formfield['employeekey'] = $_POST['employeekey'];
+
+			if (empty($_POST['sundaystart'])) { $formfield['sundaystart'] = NULL; }
+			else { $formfield['sundaystart'] = $_POST['sundaystart']; }
+			if (empty($_POST['sundayend'])) { $formfield['sundayend'] = NULL; }
+			else { $formfield['sundayend'] = $_POST['sundayend']; }
+
+			if (empty($_POST['mondaystart'])) { $formfield['mondaystart'] = NULL; }
+			else { $formfield['mondaystart'] = $_POST['mondaystart']; }
+			if (empty($_POST['mondayend'])) { $formfield['mondayend'] = NULL; }
+			else { $formfield['mondayend'] = $_POST['mondayend']; }
+
+			if (empty($_POST['tuesdaystart'])) { $formfield['tuesdaystart'] = NULL; }
+			else { $formfield['tuesdaystart'] = $_POST['tuesdaystart']; }
+			if (empty($_POST['tuesdayend'])) { $formfield['tuesdayend'] = NULL; }
+			else { $formfield['tuesdayend'] = $_POST['tuesdayend']; }
+
+			if (empty($_POST['wednesdaystart'])) { $formfield['wednesdaystart'] = NULL; }
+			else { $formfield['wednesdaystart'] = $_POST['wednesdaystart']; }
+			if (empty($_POST['wednesdayend'])) { $formfield['wednesdayend'] = NULL; }
+			else { $formfield['wednesdayend'] = $_POST['wednesdayend']; }
+
+			if (empty($_POST['thursdaystart'])) { $formfield['thursdaystart'] = NULL; }
+			else { $formfield['thursdaystart'] = $_POST['thursdaystart']; }
+			if (empty($_POST['thursdayend'])) { $formfield['thursdayend'] = NULL; }
+			else { $formfield['thursdayend'] = $_POST['thursdayend']; }
+
+			if (empty($_POST['fridaystart'])) { $formfield['fridaystart'] = NULL; }
+			else { $formfield['fridaystart'] = $_POST['fridaystart']; }
+			if (empty($_POST['fridayend'])) { $formfield['fridayend'] = NULL; }
+			else { $formfield['fridayend'] = $_POST['fridayend']; }
+
+			if (empty($_POST['saturdaystart'])) { $formfield['saturdaystart'] = NULL; }
+			else { $formfield['saturdaystart'] = $_POST['saturdaystart']; }
+			if (empty($_POST['saturdayend'])) { $formfield['saturdayend'] = NULL; }
+			else { $formfield['saturdayend'] = $_POST['saturdayend']; }
+
+			// Check if the weekday is 0 (sunday)
+			if (getWeekday($formfield['start']) != 0) {
+				// If the week day is not sunday, then make it sunday
+				$startdate = date('Y-m-d', (strtotime('-' . getWeekday($formfield['start']) . ' day', strtotime($formfield['start']))));
+			} else {
+				// The day the schedule starts is already sunday
+				$startdate = $formfield['start'];
+			}
+
+			// Check if that week has not yet been used for this employee
+			try {
+				$sql = 'SELECT *
+								FROM schedules
+								WHERE schedulestart=:bvschedulestart
+								AND employeekey=:bvemployeekey';
+
+				$s = $db->prepare($sql);
+				$s->bindValue(':bvschedulestart', $startdate);
+				$s->bindValue(':bvemployeekey', $formfield['employeekey']);
+				$s->execute();
+				$count = $s->rowCount();
+			} catch (PDOException $e) {
+				echo $e->getMessage();
+				exit();
+			}
+
+			// Proceed only if this employee already has a schedule for this week
+			if ($count < 1) {
+				// Attempt to insert
+				try {
+					// statement
+					$sqlinsert = 'INSERT INTO schedules(employeekey, schedulestart, sundaystart,
+												sundayend, mondaystart, mondayend, tuesdaystart, tuesdayend,
+												wednesdaystart, wednesdayend, thursdaystart, thursdayend,
+												fridaystart, fridayend, saturdaystart, saturdayend)
+												VALUES(:bvemployeekey, :bvschedulestart, :bvsundaystart,
+												:bvsundayend, :bvmondaystart, :bvmondayend, :bvtuesdaystart, :bvtuesdayend,
+												:bvwednesdaystart, :bvwednesdayend, :bvthursdaystart, :bvthursdayend,
+												:bvfridaystart, :bvfridayend, :bvsaturdaystart, :bvsaturdayend)';
+
+					// Prepare and execute
+					$result = $db->prepare($sqlinsert);
+					$result->bindValue('bvemployeekey', $formfield['employeekey']);
+					$result->bindValue('bvschedulestart', $startdate);
+					$result->bindValue('bvsundaystart', $formfield['sundaystart']);
+					$result->bindValue('bvsundayend', $formfield['sundayend']);
+					$result->bindValue('bvmondaystart', $formfield['mondaystart']);
+					$result->bindValue('bvmondayend', $formfield['mondayend']);
+					$result->bindValue('bvtuesdaystart', $formfield['tuesdaystart']);
+					$result->bindValue('bvtuesdayend', $formfield['tuesdayend']);
+					$result->bindValue('bvwednesdaystart', $formfield['wednesdaystart']);
+					$result->bindValue('bvwednesdayend', $formfield['wednesdayend']);
+					$result->bindValue('bvthursdaystart', $formfield['thursdaystart']);
+					$result->bindValue('bvthursdayend', $formfield['thursdayend']);
+					$result->bindValue('bvfridaystart', $formfield['fridaystart']);
+					$result->bindValue('bvfridayend', $formfield['fridayend']);
+					$result->bindValue('bvsaturdaystart', $formfield['saturdaystart']);
+					$result->bindValue('bvsaturdayend', $formfield['saturdayend']);
+					$result->execute();
+
+					// Success
+					echo '<div class="alert alert-success" role="alert">Insert successful</div>';
+				} catch (Exception $e) {
+					// An error occured
+					echo '<div class="alert alert-warning" role="alert"><strong>Insert failed: </strong>' . $e->getMessage() . '</div>';
+				}
+			} else {
+				// An employee already has a schedule for this week
+				echo '<div class="alert alert-warning" role="alert">A schedule for this week already exists, and has been overridden.</div>';
+			}
+		}
+		?>
 		<?php if (isset($_POST['selectsubmit']) || isset($_POST['insertschedule'])) { ?>
 			<form class="was-validated" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 				<!-- Week -->
@@ -147,109 +260,6 @@
 					</div>
 				</div>
 			</form>
-			<?php
-			if (isset($_POST['insertschedule'])) {
-				// Data cleansing
-				$formfield['start'] = $_POST['start'];
-				$formfield['employeekey'] = $_POST['employeekey'];
-
-				$formfield['sundaystart'] = $_POST['sundaystart'];
-				$formfield['sundayend'] = $_POST['sundayend'];
-
-				$formfield['mondaystart'] = $_POST['mondaystart'];
-				$formfield['mondayend'] = $_POST['mondayend'];
-
-				$formfield['tuesdaystart'] = $_POST['tuesdaystart'];
-				$formfield['tuesdayend'] = $_POST['tuesdayend'];
-
-				$formfield['wednesdaystart'] = $_POST['wednesdaystart'];
-				$formfield['wednesdayend'] = $_POST['wednesdayend'];
-
-				$formfield['thursdaystart'] = $_POST['thursdaystart'];
-				$formfield['thursdayend'] = $_POST['thursdayend'];
-
-				$formfield['fridaystart'] = $_POST['fridaystart'];
-				$formfield['fridayend'] = $_POST['fridayend'];
-
-				$formfield['saturdaystart'] = $_POST['saturdaystart'];
-				$formfield['saturdayend'] = $_POST['saturdayend'];
-				
-				// Check if the weekday is 0 (sunday)
-				if (getWeekday($formfield['start']) != 0) {
-					// If the week day is not sunday, then make it sunday
-					$startdate = date('Y-m-d', (strtotime('-' . getWeekday($formfield['start']) . ' day', strtotime($formfield['start']))));
-				} else {
-					// The day the schedule starts is already sunday
-					$startdate = $formfield['start'];
-				}
-
-				// Check if that week has not yet been used for this employee
-				try {
-					$sql = 'SELECT *
-									FROM schedules
-									WHERE schedulestart=:bvschedulestart
-									AND employeekey=:bvemployeekey';
-
-					$s = $db->prepare($sql);
-					$s->bindValue(':bvschedulestart', $startdate);
-					$s->bindValue(':bvemployeekey', $formfield['employeekey']);
-					$s->execute();
-					$count = $s->rowCount();
-				} catch (PDOException $e) {
-					echo $e->getMessage();
-					exit();
-				}
-
-				// Proceed only if this employee already has a schedule for this week
-				if ($count < 1) {
-					// Attempt to insert
-					try {
-						// statement
-						$sqlinsert = 'INSERT INTO schedules(employeekey, schedulestart, sundaystart,
-													sundayend, mondaystart, mondayend, tuesdaystart, tuesdayend,
-													wednesdaystart, wednesdayend, thursdaystart, thursdayend,
-													fridaystart, fridayend, saturdaystart, saturdayend)
-													VALUES(:bvemployeekey, :bvschedulestart, :bvsundaystart,
-													:bvsundayend, :bvmondaystart, :bvmondayend, :bvtuesdaystart, :bvtuesdayend,
-													:bvwednesdaystart, :bvwednesdayend, :bvthursdaystart, :bvthursdayend,
-													:bvfridaystart, :bvfridayend, :bvsaturdaystart, :bvsaturdayend)';
-
-						// Prepare and execute
-						$result = $db->prepare($sqlinsert);
-						$result->bindValue('bvemployeekey', $formfield['employeekey']);
-						$result->bindValue('bvschedulestart', $startdate);
-						$result->bindValue('bvsundaystart', $formfield['sundaystart']);
-						$result->bindValue('bvsundayend', $formfield['sundayend']);
-						$result->bindValue('bvmondaystart', $formfield['mondaystart']);
-						$result->bindValue('bvmondayend', $formfield['mondayend']);
-						$result->bindValue('bvtuesdaystart', $formfield['tuesdaystart']);
-						$result->bindValue('bvtuesdayend', $formfield['tuesdayend']);
-						$result->bindValue('bvwednesdaystart', $formfield['wednesdaystart']);
-						$result->bindValue('bvwednesdayend', $formfield['wednesdayend']);
-						$result->bindValue('bvthursdaystart', $formfield['thursdaystart']);
-						$result->bindValue('bvthursdayend', $formfield['thursdayend']);
-						$result->bindValue('bvfridaystart', $formfield['fridaystart']);
-						$result->bindValue('bvfridayend', $formfield['fridayend']);
-						$result->bindValue('bvsaturdaystart', $formfield['saturdaystart']);
-						$result->bindValue('bvsaturdayend', $formfield['saturdayend']);
-						$result->execute();
-
-						// Success
-						echo '<br /><p class="text-success font-weight-bold">Insert successful.</p>';
-					} catch (Exception $e) {
-						// An error occured
-						echo '<br />
-									<p class="text-danger font-weight-bold">Insert failed.</p>
-									<p class="text-danger">' . $e->getMessage() . '</p>';
-					}
-				} else {
-					// An employee already has a schedule for this week
-					echo '<br />
-								<p class="text-danger">A schedule for this week already exists.</p>';
-				}
-			}
-			?>
-
 		<?php } else { ?>
 			<div class="table-responsive">
 				<table class="table table-bordered" id="selectemployeesTable" width="100%" cellspacing="0">

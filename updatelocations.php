@@ -18,6 +18,8 @@
 						<th>Name</th>
 						<th>Address</th>
 						<th>Description</th>
+						<th>Opening time</th>
+						<th>Closing time</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -30,12 +32,16 @@
 							{
 								echo '<tr><td> ' . $row['locationname'] .
 								'</td><td> ' . $row['locationaddress'] . '</td><td> ' . $row['locationdescription'] . '</td>
+								<td>' . date("g:i a", strtotime($row['locationopen'])) . '</td>
+								<td>' . date("g:i a", strtotime($row['locationclose'])) . '</td>
 								<td>
 									<form name="updalocationsselectionform" method="post" action="updatelocationsform.php">
 										<input type="hidden" name="locationkey" value="' . $row['locationkey'] . '"/>
 										<input type="hidden" name="name" value="' . $row['locationname'] . '"/>
 										<input type="hidden" name="address" value="' . $row['locationaddress'] . '"/>
 										<input type="hidden" name="description" value="' . $row['locationdescription'] . '"/>
+										<input type="hidden" name="locationopen" value="' . $row['locationopen'] . '"/>
+										<input type="hidden" name="locationclose" value="' . $row['locationclose'] . '"/>
 										<input type="submit" name="updatelocationselection" value="Update"/>
 									</form>
 								</td>';

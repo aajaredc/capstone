@@ -12,6 +12,43 @@
 <div class="card">
 	<div class="card-header">Insert Menu Items</div>
 	<div class="card-body">
+		<?php
+			// Insert button pressed
+			if (isset($_POST['insert'])) {
+				// Data cleansing
+				$formfield['type'] = $_POST['type'];
+				$formfield['name'] = $_POST['name'];
+				$formfield['price'] = $_POST['price'];
+				$formfield['count'] = $_POST['count'];
+				$formfield['description'] = $_POST['description'];
+
+				// If a field is empty...
+				if (empty($formfield['type']) || empty($formfield['name']) ||
+						empty($formfield['price']) || empty($formfield['count']) ||
+						empty($formfield['description'])) {
+							// One or more fields are empty
+							echo '<br /><p class="text-warning">Insert failed: one or more fields are empty.</p>';
+				} else {
+					// Attempt to insert
+					try {
+						$sqlnewitem = "INSERT into menuitem(menutypekey, menuitemname, menuitemprice, menuitemcount, menuitemdesc)
+						VALUES (:bvtype, :bvname, :bvprice, :bvcount, :bvdescription)";
+
+						$result = $db->prepare($sqlnewitem);
+						$result->bindValue('bvtype', $formfield['type']);
+						$result->bindValue('bvname', $formfield['name']);
+						$result->bindValue('bvprice', $formfield['price']);
+						$result->bindValue('bvcount', $formfield['count']);
+						$result->bindValue('bvdescription', $formfield['description']);
+						$result->execute();
+
+						echo '<div class="alert alert-success" role="alert">Insert successful</div>';
+					} catch (Exception $e) {
+						echo '<div class="alert alert-warning" role="alert"><strong>Insert failed: </strong>' . $e->getMessage() . '</div>';
+					}
+				}
+			}
+		?>
 		<form class="was-validated" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 			<div>
 				<div class="row">
@@ -66,43 +103,6 @@
 				</div>
 			</div>
 		</form>
-		<?php
-			// Insert button pressed
-			if (isset($_POST['insert'])) {
-				// Data cleansing
-				$formfield['type'] = $_POST['type'];
-				$formfield['name'] = $_POST['name'];
-				$formfield['price'] = $_POST['price'];
-				$formfield['count'] = $_POST['count'];
-				$formfield['description'] = $_POST['description'];
-
-				// If a field is empty...
-				if (empty($formfield['type']) || empty($formfield['name']) ||
-						empty($formfield['price']) || empty($formfield['count']) ||
-						empty($formfield['description'])) {
-							// One or more fields are empty
-							echo '<br /><p class="text-warning">Insert failed: one or more fields are empty.</p>';
-				} else {
-					// Attempt to insert
-					try {
-						$sqlnewitem = "INSERT into menuitem(menutypekey, menuitemname, menuitemprice, menuitemcount, menuitemdesc)
-						VALUES (:bvtype, :bvname, :bvprice, :bvcount, :bvdescription)";
-
-						$result = $db->prepare($sqlnewitem);
-						$result->bindValue('bvtype', $formfield['type']);
-						$result->bindValue('bvname', $formfield['name']);
-						$result->bindValue('bvprice', $formfield['price']);
-						$result->bindValue('bvcount', $formfield['count']);
-						$result->bindValue('bvdescription', $formfield['description']);
-						$result->execute();
-
-						echo '<br /><p class="text-success font-weight-bold">Insert successful.</p>';
-					} catch (Exception $e) {
-						echo '<br /><p class="text-danger font-weight-bold">Insert failed.</p>';
-					}
-				}
-			}
-		?>
 	</div>
 </div>
 <?php

@@ -12,99 +12,6 @@
 <div class="card">
 	<div class="card-header">Insert Employee Types</div>
 	<div class="card-body">
-		<form class="was-validated" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
-			<div>
-				<div class="row">
-					<div class="col-12 col-md-3 mb-3">
-						<input name="name" type="text" class="form-control" placeholder="Name" required>
-						<div class="valid-feedback">Valid name</div>
-						<div class="invalid-feedback">Invalid name</div>
-					</div>
-					<div class="col-12 col-md-9 mb-3">
-						<input name="description" type="text" class="form-control" placeholder="Description" required>
-						<div class="valid-feedback">Valid description</div>
-						<div class="invalid-feedback">Invalid description</div>
-					</div>
-				</div>
-				<div class="card-header">Select Permissions</div>
-				<div class="card-body">
-					<div class="table-responsive">
-						<table class="table">
-							<thead>
-								<th></th>
-								<th>Menu Items</th>
-								<th>Menu Types</th>
-								<th>Employees</th>
-								<th>Employee Types</th>
-								<th>Customers</th>
-								<th>Orders</th>
-								<th>Tickets</th>
-								<th>Locations</th>
-								<th>Tables</th>
-							</thead>
-							<tbody>
-								<tr>
-									<th>Select</th>
-									<td><input name="selectmenuitems" type="checkbox" value="1"></td>
-									<td><input name="selectmenutypes" type="checkbox" value="1"></td>
-									<td><input name="selectemployees" type="checkbox" value="1"></td>
-									<td><input name="selectemployeetypes" type="checkbox" value="1"></td>
-									<td><input name="selectcustomers" type="checkbox" value="1"></td>
-									<td><input name="selectorders" type="checkbox" value="1"></td>
-									<td><input name="selecttickets" type="checkbox" value="1"></td>
-									<td><input name="selectlocations" type="checkbox" value="1"></td>
-									<td><input name="selecttables" type="checkbox" value="1"></td>
-								</tr>
-								<tr>
-									<th>Insert</th>
-									<td><input name="insertmenuitems" type="checkbox" value="1"></td>
-									<td><input name="insertmenutypes" type="checkbox" value="1"></td>
-									<td><input name="insertemployees" type="checkbox" value="1"></td>
-									<td><input name="insertemployeetypes" type="checkbox" value="1"></td>
-									<td><input name="insertcustomers" type="checkbox" value="1"></td>
-									<td><input name="insertorders" type="checkbox" value="1"></td>
-									<td><input name="inserttickets" type="checkbox" value="1"></td>
-									<td><input name="insertlocations" type="checkbox" value="1"></td>
-									<td><input name="inserttables" type="checkbox" value="1"></td>
-								</tr>
-								<tr>
-									<th>Update</th>
-									<td><input name="updatemenuitems" type="checkbox" value="1"></td>
-									<td><input name="updatemenutypes" type="checkbox" value="1"></td>
-									<td><input name="updateemployees" type="checkbox" value="1"></td>
-									<td><input name="updateemployeetypes" type="checkbox" value="1"></td>
-									<td><input name="updatecustomers" type="checkbox" value="1"></td>
-									<td><input name="updateorders" type="checkbox" value="1"></td>
-									<td><input name="updatetickets" type="checkbox" value="1"></td>
-									<td><input name="updatelocations" type="checkbox" value="1"></td>
-									<td><input name="updatetables" type="checkbox" value="1"></td>
-								</tr>
-								<tr>
-									<th>Delete</th>
-									<td><input name="deletemenuitems" type="checkbox" value="1"></td>
-									<td><input name="deletemenutypes" type="checkbox" value="1"></td>
-									<td><input name="deleteemployees" type="checkbox" value="1"></td>
-									<td><input name="deleteemployeetypes" type="checkbox" value="1"></td>
-									<td><input name="deletecustomers" type="checkbox" value="1"></td>
-									<td><input name="deleteorders" type="checkbox" value="1"></td>
-									<td><input name="deletetickets" type="checkbox" value="1"></td>
-									<td><input name="deletelocations" type="checkbox" value="1"></td>
-									<td><input name="deletetables" type="checkbox" value="1"></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-12">
-						<button name="insert" type="submit" class="btn btn-primary">Submit</button>
-					</div>
-					<div class="col-12">
-						<button name="permissiontest" type="submit" class="btn btn-primary">test permissions</button>
-					</div>
-				</div>
-			</div>
-		</form>
 		<?php
 		if (isset($_POST['permissiontest'])) {
 			// Create permission
@@ -234,7 +141,7 @@
 			// If a field is empty...
 			if (empty($formfield['name']) || empty($formfield['description'])) {
 				// One or more fields are empty
-				echo '<br /><p class="text-warning">Insert failed: one or more fields are empty.</p>';
+				echo '<div class="alert alert-warning" role="alert"><strong>Insert failed: </strong>one or more fields are empty.</div>';
 			} else {
 				// Attempt to insert
 				try {
@@ -247,14 +154,106 @@
 					$result->bindValue('bvpermission', $permission);
 					$result->execute();
 
-					echo '<br /><p class="text-success font-weight-bold">Insert successful.</p>';
+					echo '<div class="alert alert-success" role="alert">Insert successful</div>';
 				} catch (Exception $e) {
-					echo '<br /><p class="text-danger font-weight-bold">Insert failed.</p>';
-					echo '<p class="text-danger font-weight-bold">' . $e->getMessage() . '</p>';
+					echo '<div class="alert alert-warning" role="alert"><strong>Insert failed: </strong>' . $e->getMessage() . '</div>';
 				}
 			}
 		}
 		?>
+		<form class="was-validated" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+			<div>
+				<div class="row">
+					<div class="col-12 col-md-3 mb-3">
+						<input name="name" type="text" class="form-control" placeholder="Name" required>
+						<div class="valid-feedback">Valid name</div>
+						<div class="invalid-feedback">Invalid name</div>
+					</div>
+					<div class="col-12 col-md-9 mb-3">
+						<input name="description" type="text" class="form-control" placeholder="Description" required>
+						<div class="valid-feedback">Valid description</div>
+						<div class="invalid-feedback">Invalid description</div>
+					</div>
+				</div>
+				<div class="card-header">Select Permissions</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<th></th>
+								<th>Menu Items</th>
+								<th>Menu Types</th>
+								<th>Employees</th>
+								<th>Employee Types</th>
+								<th>Customers</th>
+								<th>Orders</th>
+								<th>Tickets</th>
+								<th>Locations</th>
+								<th>Tables</th>
+							</thead>
+							<tbody>
+								<tr>
+									<th>Select</th>
+									<td><input name="selectmenuitems" type="checkbox" value="1"></td>
+									<td><input name="selectmenutypes" type="checkbox" value="1"></td>
+									<td><input name="selectemployees" type="checkbox" value="1"></td>
+									<td><input name="selectemployeetypes" type="checkbox" value="1"></td>
+									<td><input name="selectcustomers" type="checkbox" value="1"></td>
+									<td><input name="selectorders" type="checkbox" value="1"></td>
+									<td><input name="selecttickets" type="checkbox" value="1"></td>
+									<td><input name="selectlocations" type="checkbox" value="1"></td>
+									<td><input name="selecttables" type="checkbox" value="1"></td>
+								</tr>
+								<tr>
+									<th>Insert</th>
+									<td><input name="insertmenuitems" type="checkbox" value="1"></td>
+									<td><input name="insertmenutypes" type="checkbox" value="1"></td>
+									<td><input name="insertemployees" type="checkbox" value="1"></td>
+									<td><input name="insertemployeetypes" type="checkbox" value="1"></td>
+									<td><input name="insertcustomers" type="checkbox" value="1"></td>
+									<td><input name="insertorders" type="checkbox" value="1"></td>
+									<td><input name="inserttickets" type="checkbox" value="1"></td>
+									<td><input name="insertlocations" type="checkbox" value="1"></td>
+									<td><input name="inserttables" type="checkbox" value="1"></td>
+								</tr>
+								<tr>
+									<th>Update</th>
+									<td><input name="updatemenuitems" type="checkbox" value="1"></td>
+									<td><input name="updatemenutypes" type="checkbox" value="1"></td>
+									<td><input name="updateemployees" type="checkbox" value="1"></td>
+									<td><input name="updateemployeetypes" type="checkbox" value="1"></td>
+									<td><input name="updatecustomers" type="checkbox" value="1"></td>
+									<td><input name="updateorders" type="checkbox" value="1"></td>
+									<td><input name="updatetickets" type="checkbox" value="1"></td>
+									<td><input name="updatelocations" type="checkbox" value="1"></td>
+									<td><input name="updatetables" type="checkbox" value="1"></td>
+								</tr>
+								<tr>
+									<th>Delete</th>
+									<td><input name="deletemenuitems" type="checkbox" value="1"></td>
+									<td><input name="deletemenutypes" type="checkbox" value="1"></td>
+									<td><input name="deleteemployees" type="checkbox" value="1"></td>
+									<td><input name="deleteemployeetypes" type="checkbox" value="1"></td>
+									<td><input name="deletecustomers" type="checkbox" value="1"></td>
+									<td><input name="deleteorders" type="checkbox" value="1"></td>
+									<td><input name="deletetickets" type="checkbox" value="1"></td>
+									<td><input name="deletelocations" type="checkbox" value="1"></td>
+									<td><input name="deletetables" type="checkbox" value="1"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12">
+						<button name="insert" type="submit" class="btn btn-primary">Submit</button>
+					</div>
+					<div class="col-12">
+						<button name="permissiontest" type="submit" class="btn btn-primary">test permissions</button>
+					</div>
+				</div>
+			</div>
+		</form>
 	</div>
 </div>
 <?php

@@ -11,6 +11,8 @@
 			$formfield['name'] = trim($_POST['name']);
 			$formfield['address'] = trim($_POST['address']);
 			$formfield['description'] = trim($_POST['description']);
+			$formfield['locationopen'] = $_POST['locationopen'];
+			$formfield['locationclose'] = $_POST['locationclose'];
 ?>
 <ol class="breadcrumb">
 	<li class="breadcrumb-item"><a href="#">Locations</a></li>
@@ -19,41 +21,6 @@
 <div class="card">
 	<div class="card-header">Update Locations</div>
 	<div class="card-body">
-		<form class="was-validated" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
-			<div>
-				<div class="row">
-					<!-- Name field -->
-					<div class="col-6 col-md-4">
-						<input name="name" type="text" class="form-control" placeholder="Name" value="<?php echo $formfield['name']; ?>" required>
-						<div class="valid-feedback">Valid name</div>
-						<div class="invalid-feedback">Invalid name</div>
-					</div>
-					<!-- Address field -->
-					<div class="col-6 col-md-8">
-						<input name="address" type="text" class="form-control" placeholder="Address" value="<?php echo $formfield['address']; ?>" required>
-						<div class="valid-feedback">Valid address</div>
-						<div class="invalid-feedback">Invalid address</div>
-					</div>
-				</div>
-				<br />
-				<div class="row">
-					<!-- Description field -->
-					<div class="col-12">
-						<input name="description" type="text" class="form-control" placeholder="Description" value="<?php echo $formfield['description']; ?>" required>
-						<div class="valid-feedback">Valid description</div>
-						<div class="invalid-feedback">Invalid description</div>
-					</div>
-				</div>
-				<br />
-				<div class="row">
-					<!-- Submit button -->
-					<div class="col-12">
-						<input type="hidden" name="locationkey" value="<?php echo $formfield['locationkey']; ?>"/>
-						<button name="update" type="submit" class="btn btn-primary">Submit</button>
-					</div>
-				</div>
-			</div>
-		</form>
 		<?php
 			// Insert button pressed
 			if (isset($_POST['update'])) {
@@ -68,7 +35,8 @@
 						// statement
 						$sqlupdate = 'UPDATE locations
 													SET locationname=:bvname, locationaddress=:bvaddress,
-															locationdescription=:bvdescription
+															locationdescription=:bvdescription,
+															locationopen=:bvopen, locationclose=:bvclose
 													WHERE locationkey=:bvlocationkey';
 
 						// Prepare and execute
@@ -76,11 +44,13 @@
 						$result->bindValue('bvname', $formfield['name']);
 						$result->bindValue('bvaddress', $formfield['address']);
 						$result->bindValue('bvdescription', $formfield['description']);
+						$result->bindValue('bvopen', $formfield['locationopen']);
+						$result->bindValue('bvclose', $formfield['locationclose']);
 						$result->bindValue('bvlocationkey', $formfield['locationkey']);
 						$result->execute();
 
 						// Success
-						echo '<br /><p class="text-success font-weight-bold">Update successful.</p>';
+						echo '<div class="alert alert-success" role="alert">Update successful. <a href="updatelocations.php">Back</a></div>';
 					} catch (Exception $e) {
 						// An error occured
 						echo '<br /><p class="text-danger font-weight-bold">Update failed.</p>';
@@ -88,6 +58,52 @@
 				}
 			}
 		?>
+		<form class="was-validated" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
+			<div>
+				<div class="row">
+					<!-- Name field -->
+					<div class="col-6 col-md-4 mb-4">
+						<input name="name" type="text" class="form-control" placeholder="Name" value="<?php echo $formfield['name']; ?>" required>
+						<div class="valid-feedback">Valid name</div>
+						<div class="invalid-feedback">Invalid name</div>
+					</div>
+					<!-- Address field -->
+					<div class="col-6 col-md-8 mb-4">
+						<input name="address" type="text" class="form-control" placeholder="Address" value="<?php echo $formfield['address']; ?>" required>
+						<div class="valid-feedback">Valid address</div>
+						<div class="invalid-feedback">Invalid address</div>
+					</div>
+				</div>
+				<div class="row">
+					<!-- Description field -->
+					<div class="col-12 mb-4">
+						<input name="description" type="text" class="form-control" placeholder="Description" value="<?php echo $formfield['description']; ?>" required>
+						<div class="valid-feedback">Valid description</div>
+						<div class="invalid-feedback">Invalid description</div>
+					</div>
+				</div>
+				<div class="row">
+					<!-- Time fields -->
+					<div class="col-6 mb-4">
+						<input name="locationopen" type="time" class="form-control" value="<?php echo $formfield['locationopen']; ?>" required>
+						<div class="valid-feedback">Valid open time</div>
+						<div class="invalid-feedback">Invalid open time</div>
+					</div>
+					<div class="col-6 mb-4">
+						<input name="locationclose" type="time" class="form-control" value="<?php echo $formfield['locationclose']; ?>" required>
+						<div class="valid-feedback">Valid close time</div>
+						<div class="invalid-feedback">Invalid close time</div>
+					</div>
+				</div>
+				<div class="row">
+					<!-- Submit button -->
+					<div class="col-12">
+						<input type="hidden" name="locationkey" value="<?php echo $formfield['locationkey']; ?>"/>
+						<button name="update" type="submit" class="btn btn-primary">Submit</button>
+					</div>
+				</div>
+			</div>
+		</form>
 	</div>
 </div>
 <?php

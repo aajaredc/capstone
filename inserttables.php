@@ -12,6 +12,42 @@
 <div class="card">
 	<div class="card-header">Insert Tables</div>
 	<div class="card-body">
+		<?php
+			// Insert button pressed
+			if (isset($_POST['insert'])) {
+				// Data cleansing
+				$formfield['name'] = trim($_POST['name']);
+				$formfield['locationkey'] = trim($_POST['location']);
+				$formfield['description'] = trim($_POST['description']);
+
+				// If a field is empty...
+				if (empty($formfield['name']) || empty($formfield['locationkey']) ||
+						empty($formfield['description'])) {
+							// One or more fields are empty
+							echo '<br /><p class="text-warning">Insert failed: one or more fields are empty.</p>';
+				} else {
+					// Attempt to insert
+					try {
+						// statement
+						$sqlinsert = 'INSERT INTO tables(locationkey, tablename, tabledescription)
+													VALUES(:bvlocation, :bvname, :bvdescription)';
+
+						// Prepare and execute
+						$result = $db->prepare($sqlinsert);
+						$result->bindValue('bvlocation', $formfield['locationkey']);
+						$result->bindValue('bvname', $formfield['name']);
+						$result->bindValue('bvdescription', $formfield['description']);
+						$result->execute();
+
+						// Success
+						echo '<div class="alert alert-success" role="alert">Insert successful</div>';
+					} catch (Exception $e) {
+						// An error occured
+						echo '<div class="alert alert-warning" role="alert"><strong>Insert failed: </strong>' . $e->getMessage() . '</div>';
+					}
+				}
+			}
+		?>
 		<form class="was-validated" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 			<div>
 				<div class="row">
@@ -57,42 +93,6 @@
 				</div>
 			</div>
 		</form>
-		<?php
-			// Insert button pressed
-			if (isset($_POST['insert'])) {
-				// Data cleansing
-				$formfield['name'] = trim($_POST['name']);
-				$formfield['locationkey'] = trim($_POST['location']);
-				$formfield['description'] = trim($_POST['description']);
-
-				// If a field is empty...
-				if (empty($formfield['name']) || empty($formfield['locationkey']) ||
-						empty($formfield['description'])) {
-							// One or more fields are empty
-							echo '<br /><p class="text-warning">Insert failed: one or more fields are empty.</p>';
-				} else {
-					// Attempt to insert
-					try {
-						// statement
-						$sqlinsert = 'INSERT INTO tables(locationkey, tablename, tabledescription)
-													VALUES(:bvlocation, :bvname, :bvdescription)';
-
-						// Prepare and execute
-						$result = $db->prepare($sqlinsert);
-						$result->bindValue('bvlocation', $formfield['locationkey']);
-						$result->bindValue('bvname', $formfield['name']);
-						$result->bindValue('bvdescription', $formfield['description']);
-						$result->execute();
-
-						// Success
-						echo '<br /><p class="text-success font-weight-bold">Insert successful.</p>';
-					} catch (Exception $e) {
-						// An error occured
-						echo '<br /><p class="text-danger font-weight-bold">Insert failed.</p>';
-					}
-				}
-			}
-		?>
 	</div>
 </div>
 <?php

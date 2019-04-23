@@ -19,6 +19,32 @@
 <div class="card">
 	<div class="card-header">Insert Menu Types</div>
 	<div class="card-body">
+		<?php
+		if (isset($_POST['update'])) {
+			// If a field is empty...
+			if (empty($formfield['name']) || empty($formfield['description'])) {
+				// One or more fields are empty
+				echo '<br /><p class="text-warning">Update failed: one or more fields are empty.</p>';
+			} else {
+				// Attempt to insert
+				try {
+					$sqlupdate = 'UPDATE menutype
+												SET menutypename=:bvname, menutypedescription=:bvdescription
+												WHERE menutypekey=:bvtypekey';
+
+					$result = $db->prepare($sqlupdate);
+					$result->bindValue('bvname', $formfield['name']);
+					$result->bindValue('bvdescription', $formfield['description']);
+					$result->bindValue('bvtypekey', $formfield['menutypekey']);
+					$result->execute();
+
+					echo '<div class="alert alert-success" role="alert">Update successful. <a href="updatemenutypes.php">Back</a></div>';
+				} catch (Exception $e) {
+					echo '<br /><p class="text-danger font-weight-bold">Update failed.</p>';
+				}
+			}
+		}
+		?>
 		<form class="was-validated" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 			<div>
 				<div class="row">
@@ -42,35 +68,6 @@
 				</div>
 			</div>
 		</form>
-
-		<?php
-		if (isset($_POST['update'])) {
-			// If a field is empty...
-			if (empty($formfield['name']) || empty($formfield['description'])) {
-				// One or more fields are empty
-				echo '<br /><p class="text-warning">Update failed: one or more fields are empty.</p>';
-			} else {
-				// Attempt to insert
-				try {
-					$sqlupdate = 'UPDATE menutype
-												SET menutypename=:bvname, menutypedescription=:bvdescription
-												WHERE menutypekey=:bvtypekey';
-
-					$result = $db->prepare($sqlupdate);
-					$result->bindValue('bvname', $formfield['name']);
-					$result->bindValue('bvdescription', $formfield['description']);
-					$result->bindValue('bvtypekey', $formfield['menutypekey']);
-					$result->execute();
-
-					echo '<br />
-								<p class="text-success font-weight-bold">Update successful.</p>
-								<a href="updatemenutypes.php">Back</a>';
-				} catch (Exception $e) {
-					echo '<br /><p class="text-danger font-weight-bold">Update failed.</p>';
-				}
-			}
-		}
-		?>
 	</div>
 </div>
 <?php

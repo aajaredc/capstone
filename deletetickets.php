@@ -3,24 +3,6 @@
 	require_once 'header.php';
 
 	if ($_SESSION['signedin'] == 1) {
-		// If delete button is pressed
-		if (isset($_POST['deletesubmit'])) {
-			// Create delete statement for tickets
-			$sqldelete = 'DELETE FROM tickets
-										WHERE ticketkey=:bvkey';
-			// Prepare and execute
-			$deleteresult = $db->prepare($sqldelete);
-			$deleteresult->bindValue('bvkey', $_POST['ticketkey']);
-			$deleteresult->execute();
-
-			// Create delete statement for ticket details
-			$sqldelete = 'DELETE FROM ticketdetail
-										WHERE ticketkey=:bvkey';
-			// Prepare and execute
-			$deleteresult = $db->prepare($sqldelete);
-			$deleteresult->bindValue('bvkey', $_POST['ticketkey']);
-			$deleteresult->execute();
-		}
 ?>
 <ol class="breadcrumb">
 	<li class="breadcrumb-item">Tickets</li>
@@ -29,6 +11,34 @@
 <div class="card">
 	<div class="card-header">Delete Tickets</div>
 	<div class="card-body">
+		<?php
+		// If delete button is pressed
+		if (isset($_POST['deletesubmit'])) {
+			try {
+				// Create delete statement for tickets
+				$sqldelete = 'DELETE FROM tickets
+											WHERE ticketkey=:bvkey';
+				// Prepare and execute
+				$deleteresult = $db->prepare($sqldelete);
+				$deleteresult->bindValue('bvkey', $_POST['ticketkey']);
+				$deleteresult->execute();
+
+				// Create delete statement for ticket details
+				$sqldelete = 'DELETE FROM ticketdetail
+											WHERE ticketkey=:bvkey';
+				// Prepare and execute
+				$deleteresult = $db->prepare($sqldelete);
+				$deleteresult->bindValue('bvkey', $_POST['ticketkey']);
+				$deleteresult->execute();
+
+				// Success
+				echo '<div class="alert alert-success" role="alert">Delete successful</div>';
+			} catch (Exception $e) {
+				// An error occured
+				echo '<div class="alert alert-danger" role="alert"><strong>Delete failed: </strong>' . $e->getMessage() . '</div>';
+			}
+		}
+		?>
 		<div class="table-responsive">
 			<table class="table table-bordered" id="selectordersTable" width="100%" cellspacing="0">
 				<thead>

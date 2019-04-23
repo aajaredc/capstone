@@ -18,6 +18,8 @@
 						<th>Name</th>
 						<th>Address</th>
 						<th>Description</th>
+						<th>Opening time</th>
+						<th>Closing time</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -28,7 +30,9 @@
 						while ( $row = $result-> fetch() )
 							{
 								echo '<tr><td> ' . $row['locationname'] .
-								'</td><td> ' . $row['locationaddress'] . '</td><td> ' . $row['locationdescription'] . '</td>';
+								'</td><td> ' . $row['locationaddress'] . '</td><td> ' . $row['locationdescription'] . '</td>
+								<td>' . date("g:i a", strtotime($row['locationopen'])) . '</td>
+								<td>' . date("g:i a", strtotime($row['locationclose'])) . '</td>';
 							}
 							echo '</tr>';
 					?>

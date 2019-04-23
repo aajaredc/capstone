@@ -26,6 +26,74 @@
 <div class="card">
 	<div class="card-header">Update Customers</div>
 	<div class="card-body">
+		<?php
+		// If submit button is pressed
+		if (isset($_POST['update'])) {
+
+			// If there's an empty field
+			if (empty($formfield['firstname']) || empty($formfield['lastname']) ||
+					empty($formfield['phone']) || empty($formfield['address']) ||
+					empty($formfield['city']) || empty($formfield['state']) ||
+					empty($formfield['zip']) || empty($formfield['email']) ||
+					empty($formfield['password1']) || empty($formfield['password2'])) {
+						echo '<br /><p class="text-warning">Insert failed: one or more fields are empty.</p>';
+			} else {
+				// If the two passwords are the same
+				if ($formfield['password1'] == $formfield['password2']) {
+					// If the password is invalid
+					if(strlen($formfield['password1']) < 8
+						 && !preg_match("#[0-9]+#", $formfield['password1'])
+					   && !preg_match("#[a-z]+#", $formfield['password1'])
+					 	 && !preg_match("#[A-Z]+#", $formfield['password1'])
+				 		 && !preg_match("#\W+#", $formfield['password1'])) {
+						echo '<br /><p class="text-warning">Insert failed: password is invalid.</p>';
+					} else {
+						// Options...
+						$options = [
+							'cost' => 12,
+							'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
+						];
+						// Generate an encrypted password
+						$encpass = password_hash($formfield['password1'], PASSWORD_BCRYPT, $options);
+
+						// Try to insert
+						try {
+							// SQL statement
+							$sqlupdate = 'UPDATE customer
+														SET customerfirstname=:bvfirstname, customerlastname=:bvlastname,
+																customerphone=:bvphone, customeraddress=:bvaddress,
+																customercity=:bvcity, customerstate=:bvstate,
+																customerzip=:bvzip, customeremail=:bvemail,
+																customerpassword=:bvpassword
+														WHERE customerkey=:bvcustomerkey';
+
+							// Execution
+							$result = $db->prepare($sqlupdate);
+							$result->bindValue('bvfirstname', $formfield['firstname']);
+							$result->bindValue('bvlastname', $formfield['lastname']);
+							$result->bindValue('bvphone', $formfield['phone']);
+							$result->bindValue('bvaddress', $formfield['address']);
+							$result->bindValue('bvcity', $formfield['city']);
+							$result->bindValue('bvstate', $formfield['state']);
+							$result->bindValue('bvzip', $formfield['zip']);
+							$result->bindValue('bvemail', $formfield['email']);
+							$result->bindValue('bvpassword', $encpass);
+							$result->bindValue('bvcustomerkey', $formfield['customerkey']);
+							$result->execute();
+
+							// Success
+							echo '<div class="alert alert-success" role="alert">Update successful. <a href="updatecustomers.php">Back</a></div>';
+						} catch (Exception $e) {
+							// Exception error
+							echo '<br />
+										<p class="text-success font-weight-bold">Update failed.</p>
+										<p class="text-danger">' . $e->getMessage() . '</p>';
+						}
+					}
+				}
+			}
+		}
+		?>
 		<form class="was-validated" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 			<div>
 				<div class="row">
@@ -146,77 +214,6 @@
 				</div>
 			</div>
 		</form>
-
-		<?php
-		// If submit button is pressed
-		if (isset($_POST['update'])) {
-
-			// If there's an empty field
-			if (empty($formfield['firstname']) || empty($formfield['lastname']) ||
-					empty($formfield['phone']) || empty($formfield['address']) ||
-					empty($formfield['city']) || empty($formfield['state']) ||
-					empty($formfield['zip']) || empty($formfield['email']) ||
-					empty($formfield['password1']) || empty($formfield['password2'])) {
-						echo '<br /><p class="text-warning">Insert failed: one or more fields are empty.</p>';
-			} else {
-				// If the two passwords are the same
-				if ($formfield['password1'] == $formfield['password2']) {
-					// If the password is invalid
-					if(strlen($formfield['password1']) < 8
-						 && !preg_match("#[0-9]+#", $formfield['password1'])
-					   && !preg_match("#[a-z]+#", $formfield['password1'])
-					 	 && !preg_match("#[A-Z]+#", $formfield['password1'])
-				 		 && !preg_match("#\W+#", $formfield['password1'])) {
-						echo '<br /><p class="text-warning">Insert failed: password is invalid.</p>';
-					} else {
-						// Options...
-						$options = [
-							'cost' => 12,
-							'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
-						];
-						// Generate an encrypted password
-						$encpass = password_hash($formfield['password1'], PASSWORD_BCRYPT, $options);
-
-						// Try to insert
-						try {
-							// SQL statement
-							$sqlupdate = 'UPDATE customer
-														SET customerfirstname=:bvfirstname, customerlastname=:bvlastname,
-																customerphone=:bvphone, customeraddress=:bvaddress,
-																customercity=:bvcity, customerstate=:bvstate,
-																customerzip=:bvzip, customeremail=:bvemail,
-																customerpassword=:bvpassword
-														WHERE customerkey=:bvcustomerkey';
-
-							// Execution
-							$result = $db->prepare($sqlupdate);
-							$result->bindValue('bvfirstname', $formfield['firstname']);
-							$result->bindValue('bvlastname', $formfield['lastname']);
-							$result->bindValue('bvphone', $formfield['phone']);
-							$result->bindValue('bvaddress', $formfield['address']);
-							$result->bindValue('bvcity', $formfield['city']);
-							$result->bindValue('bvstate', $formfield['state']);
-							$result->bindValue('bvzip', $formfield['zip']);
-							$result->bindValue('bvemail', $formfield['email']);
-							$result->bindValue('bvpassword', $encpass);
-							$result->bindValue('bvcustomerkey', $formfield['customerkey']);
-							$result->execute();
-
-							// Success
-							echo '<br />
-										<p class="text-success font-weight-bold">Update successful.</p>
-										<a href="updatecustomers.php">Back</a>';
-						} catch (Exception $e) {
-							// Exception error
-							echo '<br />
-										<p class="text-success font-weight-bold">Update failed.</p>
-										<p class="text-danger">' . $e->getMessage() . '</p>';
-						}
-					}
-				}
-			}
-		}
-		?>
 	</div>
 </div>
 <script type="text/javascript" src="scripts/passwordvalidator.js"></script>

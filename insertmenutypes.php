@@ -12,6 +12,34 @@
 <div class="card">
 	<div class="card-header">Insert Menu Types</div>
 	<div class="card-body">
+		<?php
+		if (isset($_POST['insert'])) {
+			// Data cleansing
+			$formfield['name'] = $_POST['name'];
+			$formfield['description'] = $_POST['description'];
+
+			// If a field is empty...
+			if (empty($formfield['name']) || empty($formfield['description'])) {
+				// One or more fields are empty
+				echo '<br /><p class="text-warning">Insert failed: one or more fields are empty.</p>';
+			} else {
+				// Attempt to insert
+				try {
+					$sqlnewtype = "INSERT into menutype(menutypename, menutypedescription)
+					VALUES (:bvname, :bvdescription)";
+
+					$result = $db->prepare($sqlnewtype);
+					$result->bindValue('bvname', $formfield['name']);
+					$result->bindValue('bvdescription', $formfield['description']);
+					$result->execute();
+
+					echo '<div class="alert alert-success" role="alert">Insert successful</div>';
+				} catch (Exception $e) {
+					echo '<div class="alert alert-warning" role="alert"><strong>Insert failed: </strong>' . $e->getMessage() . '</div>';
+				}
+			}
+		}
+		?>
 		<form class="was-validated" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 			<div>
 				<div class="row">
@@ -34,35 +62,6 @@
 				</div>
 			</div>
 		</form>
-
-		<?php
-		if (isset($_POST['insert'])) {
-			// Data cleansing
-			$formfield['name'] = $_POST['name'];
-			$formfield['description'] = $_POST['description'];
-
-			// If a field is empty...
-			if (empty($formfield['name']) || empty($formfield['description'])) {
-				// One or more fields are empty
-				echo '<br /><p class="text-warning">Insert failed: one or more fields are empty.</p>';
-			} else {
-				// Attempt to insert
-				try {
-					$sqlnewtype = "INSERT into menutype(menutypename, menutypedescription)
-					VALUES (:bvname, :bvdescription)";
-
-					$result = $db->prepare($sqlnewtype);
-					$result->bindValue('bvname', $formfield['name']);
-					$result->bindValue('bvdescription', $formfield['description']);
-					$result->execute();
-
-					echo '<br /><p class="text-success font-weight-bold">Insert successful.</p>';
-				} catch (Exception $e) {
-					echo '<br /><p class="text-danger font-weight-bold">Insert failed.</p>';
-				}
-			}
-		}
-		?>
 	</div>
 </div>
 <?php

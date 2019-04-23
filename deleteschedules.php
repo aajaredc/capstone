@@ -3,16 +3,6 @@
 	require_once 'header.php';
 
 	if ($_SESSION['signedin'] == 1) {
-		if (isset($_POST['deleteschedulesubmit'])) {
-			// Create delete statement for orders
-			$sqldelete = 'DELETE FROM schedules
-										WHERE schedulekey=:bvkey';
-			// Prepare and execute
-			$deleteresult = $db->prepare($sqldelete);
-			$deleteresult->bindValue('bvkey', $_POST['schedulekey']);
-			$deleteresult->execute();
-		}
-
 		// This function gets the weekdate of a given date
 		function getWeekday($date) {
 			return date('w', strtotime($date));
@@ -25,6 +15,25 @@
 <div class="card">
 	<div class="card-header">Delete Schedules</div>
 	<div class="card-body">
+		<?php
+		if (isset($_POST['deleteschedulesubmit'])) {
+			try {
+				// Create delete statement for schedules
+				$sqldelete = 'DELETE FROM schedules
+											WHERE schedulekey=:bvkey';
+				// Prepare and execute
+				$deleteresult = $db->prepare($sqldelete);
+				$deleteresult->bindValue('bvkey', $_POST['schedulekey']);
+				$deleteresult->execute();
+
+				// Success
+				echo '<div class="alert alert-success" role="alert">Delete successful. <a href="deleteschedules.php">Back</a></div>';
+			} catch (Exception $e) {
+				// An error occured
+				echo '<div class="alert alert-danger" role="alert"><strong>Delete failed: </strong>' . $e->getMessage() . '</div>';
+			}
+		}
+		?>
 		<?php if(isset($_POST['selectemployeesubmit']) || isset($_POST['deleteschedulesubmit'])) { ?>
 			<div class="table-responsive">
 				<table class="table table-bordered" id="selectschedulesTable" width="100%" cellspacing="0">
@@ -48,6 +57,7 @@
 									<td>
 										<form name="deletescheduleform" method="post" action="' . $_SERVER['PHP_SELF'] . '">
 											<input type="hidden" name="schedulekey" value="' . $row['schedulekey'] . '"/>
+											<input type="hidden" name="employeekey" value="' . $_POST['employeekey'] . '"/>
 											<input type="submit" name="deleteschedulesubmit" value="Delete"/>
 										</form>
 									</td>';

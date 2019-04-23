@@ -82,7 +82,7 @@
 					$result->bindValue('bvemployeetypekey', $formfield['employeetypekey']);
 					$result->execute();
 
-					$feedback .= '<br /><p class="text-success font-weight-bold">Update successful.</p>';
+					echo '<div class="alert alert-success" role="alert">Update successful. <a href="updateemployeetypes.php">Back</a></div>';
 				} catch (Exception $e) {
 					$feedback .= '<br /><p class="text-danger font-weight-bold">Update failed.</p>';
 					$feedback .= '<p class="text-danger">' . $e->getMessage() . '</p>';

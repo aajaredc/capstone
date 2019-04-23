@@ -6,36 +6,40 @@
 ?>
 <ol class="breadcrumb">
 	<li class="breadcrumb-item">Orders</li>
-	<li class="breadcrumb-item active">Delete</li>
+	<li class="breadcrumb-item active">Current Orders</li>
 </ol>
 <div class="card">
-	<div class="card-header">Delete Orders</div>
+	<div class="card-header">Current Orders</div>
 	<div class="card-body">
 		<?php
-		// If delete button is pressed
-		if (isset($_POST['deletesubmit'])) {
+		// Close order submission:
+		if (isset($_POST['closeordersubmit'])) {
 			try {
-				// Create delete statement for orders
-				$sqldelete = 'DELETE FROM orders
+				// Statement for orders table
+				$sqlupdateo = 'UPDATE orders
+											SET ordercomplete=1
 											WHERE orderkey=:bvkey';
-				// Prepare and execute
-				$deleteresult = $db->prepare($sqldelete);
-				$deleteresult->bindValue('bvkey', $_POST['orderkey']);
-				$deleteresult->execute();
 
-				// Create delete statement for order details
-				$sqldelete = 'DELETE FROM orderdetail
-											WHERE orderkey=:bvkey';
 				// Prepare and execute
-				$deleteresult = $db->prepare($sqldelete);
-				$deleteresult->bindValue('bvkey', $_POST['orderkey']);
-				$deleteresult->execute();
+				$resulto = $db->prepare($sqlupdateo);
+				$resulto->bindValue('bvkey', $_POST['orderkey']);
+				$resulto->execute();
+
+				// Statement order details table
+				$sqlupdated = 'UPDATE orderdetail
+											SET orderdetailcomplete=1
+											WHERE orderkey=:bvkey';
+
+				// Prepare and execute
+				$resultd = $db->prepare($sqlupdated);
+				$resultd->bindValue('bvkey', $_POST['orderkey']);
+				$resultd->execute();
 
 				// Success
-				echo '<div class="alert alert-success" role="alert">Delete successful</div>';
+				echo '<div class="alert alert-success" role="alert">Order closed successfully</div>';
 			} catch (Exception $e) {
 				// An error occured
-				echo '<div class="alert alert-danger" role="alert"><strong>Delete failed: </strong>' . $e->getMessage() . '</div>';
+				echo '<div class="alert alert-danger" role="alert"><strong>Update failed: </strong>' . $e->getMessage() . '</div>';
 			}
 		}
 		?>
@@ -48,6 +52,7 @@
 						<th>Customer</th>
 						<th>Employee</th>
 						<th></th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -55,6 +60,7 @@
 					$sqlselecto = "SELECT * FROM orders
 												 INNER JOIN customer ON orders.customerkey = customer.customerkey
 												 INNER JOIN employee ON orders.employeekey = employee.employeekey
+												 WHERE orders.ordercomplete = 0
 												 ORDER BY orderkey ASC";
 					$result = $db->prepare($sqlselecto);
 					$result->execute();
@@ -62,9 +68,15 @@
 						echo '<tr><td>' . $row['orderdate'] . '</td><td> ' . $row['ordertime'] .
 						'</td><td> ' . $row['customeremail'] . '</td><td> ' . $row['employeeusername'] . '</td>
 						<td>
-							<form name="deleteform" method="post" action="' . $_SERVER['PHP_SELF'] . '">
+							<form name="closeorderform" method="post" action="'. $_SERVER['PHP_SELF'] . '">
 								<input type="hidden" name="orderkey" value="' . $row['orderkey'] . '"/>
-								<input type="submit" name="deletesubmit" value="Delete"/>
+								<input type="submit" name="closeordersubmit" value="Close"/>
+							</form>
+						</td>
+						<td>
+							<form name="selectorderform" method="post" action="closeorderdetails.php">
+								<input type="hidden" name="orderkey" value="' . $row['orderkey'] . '"/>
+								<input type="submit" name="selectordersubmit" value="Select"/>
 							</form>
 						</td>';
 					}

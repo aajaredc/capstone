@@ -22,6 +22,40 @@
 <div class="card">
 	<div class="card-header">Update Menu Items</div>
 	<div class="card-body">
+		<?php
+			// Insert button pressed
+			if (isset($_POST['update'])) {
+				// If a field is empty...
+				if (empty($formfield['type']) || empty($formfield['name']) ||
+						empty($formfield['price']) || empty($formfield['count']) ||
+						empty($formfield['description'])) {
+							// One or more fields are empty
+							echo '<br /><p class="text-warning">Insert failed: one or more fields are empty.</p>';
+				} else {
+					// Attempt to update
+					try {
+						$sqlupdate = 'UPDATE menuitem
+													SET menutypekey=:bvtype, menuitemname=:bvname,
+															menuitemprice=:bvprice, menuitemcount=:bvcount,
+															menuitemdesc=:bvdescription
+													WHERE menuitemkey=:bvitemkey';
+
+						$result = $db->prepare($sqlupdate);
+						$result->bindValue('bvtype', $formfield['type']);
+						$result->bindValue('bvname', $formfield['name']);
+						$result->bindValue('bvprice', $formfield['price']);
+						$result->bindValue('bvcount', $formfield['count']);
+						$result->bindValue('bvdescription', $formfield['description']);
+						$result->bindValue('bvitemkey', $formfield['menuitemkey']);
+						$result->execute();
+
+						echo '<div class="alert alert-success" role="alert">Update successful. <a href="updatemenuitems.php">Back</a></div>';
+					} catch (Exception $e) {
+						echo '<br /><p class="text-danger font-weight-bold">Update failed.</p>';
+					}
+				}
+			}
+		?>
 		<form class="was-validated" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 			<div>
 				<div class="row">
@@ -79,42 +113,6 @@
 				</div>
 			</div>
 		</form>
-		<?php
-			// Insert button pressed
-			if (isset($_POST['update'])) {
-				// If a field is empty...
-				if (empty($formfield['type']) || empty($formfield['name']) ||
-						empty($formfield['price']) || empty($formfield['count']) ||
-						empty($formfield['description'])) {
-							// One or more fields are empty
-							echo '<br /><p class="text-warning">Insert failed: one or more fields are empty.</p>';
-				} else {
-					// Attempt to update
-					try {
-						$sqlupdate = 'UPDATE menuitem
-													SET menutypekey=:bvtype, menuitemname=:bvname,
-															menuitemprice=:bvprice, menuitemcount=:bvcount,
-															menuitemdesc=:bvdescription
-													WHERE menuitemkey=:bvitemkey';
-
-						$result = $db->prepare($sqlupdate);
-						$result->bindValue('bvtype', $formfield['type']);
-						$result->bindValue('bvname', $formfield['name']);
-						$result->bindValue('bvprice', $formfield['price']);
-						$result->bindValue('bvcount', $formfield['count']);
-						$result->bindValue('bvdescription', $formfield['description']);
-						$result->bindValue('bvitemkey', $formfield['menuitemkey']);
-						$result->execute();
-
-						echo '<br />
-									<p class="text-success font-weight-bold">Update successful.</p>
-									<a href="updatemenuitems.php">Back</a>';
-					} catch (Exception $e) {
-						echo '<br /><p class="text-danger font-weight-bold">Update failed.</p>';
-					}
-				}
-			}
-		?>
 	</div>
 </div>
 <?php

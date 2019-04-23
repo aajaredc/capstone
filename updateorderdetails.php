@@ -3,7 +3,11 @@
 	require_once 'header.php';
 
 	if ($_SESSION['signedin'] == 1) {
+		// Define order key
 		$formfield['fforderkey'] = $_POST['orderkey'];
+
+		// Set locale for money format
+		setlocale(LC_MONETARY, 'en_US.UTF-8');
 
 		if (isset($_POST['DeleteItem'])) {
 			$sqldelete = 'DELETE FROM orderdetail
@@ -57,7 +61,7 @@
 					while ($rowo = $resulto->fetch()){
 					$ordertotal = $ordertotal + $rowo['orderdetailprice'];
 
-					echo '<tr><td style="vertical-align: middle;">' . $rowo['menuitemname'] . '</td><td style="vertical-align: middle;">' . $rowo['orderdetailprice'] . '</td>';
+					echo '<tr><td style="vertical-align: middle;">' . $rowo['menuitemname'] . '</td><td style="vertical-align: middle;">' . money_format('%.2n', $rowo['orderdetailprice']) . '</td>';
 					echo '<td style="vertical-align: middle;">' . $rowo['orderdetailnote'] . '</td><td>';
 					echo '<form action = "' . $_SERVER['PHP_SELF'] . '" method = "post">';
 					echo '<input type = "hidden" name = "orderkey" value = "'. $formfield['fforderkey'] .'">';
@@ -73,7 +77,7 @@
 				?>
 			<tr>
 				<th>Total:</th>
-				<th><?php echo $ordertotal; ?></th>
+				<th><?php echo money_format('%.2n', $ordertotal); ?></th>
 			</tr>
 			</table>
 
@@ -97,7 +101,14 @@
 						<table class="table table-bordered">
 							<tr>
 								<th>Price</th>
-								<td><input type = "text" name ="newprice" value="'. $rowoi['orderdetailprice'] . '"></td>
+								<td>
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<div class="input-group-text">$</div>
+									</div>
+									<input name="newprice" type="text" value="'. $rowoi['orderdetailprice'] . '" required>
+								</div>
+								</td>
 							</tr>
 							<tr>
 								<th>Notes</th>
@@ -117,10 +128,11 @@
 					?>
 			</table>
 		</div>
-		<form name="ordersubmitform" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+
+		<!-- <form name="ordersubmitform" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 			<input name="orderkey" type="hidden" value="<?php echo $formfield['fforderkey']; ?>"/>
 			<button name="submitorder" type="submit" class="btn btn-primary">Submit</button>
-		</form>
+		</form> -->
 	</div>
 </div>
 

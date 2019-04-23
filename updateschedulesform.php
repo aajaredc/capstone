@@ -18,26 +18,40 @@
 			$formfield['start'] = $_POST['start'];
 			$formfield['employeekey'] = $_POST['employeekey'];
 
-			$formfield['sundaystart'] = $_POST['sundaystart'];
-			$formfield['sundayend'] = $_POST['sundayend'];
+			if (empty($_POST['sundaystart'])) { $formfield['sundaystart'] = NULL; }
+			else { $formfield['sundaystart'] = $_POST['sundaystart']; }
+			if (empty($_POST['sundayend'])) { $formfield['sundayend'] = NULL; }
+			else { $formfield['sundayend'] = $_POST['sundayend']; }
 
-			$formfield['mondaystart'] = $_POST['mondaystart'];
-			$formfield['mondayend'] = $_POST['mondayend'];
+			if (empty($_POST['mondaystart'])) { $formfield['mondaystart'] = NULL; }
+			else { $formfield['mondaystart'] = $_POST['mondaystart']; }
+			if (empty($_POST['mondayend'])) { $formfield['mondayend'] = NULL; }
+			else { $formfield['mondayend'] = $_POST['mondayend']; }
 
-			$formfield['tuesdaystart'] = $_POST['tuesdaystart'];
-			$formfield['tuesdayend'] = $_POST['tuesdayend'];
+			if (empty($_POST['tuesdaystart'])) { $formfield['tuesdaystart'] = NULL; }
+			else { $formfield['tuesdaystart'] = $_POST['tuesdaystart']; }
+			if (empty($_POST['tuesdayend'])) { $formfield['tuesdayend'] = NULL; }
+			else { $formfield['tuesdayend'] = $_POST['tuesdayend']; }
 
-			$formfield['wednesdaystart'] = $_POST['wednesdaystart'];
-			$formfield['wednesdayend'] = $_POST['wednesdayend'];
+			if (empty($_POST['wednesdaystart'])) { $formfield['wednesdaystart'] = NULL; }
+			else { $formfield['wednesdaystart'] = $_POST['wednesdaystart']; }
+			if (empty($_POST['wednesdayend'])) { $formfield['wednesdayend'] = NULL; }
+			else { $formfield['wednesdayend'] = $_POST['wednesdayend']; }
 
-			$formfield['thursdaystart'] = $_POST['thursdaystart'];
-			$formfield['thursdayend'] = $_POST['thursdayend'];
+			if (empty($_POST['thursdaystart'])) { $formfield['thursdaystart'] = NULL; }
+			else { $formfield['thursdaystart'] = $_POST['thursdaystart']; }
+			if (empty($_POST['thursdayend'])) { $formfield['thursdayend'] = NULL; }
+			else { $formfield['thursdayend'] = $_POST['thursdayend']; }
 
-			$formfield['fridaystart'] = $_POST['fridaystart'];
-			$formfield['fridayend'] = $_POST['fridayend'];
+			if (empty($_POST['fridaystart'])) { $formfield['fridaystart'] = NULL; }
+			else { $formfield['fridaystart'] = $_POST['fridaystart']; }
+			if (empty($_POST['fridayend'])) { $formfield['fridayend'] = NULL; }
+			else { $formfield['fridayend'] = $_POST['fridayend']; }
 
-			$formfield['saturdaystart'] = $_POST['saturdaystart'];
-			$formfield['saturdayend'] = $_POST['saturdayend'];
+			if (empty($_POST['saturdaystart'])) { $formfield['saturdaystart'] = NULL; }
+			else { $formfield['saturdaystart'] = $_POST['saturdaystart']; }
+			if (empty($_POST['saturdayend'])) { $formfield['saturdayend'] = NULL; }
+			else { $formfield['saturdayend'] = $_POST['saturdayend']; }
 
 			// Check if the weekday is 0 (sunday)
 			if (getWeekday($formfield['start']) != 0) {
@@ -103,7 +117,7 @@
 					$result->execute();
 
 					// Success
-					$feedback .= '<br /><p class="text-success font-weight-bold">Update successful.</p>';
+					$feedback .= '<div class="alert alert-success" role="alert">Update successful. <a href="updateschedules.php">Back</a></div>';
 				} catch (Exception $e) {
 					// An error occured
 					$feedback .= '<br />
@@ -135,6 +149,7 @@
 <div class="card">
 	<div class="card-header">Update Schedules</div>
 	<div class="card-body">
+		<?php if (isset($_POST['updateschedule'])) { echo $feedback; } ?>
 		<form class="was-validated" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 			<!-- Week -->
 			<p class="mb-1">Select Week</p>
@@ -265,7 +280,6 @@
 				</div>
 			</div>
 		</form>
-		<?php if (isset($_POST['updateschedule'])) { echo $feedback; } ?>
 	</div>
 </div>
 <script>

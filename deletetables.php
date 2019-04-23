@@ -3,16 +3,6 @@
 	require_once 'header.php';
 
 	if ($_SESSION['signedin'] == 1) {
-		// If delete button is pressed
-		if (isset($_POST['deletesubmit'])) {
-			// Create delete statement
-			$sqldelete = 'DELETE FROM tables
-										WHERE tablekey=:bvkey';
-			// Prepare and execute
-			$deleteresult = $db->prepare($sqldelete);
-			$deleteresult->bindValue('bvkey', $_POST['tablekey']);
-			$deleteresult->execute();
-		}
 ?>
 <ol class="breadcrumb">
 	<li class="breadcrumb-item">Locations</li>
@@ -22,6 +12,26 @@
 <div class="card">
 	<div class="card-header">Delete Tables</div>
 	<div class="card-body">
+		<?php
+		// If delete button is pressed
+		if (isset($_POST['deletesubmit'])) {
+			try {
+				// Create delete statement
+				$sqldelete = 'DELETE FROM tables
+											WHERE tablekey=:bvkey';
+				// Prepare and execute
+				$deleteresult = $db->prepare($sqldelete);
+				$deleteresult->bindValue('bvkey', $_POST['tablekey']);
+				$deleteresult->execute();
+
+				// Success
+				echo '<div class="alert alert-success" role="alert">Delete successful</div>';
+			} catch (Exception $e) {
+				// An error occured
+				echo '<div class="alert alert-danger" role="alert"><strong>Delete failed: </strong>' . $e->getMessage() . '</div>';
+			}
+		}
+		?>
 		<div class="table-responsive">
 			<table class="table table-bordered" id="selecttablesTable" width="100%" cellspacing="0">
 				<thead>
