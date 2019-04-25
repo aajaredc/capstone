@@ -113,10 +113,11 @@
 								<span>Tickets</span>
 							</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<h6 class="dropdown-header">Tickets:</h6>
 								<a class="dropdown-item" href="selecttickets.php">Select</a>
 								<a class="dropdown-item" href="updatetickets.php">Update</a>
 								<a class="dropdown-item" href="deletetickets.php">Delete</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="closetickets.php">Current Tickets</a>
 							</div>
 						</li>
 						<li class="nav-item dropdown">
