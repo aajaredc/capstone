@@ -5,7 +5,7 @@
 	if ($_SESSION['signedin'] == 1) {
 ?>
 <ol class="breadcrumb">
-	<li class="breadcrumb-item">tickets</li>
+	<li class="breadcrumb-item">Tickets</li>
 	<li class="breadcrumb-item active">Current tickets</li>
 </ol>
 <div class="card">
@@ -36,7 +36,7 @@
 				$resultd->execute();
 
 				// Success
-				echo '<div class="alert alert-success" role="alert">ticket closed successfully</div>';
+				echo '<div class="alert alert-success" role="alert">Ticket closed successfully</div>';
 			} catch (Exception $e) {
 				// An error occured
 				echo '<div class="alert alert-danger" role="alert"><strong>Update failed: </strong>' . $e->getMessage() . '</div>';
@@ -44,7 +44,7 @@
 		}
 		?>
 		<div class="table-responsive">
-			<table class="table table-bticketed" id="selectticketsTable" width="100%" cellspacing="0">
+			<table class="table table-bordered" id="selectticketsTable" width="100%" cellspacing="0">
 				<thead>
 					<tr>
 						<th>Date</th>

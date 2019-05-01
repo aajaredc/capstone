@@ -3,7 +3,6 @@
 	require_once 'header.php';
 
 	if ($_SESSION['signedin'] == 1) {
-
 		// This function gets the weekdate of a given date
 		function getWeekday($date) {
 			return date('w', strtotime($date));
@@ -302,8 +301,7 @@ $(document).ready( function () {
 } );
 </script>
 <?php
-}
-else {
+} else {
 	echo '<p>You are not signed in. Click <a href="signin.php">here</a> to sign in.</p>';
 }
 	require_once 'footer.php';

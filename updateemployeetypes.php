@@ -3,6 +3,7 @@
 	require_once 'header.php';
 
 	if ($_SESSION['signedin'] == 1) {
+		if (preg_match('/.......................1................/', $_SESSION['permission'])) {
 ?>
 <ol class="breadcrumb">
 	<li class="breadcrumb-item"><a href="#">Employees</a></li>
@@ -18,6 +19,7 @@
 					<tr>
 						<th>Name</th>
 						<th>Description</th>
+						<th>Default Pay</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -28,6 +30,7 @@
 					$result->execute();
 						while ( $row = $result-> fetch() ) {
 							echo '<tr><td>' . $row['employeetypename'] . '</td><td> ' . $row['employeetypedescription'] . '</td>
+							<td> ' . $row['defaultpay'] . '</td>
 							<td>
 								<form name="updateemployeetypesselectionform" method="post" action="updateemployeetypesform.php">
 									<input type="hidden" name="employeetypekey" value="' . $row['employeetypekey'] . '"/>
@@ -48,8 +51,10 @@ $(document).ready( function () {
 } );
 </script>
 <?php
+} else {
+	echo '<p>You do not have permission to view this page</p>';
 }
-else {
+} else {
 	echo '<p>You are not signed in. Click <a href="signin.php">here</a> to sign in.</p>';
 }
 	require_once 'footer.php';

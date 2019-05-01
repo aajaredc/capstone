@@ -56,8 +56,7 @@ $(document).ready( function () {
 } );
 </script>
 <?php
-}
-else {
+} else {
 	echo '<p>You are not signed in. Click <a href="signin.php">here</a> to sign in.</p>';
 }
 	require_once 'footer.php';

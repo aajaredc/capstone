@@ -3,13 +3,14 @@
 	require_once 'header.php';
 
 	if ($_SESSION['signedin'] == 1) {
+		if (preg_match('/..................................1...../', $_SESSION['permission'])) {
 ?>
 <ol class="breadcrumb">
 	<li class="breadcrumb-item"><a href="#">Customers</a></li>
-	<li class="breadcrumb-item active">Select</li>
+	<li class="breadcrumb-item active">Delete</li>
 </ol>
 <div class="card">
-	<div class="card-header">Select Customers</div>
+	<div class="card-header">Delete Customers</div>
 	<div class="card-body">
 		<?php
 			if (isset($_POST['deletesubmit'])) {
@@ -28,6 +29,7 @@
 				}
 			}
 		?>
+
 		<div class="table-responsive">
 			<table class="table table-bordered" id="selectcustomersTable" width="100%" cellspacing="0">
 				<thead>
@@ -56,10 +58,27 @@
 								'</td><td> ' . $row['customerstate'] . '</td><td> ' . $row['customerzip'] .
 								'</td><td> ' . $row['customeremail'] . '</td>
 								<td>
-									<form name="deletecustomersform" method="post" action="' . $_SERVER['PHP_SELF'] . '">
-										<input type="hidden" name="customerkey" value="' . $row['customerkey'] . '"/>
-										<input type="submit" name="deletesubmit" value="Delete"/>
-									</form>
+								<input type="button" value="Delete" data-toggle="modal" data-target="#delete' . $row['customerkey'] . 'Modal">
+								<div class="modal" id="delete' . $row['customerkey'] . 'Modal" tabindex="-1" role="dialog" aria-labelledby="delete' . $row['customerkey'] . 'ModalLabel" aria-hidden="true">
+									<div class="modal-dialog" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title" id="delete' . $row['customerkey'] . 'ModalLabel">Confirmation</h5>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+													<span aria-hidden="true">&times;</span>
+												</button>
+											</div>
+											<div class="modal-body">Are you sure you would like to delete the selected customer?</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+												<form name="deleteform" method="post" action="' . $_SERVER['PHP_SELF'] . '">
+													<input type="hidden" name="customerkey" value="' . $row['customerkey'] . '"/>
+													<input type="submit" name="deletesubmit" class="btn btn-primary" value="Confirm">
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
 								</td>';
 							}
 							echo '</tr>';
@@ -75,8 +94,10 @@ $(document).ready( function () {
 } );
 </script>
 <?php
+} else {
+	echo '<p>You do not have permission to view this page</p>';
 }
-else {
+} else {
 	echo '<p>You are not signed in. Click <a href="signin.php">here</a> to sign in.</p>';
 }
 	require_once 'footer.php';

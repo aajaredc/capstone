@@ -3,6 +3,7 @@
 	require_once 'header.php';
 
 	if ($_SESSION['signedin'] == 1) {
+		if (preg_match('/............................1.........../', $_SESSION['permission'])) {
 ?>
 <ol class="breadcrumb">
 	<li class="breadcrumb-item">Locations</li>
@@ -54,8 +55,10 @@ $(document).ready( function () {
 } );
 </script>
 <?php
+} else {
+	echo '<p>You do not have permission to view this page</p>';
 }
-else {
+} else {
 	echo '<p>You are not signed in. Click <a href="signin.php">here</a> to sign in.</p>';
 }
 	require_once 'footer.php';

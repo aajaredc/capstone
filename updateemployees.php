@@ -3,6 +3,7 @@
 	require_once 'header.php';
 
 	if ($_SESSION['signedin'] == 1) {
+		if (preg_match('/......................1................./', $_SESSION['permission'])) {
 ?>
 <ol class="breadcrumb">
 	<li class="breadcrumb-item"><a href="#">Employees</a></li>
@@ -25,6 +26,7 @@
 						<th>State</th>
 						<th>ZIP</th>
 						<th>Email</th>
+						<th>Pay</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -40,6 +42,7 @@
 								<td> ' . $row['employeephone'] . '</td><td> ' . $row['employeeaddress'] . '</td>
 								<td> ' . $row['employeecity'] . '</td><td> ' . $row['employeestate'] . '</td>
 								<td> ' . $row['employeezip'] . '</td><td> ' . $row['employeeemail'] . '</td>
+								<td> ' . $row['employeepay'] . '</td>
 								<td>
 									<form name="updateemployeesselectionform" method="post" action="updateemployeesform.php">
 										<input type="hidden" name="employeekey" value="' . $row['employeekey'] . '"/>
@@ -52,6 +55,7 @@
 										<input type="hidden" name="state" value="' . $row['employeestate'] . '"/>
 										<input type="hidden" name="zip" value="' . $row['employeezip'] . '"/>
 										<input type="hidden" name="username" value="' . $row['employeeusername'] . '"/>
+										<input type="hidden" name="pay" value="' . $row['employeepay'] . '"/>
 										<input type="hidden" name="type" value="' . $row['employeetypekey'] . '"/>
 										<input type="submit" name="updateemployeeselection" value="Update"/>
 									</form>
@@ -70,8 +74,10 @@ $(document).ready( function () {
 } );
 </script>
 <?php
+} else {
+	echo '<p>You do not have permission to view this page</p>';
 }
-else {
+} else {
 	echo '<p>You are not signed in. Click <a href="signin.php">here</a> to sign in.</p>';
 }
 	require_once 'footer.php';

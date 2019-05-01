@@ -3,13 +3,19 @@
 	require_once 'header.php';
 
 	if ($_SESSION['signedin'] == 1) {
-		// Only view this page if it came from the according pages
-		if (isset($_POST['updateemployeeselection']) || isset($_POST['update'])) {
+		// Select employee information
+		$sqlselecte = 'SELECT *
+									FROM employee
+									WHERE employeekey=:bvemployeekey';
+		$resulte = $db->prepare($sqlselecte);
+		$resulte->bindValue('bvemployeekey', $_SESSION['employeekey']);
+		$resulte->execute();
+
+		// If the user has clicked the update button:
+		if (isset($_POST['update'])) {
 			// Define employee key
 			$formfield['employeekey'] = $_POST['employeekey'];
 			// Data cleansing
-			$formfield['username'] = $_POST['username'];
-			$formfield['typekey'] = $_POST['type'];
 			$formfield['firstname'] = $_POST['firstname'];
 			$formfield['lastname'] = $_POST['lastname'];
 			$formfield['phone'] = $_POST['phone'];
@@ -20,14 +26,34 @@
 			$formfield['email'] = $_POST['email'];
 			$formfield['password1'] = $_POST['password1'];
 			$formfield['password2'] = $_POST['password2'];
-			$formfield['pay'] = $_POST['pay'];
+			while ($rowe = $resulte->fetch()) {
+				$formfield['username'] = $rowe['employeeusername'];
+				$formfield['pay'] = $rowe['pay'];
+				$formfield['typekey'] = $rowe['employeetypekey'];
+			}
+		} else {
+			// If the user has just opened the page:
+			while ($rowe = $resulte->fetch()) {
+				$formfield['username'] = $rowe['employeeusername'];
+				$formfield['typekey'] = $rowe['employeetypekey'];
+				$formfield['firstname'] = $rowe['employeefirstname'];
+				$formfield['lastname'] = $rowe['employeelastname'];
+				$formfield['phone'] = $rowe['employeephone'];
+				$formfield['address'] = $rowe['employeeaddress'];
+				$formfield['city'] = $rowe['employeecity'];
+				$formfield['state'] = $rowe['employeestate'];
+				$formfield['zip'] = $rowe['employeezip'];
+				$formfield['email'] = $rowe['employeeemail'];
+				$formfield['pay'] = $rowe['employeepay'];
+			}
+		}
 ?>
 <ol class="breadcrumb">
 	<li class="breadcrumb-item"><a href="#">Employees</a></li>
-	<li class="breadcrumb-item active">Update</li>
+	<li class="breadcrumb-item active">My Information</li>
 </ol>
 <div class="card">
-	<div class="card-header">Update Employees</div>
+	<div class="card-header">Update My Information</div>
 	<div class="card-body">
 		<?php
 		// If submit button is pressed
@@ -40,7 +66,7 @@
 					empty($formfield['city']) || empty($formfield['state']) ||
 					empty($formfield['zip']) || empty($formfield['email']) ||
 					empty($formfield['password1']) || empty($formfield['password2'])) {
-						echo '<br /><p class="text-warning">Insert failed: one or more fields are empty.</p>';
+						echo '<br /><p class="text-warning">Update failed: one or more fields are empty.</p>';
 			} else {
 				// If the two passwords are the same
 				if ($formfield['password1'] == $formfield['password2']) {
@@ -50,7 +76,7 @@
 						 && !preg_match("#[a-z]+#", $formfield['password1'])
 						 && !preg_match("#[A-Z]+#", $formfield['password1'])
 						 && !preg_match("#\W+#", $formfield['password1'])) {
-						echo '<br /><p class="text-warning">Insert failed: password is invalid.</p>';
+						echo '<br /><p class="text-warning">Update failed: password is invalid.</p>';
 					} else {
 						// Options...
 						$options = [
@@ -59,7 +85,6 @@
 						];
 						// Generate an encrypted password
 						$encpass = password_hash($formfield['password1'], PASSWORD_BCRYPT, $options);
-
 						// Try to insert
 						try {
 							// SQL statement
@@ -69,6 +94,7 @@
 																employeephone=:bvphone, employeeaddress=:bvaddress,
 																employeecity=:bvcity, employeestate=:bvstate,
 																employeezip=:bvzip, employeeemail=:bvemail,
+																employeedefaultpassword=:bvdefaultpassword,
 																employeepassword=:bvpassword, employeepay=:bvpay
 														WHERE employeekey=:bvemployeekey';
 
@@ -85,17 +111,16 @@
 							$result->bindValue('bvzip', $formfield['zip']);
 							$result->bindValue('bvemail', $formfield['email']);
 							$result->bindValue('bvpassword', $encpass);
+							$result->bindValue('bvdefaultpassword', 1);
 							$result->bindValue('bvpay', $formfield['pay']);
-							$result->bindValue('bvemployeekey', $formfield['employeekey']);
+							$result->bindValue('bvemployeekey', $_SESSION['employeekey']);
 							$result->execute();
 
 							// Success
-							echo '<div class="alert alert-success" role="alert">Update successful. <a href="updateemployees.php">Back</a></div>';
+							echo '<div class="alert alert-success" role="alert">Update successful. <a href="index.php">Back</a></div>';
 						} catch (Exception $e) {
 							// Exception error
-							echo '<br />
-										<p class="text-success font-weight-bold">Update failed.</p>
-										<p class="text-danger">' . $e->getMessage() . '</p>';
+							echo '<div class="alert alert-danger" role="alert">Update failed: ' . $e->getMessage() . '</div>';
 						}
 					}
 				}
@@ -203,43 +228,6 @@
 				</div>
 				<div class="row">
 					<div class="col-12 col-md-6 mb-3">
-						<input name="username" type="text" class="form-control" placeholder="Username" value="<?php echo $formfield['username']; ?>" required>
-						<div class="valid-feedback">Valid username</div>
-						<div class="invalid-feedback">Invalid username</div>
-					</div>
-					<div class="col-12 col-md-6 mb-3">
-						<select name="type" class="form-control" required>
-							<option disabled selected>User Type</option>
-							<?php
-							$sqlselectet = "SELECT * FROM employeetype WHERE 1";
-							$resultet = $db->prepare($sqlselectet);
-							$resultet->execute();
-
-							while ($rowet = $resultet->fetch()) {
-								echo '<option value="'. $rowet['employeetypekey'] . '"';
-								if ($rowet['employeetypekey'] == $formfield['typekey']) { echo ' selected'; };
-								echo '>' . $rowet['employeetypename'] . '</option>';
-							}
-							?>
-						</select>
-						<div class="valid-feedback">Valid user type</div>
-						<div class="invalid-feedback">Invalid user type</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-12 col-md-2 mb-3">
-						<div class="input-group">
-							<div class="input-group-prepend">
-								<div class="input-group-text">$</div>
-							</div>
-							<input name="pay" type="text" class="form-control" placeholder="Pay" value="<?php echo $formfield['pay']; ?>" required>
-							<div class="valid-feedback">Valid pay</div>
-							<div class="invalid-feedback">Invalid pay</div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-12 col-md-6 mb-3">
 						<input id="password1" name="password1" type="text" class="form-control" placeholder="Password" required>
 						<div class="valid-feedback">Valid password</div>
 						<div id="password1-feedback" class="invalid-feedback">Invalid password</div>
@@ -263,9 +251,6 @@
 </div>
 <script type="text/javascript" src="scripts/passwordvalidator.js"></script>
 <?php
-} else {
-	echo '<p>not this time</p>'; // page can not be viewed
-}
 } else {
 		echo '<p>You are not signed in. Click <a href="signin.php">here</a> to sign in.</p>';
 }

@@ -6,6 +6,18 @@
 		// Define employee type key
 		$formfield['employeetypekey'] = $_POST['employeetypekey'];
 
+		// Only view this page if it came from the according pages
+		if (isset($_POST['updateemployeetypeselection']) || isset($_POST['updateemployeetype'])) {
+?>
+<ol class="breadcrumb">
+	<li class="breadcrumb-item">Employees</li>
+	<li class="breadcrumb-item">Employee Types</li>
+	<li class="breadcrumb-item active">Update</li>
+</ol>
+<div class="card">
+	<div class="card-header">Update Employee Types</div>
+	<div class="card-body">
+		<?php
 		// If update button is pressed
 		if (isset($_POST['updateemployeetype'])) {
 			// feedback
@@ -14,6 +26,7 @@
 			// Data cleansing
 			$formfield['name'] = $_POST['name'];
 			$formfield['description'] = $_POST['description'];
+			$formfield['defaultpay'] = $_POST['defaultpay'];
 
 			// Generate permission
 			$permission = '';
@@ -72,13 +85,14 @@
 				try {
 					$sqlupdate = 'UPDATE employeetype
 												SET employeetypename=:bvname, employeetypedescription=:bvdescription,
-														employeetypepermission=:bvpermission
+														employeetypepermission=:bvpermission, defaultpay=:bvpay
 												WHERE employeetypekey=:bvemployeetypekey';
 
 					$result = $db->prepare($sqlupdate);
 					$result->bindValue('bvname', $formfield['name']);
 					$result->bindValue('bvdescription', $formfield['description']);
 					$result->bindValue('bvpermission', $permission);
+					$result->bindValue('bvpay', $formfield['defaultpay']);
 					$result->bindValue('bvemployeetypekey', $formfield['employeetypekey']);
 					$result->execute();
 
@@ -90,25 +104,15 @@
 			}
 		}
 
-		// Only view this page if it came from the according pages
-		if (isset($_POST['updateemployeetypeselection']) || isset($_POST['updateemployeetype'])) {
-			// Get information from schedule
-			$sqlselects = 'SELECT *
-										 FROM employeetype
-										 WHERE employeetypekey=:bvkey';
-			$result = $db->prepare($sqlselects);
-			$result->bindValue(':bvkey', $formfield['employeetypekey']);
-			$result->execute();
-			$row = $result->fetch();
-?>
-<ol class="breadcrumb">
-	<li class="breadcrumb-item">Employees</li>
-	<li class="breadcrumb-item">Employee Types</li>
-	<li class="breadcrumb-item active">Update</li>
-</ol>
-<div class="card">
-	<div class="card-header">Update Employee Types</div>
-	<div class="card-body">
+		// Get information from schedule
+		$sqlselects = 'SELECT *
+									 FROM employeetype
+									 WHERE employeetypekey=:bvkey';
+		$result = $db->prepare($sqlselects);
+		$result->bindValue(':bvkey', $formfield['employeetypekey']);
+		$result->execute();
+		$row = $result->fetch();
+		?>
 		<form class="was-validated" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 			<div>
 				<div class="row">
@@ -117,10 +121,22 @@
 						<div class="valid-feedback">Valid name</div>
 						<div class="invalid-feedback">Invalid name</div>
 					</div>
-					<div class="col-12 col-md-9 mb-3">
+					<div class="col-12 col-md-7 mb-3">
 						<input name="description" type="text" class="form-control" placeholder="Description" value="<?php echo $row['employeetypedescription']; ?>" required>
 						<div class="valid-feedback">Valid description</div>
 						<div class="invalid-feedback">Invalid description</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12 col-md-4 mb-3">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">$</div>
+							</div>
+							<input name="defaultpay" type="text" class="form-control" placeholder="Default Pay" value="<?php echo $row['defaultpay']; ?>" required>
+							<div class="valid-feedback">Valid default pay</div>
+							<div class="invalid-feedback">Invalid default pay</div>
+						</div>
 					</div>
 				</div>
 				<div class="card-header">Select Permissions</div>
@@ -138,55 +154,60 @@
 								<th>Tickets</th>
 								<th>Locations</th>
 								<th>Tables</th>
+								<th>Schedules</th>
 							</thead>
 							<tbody>
 								<tr>
 									<th>Select</th>
-									<td><input name="selectmenuitems" type="checkbox" value="1"></td>
-									<td><input name="selectmenutypes" type="checkbox" value="1"></td>
-									<td><input name="selectemployees" type="checkbox" value="1"></td>
-									<td><input name="selectemployeetypes" type="checkbox" value="1"></td>
-									<td><input name="selectcustomers" type="checkbox" value="1"></td>
-									<td><input name="selectorders" type="checkbox" value="1"></td>
-									<td><input name="selecttickets" type="checkbox" value="1"></td>
-									<td><input name="selectlocations" type="checkbox" value="1"></td>
-									<td><input name="selecttables" type="checkbox" value="1"></td>
+									<td><input name="selectmenuitems" type="checkbox" value="1" <?php if (preg_match('/1......................................./', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="selectmenutypes" type="checkbox" value="1" <?php if (preg_match('/.1....................................../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="selectemployees" type="checkbox" value="1" <?php if (preg_match('/..1...................................../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="selectemployeetypes" type="checkbox" value="1" <?php if (preg_match('/...1..................................../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="selectcustomers" type="checkbox" value="1" <?php if (preg_match('/....1.................................../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="selectorders" type="checkbox" value="1" <?php if (preg_match('/.....1................................../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="selecttickets" type="checkbox" value="1" <?php if (preg_match('/......1................................./', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="selectlocations" type="checkbox" value="1" <?php if (preg_match('/.......1................................/', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="selecttables" type="checkbox" value="1" <?php if (preg_match('/........1.............................../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="selectschedules" type="checkbox" value="1" <?php if (preg_match('/.........1............................../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
 								</tr>
 								<tr>
 									<th>Insert</th>
-									<td><input name="insertmenuitems" type="checkbox" value="1"></td>
-									<td><input name="insertmenutypes" type="checkbox" value="1"></td>
-									<td><input name="insertemployees" type="checkbox" value="1"></td>
-									<td><input name="insertemployeetypes" type="checkbox" value="1"></td>
-									<td><input name="insertcustomers" type="checkbox" value="1"></td>
-									<td><input name="insertorders" type="checkbox" value="1"></td>
-									<td><input name="inserttickets" type="checkbox" value="1"></td>
-									<td><input name="insertlocations" type="checkbox" value="1"></td>
-									<td><input name="inserttables" type="checkbox" value="1"></td>
+									<td><input name="insertmenuitems" type="checkbox" value="1" <?php if (preg_match('/..........1............................./', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="insertmenutypes" type="checkbox" value="1" <?php if (preg_match('/...........1............................/', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="insertemployees" type="checkbox" value="1" <?php if (preg_match('/............1.........................../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="insertemployeetypes" type="checkbox" value="1" <?php if (preg_match('/.............1........................../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="insertcustomers" type="checkbox" value="1" <?php if (preg_match('/..............1........................./', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="insertorders" type="checkbox" value="1" <?php if (preg_match('/...............1......................../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="inserttickets" type="checkbox" value="1" <?php if (preg_match('/................1......................./', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="insertlocations" type="checkbox" value="1" <?php if (preg_match('/.................1....................../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="inserttables" type="checkbox" value="1" <?php if (preg_match('/..................1...................../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="insertschedules" type="checkbox" value="1" <?php if (preg_match('/...................1..................../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
 								</tr>
 								<tr>
 									<th>Update</th>
-									<td><input name="updatemenuitems" type="checkbox" value="1"></td>
-									<td><input name="updatemenutypes" type="checkbox" value="1"></td>
-									<td><input name="updateemployees" type="checkbox" value="1"></td>
-									<td><input name="updateemployeetypes" type="checkbox" value="1"></td>
-									<td><input name="updatecustomers" type="checkbox" value="1"></td>
-									<td><input name="updateorders" type="checkbox" value="1"></td>
-									<td><input name="updatetickets" type="checkbox" value="1"></td>
-									<td><input name="updatelocations" type="checkbox" value="1"></td>
-									<td><input name="updatetables" type="checkbox" value="1"></td>
+									<td><input name="updatemenuitems" type="checkbox" value="1" <?php if (preg_match('/....................1.................../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="updatemenutypes" type="checkbox" value="1" <?php if (preg_match('/.....................1................../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="updateemployees" type="checkbox" value="1" <?php if (preg_match('/......................1................./', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="updateemployeetypes" type="checkbox" value="1" <?php if (preg_match('/.......................1................/', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="updatecustomers" type="checkbox" value="1" <?php if (preg_match('/........................1.............../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="updateorders" type="checkbox" value="1" <?php if (preg_match('/.........................1............../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="updatetickets" type="checkbox" value="1" <?php if (preg_match('/..........................1............./', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="updatelocations" type="checkbox" value="1" <?php if (preg_match('/...........................1............/', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="updatetables" type="checkbox" value="1" <?php if (preg_match('/............................1.........../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="updateschedules" type="checkbox" value="1" <?php if (preg_match('/.............................1........../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
 								</tr>
 								<tr>
 									<th>Delete</th>
-									<td><input name="deletemenuitems" type="checkbox" value="1"></td>
-									<td><input name="deletemenutypes" type="checkbox" value="1"></td>
-									<td><input name="deleteemployees" type="checkbox" value="1"></td>
-									<td><input name="deleteemployeetypes" type="checkbox" value="1"></td>
-									<td><input name="deletecustomers" type="checkbox" value="1"></td>
-									<td><input name="deleteorders" type="checkbox" value="1"></td>
-									<td><input name="deletetickets" type="checkbox" value="1"></td>
-									<td><input name="deletelocations" type="checkbox" value="1"></td>
-									<td><input name="deletetables" type="checkbox" value="1"></td>
+									<td><input name="deletemenuitems" type="checkbox" value="1" <?php if (preg_match('/..............................1........./', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="deletemenutypes" type="checkbox" value="1" <?php if (preg_match('/...............................1......../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="deleteemployees" type="checkbox" value="1" <?php if (preg_match('/................................1......./', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="deleteemployeetypes" type="checkbox" value="1" <?php if (preg_match('/.................................1....../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="deletecustomers" type="checkbox" value="1" <?php if (preg_match('/..................................1...../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="deleteorders" type="checkbox" value="1" <?php if (preg_match('/...................................1..../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="deletetickets" type="checkbox" value="1" <?php if (preg_match('/....................................1.../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="deletelocations" type="checkbox" value="1" <?php if (preg_match('/.....................................1../', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="deletetables" type="checkbox" value="1" <?php if (preg_match('/......................................1./', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
+									<td><input name="deleteschedules" type="checkbox" value="1" <?php if (preg_match('/.......................................1/', $row['employeetypepermission'])) { echo ' checked'; } ?>></td>
 								</tr>
 							</tbody>
 						</table>

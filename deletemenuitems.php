@@ -3,6 +3,7 @@
 	require_once 'header.php';
 
 	if ($_SESSION['signedin'] == 1) {
+		if (preg_match('/..............................1........./', $_SESSION['permission'])) {
 ?>
 <ol class="breadcrumb">
 	<li class="breadcrumb-item">Menu</li>
@@ -55,10 +56,27 @@
 								'</td><td> ' . $row['menutypename'] . '</td><td> ' . $row['menuitemprice'] . '</td>
 								<td> ' . $row['menuitemcount'] . '</td><td> ' . $row['menuitemdesc'] . '</td>
 								<td>
-									<form name="deleteform" method="post" action="' . $_SERVER['PHP_SELF'] . '">
-										<input type="hidden" name="menuitemkey" value="' . $row['menuitemkey'] . '"/>
-										<input type="submit" name="deletesubmit" value="Delete"/>
-									</form>
+								<input type="button" value="Delete" data-toggle="modal" data-target="#delete' . $row['menuitemkey'] . 'Modal">
+								<div class="modal" id="delete' . $row['menuitemkey'] . 'Modal" tabindex="-1" role="dialog" aria-labelledby="delete' . $row['menuitemkey'] . 'ModalLabel" aria-hidden="true">
+									<div class="modal-dialog" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title" id="delete' . $row['menuitemkey'] . 'ModalLabel">Confirmation</h5>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+													<span aria-hidden="true">&times;</span>
+												</button>
+											</div>
+											<div class="modal-body">Are you sure you would like to delete the selected menu item?</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+												<form name="deleteform" method="post" action="' . $_SERVER['PHP_SELF'] . '">
+													<input type="hidden" name="menuitemkey" value="' . $row['menuitemkey'] . '"/>
+													<input type="submit" name="deletesubmit" class="btn btn-primary" value="Confirm">
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
 								</td>';
 							}
 							echo '</tr>';
@@ -74,8 +92,10 @@ $(document).ready( function () {
 } );
 </script>
 <?php
+} else {
+	echo '<p>You do not have permission to view this page</p>';
 }
-else {
+} else {
 	echo '<p>You are not signed in. Click <a href="signin.php">here</a> to sign in.</p>';
 }
 	require_once 'footer.php';

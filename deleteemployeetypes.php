@@ -3,6 +3,7 @@
 	require_once 'header.php';
 
 	if ($_SESSION['signedin'] == 1) {
+		if (preg_match('/.................................1....../', $_SESSION['permission'])) {
 ?>
 <ol class="breadcrumb">
 	<li class="breadcrumb-item">Employees</li>
@@ -56,10 +57,27 @@
 						while ( $row = $result-> fetch() ) {
 							echo '<tr><td>' . $row['employeetypename'] . '</td><td> ' . $row['employeetypedescription'] . '</td>
 							<td>
-								<form name="deleteform" method="post" action="' . $_SERVER['PHP_SELF'] . '">
-									<input type="hidden" name="employeetypekey" value="' . $row['employeetypekey'] . '"/>
-									<input type="submit" name="deletesubmit" value="Delete"/>
-								</form>
+							<input type="button" value="Delete" data-toggle="modal" data-target="#delete' . $row['employeetypekey'] . 'Modal">
+							<div class="modal" id="delete' . $row['employeetypekey'] . 'Modal" tabindex="-1" role="dialog" aria-labelledby="delete' . $row['employeetypekey'] . 'ModalLabel" aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="delete' . $row['employeetypekey'] . 'ModalLabel">Confirmation</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body">Are you sure you would like to delete the selected employee type? <strong>This will delete all employees associated with this employee type.</strong></div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+											<form name="deleteform" method="post" action="' . $_SERVER['PHP_SELF'] . '">
+												<input type="hidden" name="employeetypekey" value="' . $row['employeetypekey'] . '"/>
+												<input type="submit" name="deletesubmit" class="btn btn-primary" value="Confirm">
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
 							</td>';
 						}
 						echo '</tr>';
@@ -75,8 +93,10 @@ $(document).ready( function () {
 } );
 </script>
 <?php
+} else {
+	echo '<p>You do not have permission to view this page</p>';
 }
-else {
+} else {
 	echo '<p>You are not signed in. Click <a href="signin.php">here</a> to sign in.</p>';
 }
 	require_once 'footer.php';

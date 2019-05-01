@@ -84,7 +84,7 @@
 			// While there are order detail entries...
 			while ($rowo = $resulto->fetch()) {
 				// Debug
-				echo 'update that item<br />';
+				//echo 'update that item<br />';
 				// Set the menu item key to that order detail's menu item key
 				$itemkey = $rowo['menuitemkey'];
 				// Prepare and execute the statement to select the menu item
@@ -94,7 +94,7 @@
 				// Get the item count for that menu item
 				while ($rowm = $resultm->fetch()) {
 					// Debug
-					echo 'updating menuitemkey ' . $itemkey . '<br />';
+					//echo 'updating menuitemkey ' . $itemkey . '<br />';
 					// Get the item count
 					$itemcount = $rowm['menuitemcount'];
 				}
@@ -109,7 +109,39 @@
 			}
 			?>
 			<!-- Order is successful! :) -->
-			<p>Order successful! :)</p>
+			<div class="alert alert-success" role="alert"><strong>Order successful!</strong> <a href="closeorders.php">Close order</a></div>
+			<?php
+			$sqlselecto = 'SELECT *
+										 FROM orderdetail
+										 INNER JOIN menuitem ON menuitem.menuitemkey=orderdetail.menuitemkey
+										 WHERE orderkey=:bvorderkey';
+			$resulto = $db->prepare($sqlselecto);
+			$resulto->bindValue(':bvorderkey', $formfield['fforderkey']);
+			$resulto->execute();
+
+			$ordertotal = 0;
+			echo '<table class="table table-bordered">';
+			echo '<th>Name</th>';
+			echo '<th>Price</th>';
+			echo '<th>Notes</th>';
+			while ($rowo = $resulto->fetch()) {
+			$ordertotal = $ordertotal + $rowo['orderdetailprice'];
+
+			echo '
+			<tr>
+				<td style="vertical-align: middle;">' . $rowo['menuitemname'] . '</td>
+				<td style="vertical-align: middle;">' . money_format('%.2n', $rowo['orderdetailprice']) . '</td>
+				<td style="vertical-align: middle;">' . $rowo['orderdetailnote'] . '</td>
+			</tr>';
+			}
+			echo '
+			<tr>
+				<th>Total:</th>
+				<th>' . money_format('%.2n', $ordertotal) . '</th>
+			</tr>';
+			echo '</table>';
+			?>
+			<a class="btn btn-primary" href="insertorders.php">New Order</a>
 		</div>
 	</div>
 <?php } else { ?>

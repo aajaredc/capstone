@@ -75,7 +75,7 @@
 
 							// Redirect accordingly
 							//header("Location: frontindex.php");
-							echo '<script>document.location.replace("blank.php");</script>';
+							echo '<script>document.location.replace("index.php");</script>';
 							echo '<p>Login successful. If you are not automatically redirected, <a href="insertmenuitems">click here</a>.</p>';
 
 						} else {
@@ -87,6 +87,6 @@
 
 			</div>
 		</div>
-		<script>alert('Username: emp\nPassword: Password1')</script>
+		<!-- <script>alert('Username: emp\nPassword: Password1')</script> -->
 	</body>
 </html>

@@ -68,7 +68,7 @@
 
 		?>
 		<div class="table-responsive">
-			<table class="table table-bticketed" id="selectticketdetailsTable" width="100%" cellspacing="0">
+			<table class="table table-bordered" id="selectticketdetailsTable" width="100%" cellspacing="0">
 				<thead>
 					<tr>
 						<th>Item</th>

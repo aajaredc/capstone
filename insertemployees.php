@@ -3,6 +3,7 @@
 	require_once 'header.php';
 
 	if ($_SESSION['signedin'] == 1) {
+		if (preg_match('/............1.........................../', $_SESSION['permission'])) {
 ?>
 <ol class="breadcrumb">
 	<li class="breadcrumb-item">Employees</li>
@@ -27,6 +28,18 @@
 			$formfield['email'] = $_POST['email'];
 			$formfield['password1'] = $_POST['password1'];
 			$formfield['password2'] = $_POST['password2'];
+
+			// Get default pay
+			$defaultpay = 0;
+			$sqlselectp = 'SELECT *
+										 FROM employeetype
+										 WHERE employeetypekey = :bvemployeetypekey';
+		  $resultp = $db->prepare($sqlselectp);
+			$resultp->bindValue('bvemployeetypekey', $formfield['typekey']);
+			$resultp->execute();
+			while ( $rowp = $resultp-> fetch() ) {
+				$defaultpay = $rowp['defaultpay'];
+			}
 
 			// If there's an empty field...
 			if (empty($formfield['username']) || empty($formfield['typekey']) ||
@@ -63,10 +76,10 @@
 							$sqlnewemployee = "INSERT into
 								employee(employeeusername, employeetypekey, employeefirstname, employeelastname,
 												 employeephone, employeeaddress, employeecity, employeestate,
-												 employeezip, employeeemail, employeepassword)
+												 employeezip, employeeemail, employeepassword, employeepay)
 								VALUES(:bvusername, :bvtypekey, :bvfirstname, :bvlastname,
 											 :bvphone, :bvaddress, :bvcity, :bvstate,
-											 :bvzip, :bvemail, :bvpassword)";
+											 :bvzip, :bvemail, :bvpassword, :bvpay)";
 
 							// Execution
 							$result = $db->prepare($sqlnewemployee);
@@ -81,6 +94,7 @@
 							$result->bindValue('bvzip', $formfield['zip']);
 							$result->bindValue('bvemail', $formfield['email']);
 							$result->bindValue('bvpassword', $encpass);
+							$result->bindValue('bvpay', $defaultpay);
 							$result->execute();
 
 							// Success
@@ -255,8 +269,10 @@
 <!-- Initialize script to validate password -->
 <script type="text/javascript" src="scripts/passwordvalidator.js"></script>
 <?php
+} else {
+	echo '<p>You do not have permission to view this page</p>';
 }
-else {
+} else {
 	echo '<p>You are not signed in. Click <a href="signin.php">here</a> to sign in.</p>';
 }
 	require_once 'footer.php';

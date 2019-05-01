@@ -43,6 +43,22 @@
 		<div id="main-wrapper">
 			<ul id="sidebar" style="display: flex;" class="sidebar navbar-nav">
 					<?php if ($_SESSION['signedin'] == 1) { ?>
+						<li class="nav-item">
+							<a class="nav-link" href="index.php">
+								<i class="fas fa-fw fa-home"></i>
+								<span>Home</span>
+							</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fas fa-fw fa-user"></i>
+								<span>Me</span>
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="viewschedule.php">My Schedule</a>
+								<a class="dropdown-item" href="updatemyinformation.php">My Information</a>
+							</div>
+						</li>
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								<i class="fas fa-fw fa-table"></i>
@@ -64,7 +80,7 @@
 						</li>
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<i class="fas fa-fw fa-user"></i>
+								<i class="fas fa-fw fa-users"></i>
 								<span>Employees</span>
 							</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -83,7 +99,7 @@
 						</li>
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<i class="fas fa-fw fa-user"></i>
+								<i class="fas fa-fw fa-user-tag"></i>
 								<span>Customers</span>
 							</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
