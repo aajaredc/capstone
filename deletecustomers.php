@@ -42,12 +42,16 @@
 						<th>State</th>
 						<th>ZIP</th>
 						<th>Email</th>
+						<th>Preferred Location</th>
 						<th></th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php
-					$sqlselectc = "SELECT * FROM customer ORDER BY customerkey ASC";
+					$sqlselectc = "SELECT *
+					FROM customer
+					INNER JOIN locations ON customer.locationkey = locations.locationkey
+					ORDER BY customerkey ASC";
 					$result = $db->prepare($sqlselectc);
 					$result->execute();
 						while ( $row = $result-> fetch() )
@@ -56,7 +60,7 @@
 								'</td><td> ' . $row['customerlastname'] . '</td><td> ' . $row['customerphone'] .
 								'</td><td> ' . $row['customeraddress'] . '</td><td> ' . $row['customercity'] .
 								'</td><td> ' . $row['customerstate'] . '</td><td> ' . $row['customerzip'] .
-								'</td><td> ' . $row['customeremail'] . '</td>
+								'</td><td> ' . $row['customeremail'] . '</td><td> ' . $row['locationname'] . '</td>
 								<td>
 								<input type="button" value="Delete" data-toggle="modal" data-target="#delete' . $row['customerkey'] . 'Modal">
 								<div class="modal" id="delete' . $row['customerkey'] . 'Modal" tabindex="-1" role="dialog" aria-labelledby="delete' . $row['customerkey'] . 'ModalLabel" aria-hidden="true">

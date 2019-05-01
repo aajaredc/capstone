@@ -26,13 +26,15 @@
 			$formfield['email'] = $_POST['email'];
 			$formfield['password1'] = $_POST['password1'];
 			$formfield['password2'] = $_POST['password2'];
+			$formfield['preferredlocation'] = $_POST['preferredlocation'];
 
 			// If there's an empty field
 			if (empty($formfield['firstname']) || empty($formfield['lastname']) ||
 					empty($formfield['phone']) || empty($formfield['address']) ||
 					empty($formfield['city']) || empty($formfield['state']) ||
 					empty($formfield['zip']) || empty($formfield['email']) ||
-					empty($formfield['password1']) || empty($formfield['password2'])) {
+					empty($formfield['password1']) || empty($formfield['password2']) ||
+					empty($formfield['preferredlocation'])) {
 						echo '<div class="alert alert-warning" role="alert"><strong>Insert failed: </strong>one or more fields are empty.</div>';
 			} else {
 				// If the two passwords are the same
@@ -59,10 +61,10 @@
 							$sqlnewcustomer = "INSERT into
 								customer(customerfirstname, customerlastname,
 												 customerphone, customeraddress, customercity, customerstate,
-												 customerzip, customeremail, customerpassword)
+												 customerzip, customeremail, customerpassword, locationkey)
 								VALUES(:bvfirstname, :bvlastname,
 											 :bvphone, :bvaddress, :bvcity, :bvstate,
-											 :bvzip, :bvemail, :bvpassword)";
+											 :bvzip, :bvemail, :bvpassword, :bvpreferredlocation)";
 
 							// Execution
 							$result = $db->prepare($sqlnewcustomer);
@@ -75,6 +77,7 @@
 							$result->bindValue('bvzip', $formfield['zip']);
 							$result->bindValue('bvemail', $formfield['email']);
 							$result->bindValue('bvpassword', $encpass);
+							$result->bindValue('bvpreferredlocation', $formfield['preferredlocation']);
 							$result->execute();
 
 							// Success
@@ -185,6 +188,24 @@
 						<input name="zip" type="text" class="form-control" placeholder="ZIP" required>
 						<div class="valid-feedback">Valid zip</div>
 						<div class="invalid-feedback">Invalid zip</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-12 col-md-4 mb-3">
+						<select name="preferredlocation" class="form-control" required>
+							<option disabled selected>Location</option>
+							<?php
+							$sqlselectl = "SELECT * FROM locations";
+							$resultl = $db->prepare($sqlselectl);
+							$resultl->execute();
+
+							while ($rowl = $resultl->fetch()) {
+								echo '<option value="'. $rowl['locationkey'] . '">' . $rowl['locationname'] . '</option>';
+							}
+							?>
+						</select>
+						<div class="valid-feedback">Valid preferred location</div>
+						<div class="invalid-feedback">Invalid preferred location</div>
 					</div>
 				</div>
 				<div class="row">

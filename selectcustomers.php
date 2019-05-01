@@ -24,11 +24,15 @@
 						<th>State</th>
 						<th>ZIP</th>
 						<th>Email</th>
+						<th>Preferred Locarion</th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php
-					$sqlselectc = "SELECT * FROM customer ORDER BY customerkey ASC";
+					$sqlselectc = "SELECT *
+					FROM customer
+					INNER JOIN locations ON customer.locationkey = locations.locationkey
+					ORDER BY customerkey ASC";
 					$result = $db->prepare($sqlselectc);
 					$result->execute();
 						while ( $row = $result-> fetch() )
@@ -37,7 +41,7 @@
 								'</td><td> ' . $row['customerlastname'] . '</td><td> ' . $row['customerphone'] .
 								'</td><td> ' . $row['customeraddress'] . '</td><td> ' . $row['customercity'] .
 								'</td><td> ' . $row['customerstate'] . '</td><td> ' . $row['customerzip'] .
-								'</td><td> ' . $row['customeremail'] . '</td>';
+								'</td><td> ' . $row['customeremail'] . '</td><td> ' . $row['locationname'] . '</td>';
 							}
 							echo '</tr>';
 					?>
