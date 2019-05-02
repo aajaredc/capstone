@@ -1,5 +1,17 @@
 <?php
 	require_once 'connect.php';
+
+	if (!isset($_SESSION['signedin'])) {
+		// Redirect user if not signedin:
+		// Meta tag
+		echo '<meta http-equiv="refresh" content="0;URL=signin.php" />';
+		// If meta doesn't work for some reason, use javascript
+		echo '<script>document.location.replace("signin.php");</script>';
+		// If javascript doesn't work, just prompt a message
+		echo '<p>You are not signed in. Click <a href="signin.php">here</a> to sign in.</p>';
+	} 
+
+
 ?>
 
 <!DOCTYPE html>

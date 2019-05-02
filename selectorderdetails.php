@@ -4,6 +4,9 @@
 
 	if ($_SESSION['signedin'] == 1) {
 		if (isset($_POST['selectordersubmit'])) {
+
+			// Set locale for money format
+			setlocale(LC_MONETARY, 'en_US.UTF-8');
 ?>
 <ol class="breadcrumb">
 	<li class="breadcrumb-item"><a href="#">Orders</a></li>
@@ -32,7 +35,7 @@
 					$result->bindValue('bvorderkey', $_POST['orderkey']);
 					$result->execute();
 					while ( $row = $result-> fetch() ) {
-						echo '<tr><td>' . $row['menuitemname'] . '</td><td> ' . $row['orderdetailprice'] .
+						echo '<tr><td>' . $row['menuitemname'] . '</td><td> ' . money_format('%.2n', $row['orderdetailprice']) .
 						'</td><td> ' . $row['orderdetailnote'] . '</td>';
 					}
 					echo '</tr>';

@@ -62,7 +62,7 @@
 						echo '<tr><td>' . $row['ticketdate'] . '</td><td> ' . $row['tickettime'] .
 						'</td><td> ' . $row['tickettype'] . '</td><td> ' . $row['customeremail'] . '</td>
 						<td>
-						<input type="button" value="Delete" data-toggle="modal" data-target="#delete' . $row['orderkey'] . 'Modal">
+						<input type="button" value="Delete" data-toggle="modal" data-target="#delete' . $row['ticketkey'] . 'Modal">
 						<div class="modal" id="delete' . $row['ticketkey'] . 'Modal" tabindex="-1" role="dialog" aria-labelledby="delete' . $row['ticketkey'] . 'ModalLabel" aria-hidden="true">
 							<div class="modal-dialog" role="document">
 								<div class="modal-content">

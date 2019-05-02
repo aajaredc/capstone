@@ -4,6 +4,9 @@
 
 	if ($_SESSION['signedin'] == 1) {
 		if (isset($_POST['selectticketsubmit'])) {
+
+			// Set locale for money format
+			setlocale(LC_MONETARY, 'en_US.UTF-8');
 ?>
 <ol class="breadcrumb">
 	<li class="breadcrumb-item"><a href="#">Tickets</a></li>
@@ -32,7 +35,7 @@
 					$result->bindValue('bvticketkey', $_POST['ticketkey']);
 					$result->execute();
 					while ( $row = $result-> fetch() ) {
-						echo '<tr><td>' . $row['menuitemname'] . '</td><td> ' . $row['ticketdetailprice'] .
+						echo '<tr><td>' . $row['menuitemname'] . '</td><td> ' . money_format('%.2n', $row['ticketdetailprice']) .
 						'</td><td> ' . $row['ticketdetailnote'] . '</td>';
 					}
 					echo '</tr>';
@@ -48,10 +51,10 @@ $(document).ready( function () {
 } );
 </script>
 <?php
-}
+} else {
 	echo '<p>This page can not be viewed.</p>';
 }
-else {
+} else {
 	echo '<p>You are not signed in. Click <a href="signin.php">here</a> to sign in.</p>';
 }
 	require_once 'footer.php';
