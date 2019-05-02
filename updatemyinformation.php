@@ -49,7 +49,7 @@
 		}
 ?>
 <ol class="breadcrumb">
-	<li class="breadcrumb-item"><a href="#">Employees</a></li>
+	<li class="breadcrumb-item"><a href="#">Me</a></li>
 	<li class="breadcrumb-item active">My Information</li>
 </ol>
 <div class="card">

@@ -24,7 +24,7 @@
 						<th>State</th>
 						<th>ZIP</th>
 						<th>Email</th>
-						<th>Preferred Locarion</th>
+						<th>Preferred Location</th>
 					</tr>
 				</thead>
 				<tbody>

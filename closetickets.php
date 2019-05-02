@@ -5,11 +5,11 @@
 	if ($_SESSION['signedin'] == 1) {
 ?>
 <ol class="breadcrumb">
-	<li class="breadcrumb-item">Tickets</li>
-	<li class="breadcrumb-item active">Current tickets</li>
+	<li class="breadcrumb-item"><a href="#">Tickets</a></li>
+	<li class="breadcrumb-item active">Current Tickets</li>
 </ol>
 <div class="card">
-	<div class="card-header">Current tickets</div>
+	<div class="card-header">Current Tickets</div>
 	<div class="card-body">
 		<?php
 		// Close ticket submission:

@@ -10,7 +10,7 @@
 		}
 ?>
 <ol class="breadcrumb">
-	<li class="breadcrumb-item">Schedules</li>
+	<li class="breadcrumb-item"><a href="#">Schedules</a></li>
 	<li class="breadcrumb-item active">Select</li>
 </ol>
 <div class="card">

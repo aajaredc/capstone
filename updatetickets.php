@@ -6,11 +6,11 @@
 		if (preg_match('/..........................1............./', $_SESSION['permission'])) {
 ?>
 <ol class="breadcrumb">
-	<li class="breadcrumb-item">tickets</li>
+	<li class="breadcrumb-item"><a href="#">Tickets</a></li>
 	<li class="breadcrumb-item active">Update</li>
 </ol>
 <div class="card">
-	<div class="card-header">Update tickets</div>
+	<div class="card-header">Update Tickets</div>
 	<div class="card-body">
 		<div class="table-responsive">
 			<table class="table table-bordered" id="selectticketsTable" width="100%" cellspacing="0">

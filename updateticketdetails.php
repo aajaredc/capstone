@@ -25,8 +25,8 @@
 		}
 ?>
 <ol class="breadcrumb">
-	<li class="breadcrumb-item">Tickets</li>
-	<li class="breadcrumb-item">Ticket Details</li>
+	<li class="breadcrumb-item"><a href="#">Tickets</a></li>
+	<li class="breadcrumb-item"><a href="#">Ticket Details</a></li>
 	<li class="breadcrumb-item active">Update</li>
 </ol>
 

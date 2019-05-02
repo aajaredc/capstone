@@ -6,8 +6,8 @@
 		if (preg_match('/.............1........................../', $_SESSION['permission'])) {
 ?>
 <ol class="breadcrumb">
-	<li class="breadcrumb-item">Employees</li>
-	<li class="breadcrumb-item">Employee Types</li>
+	<li class="breadcrumb-item"><a href="#">Employees</a></li>
+	<li class="breadcrumb-item"><a href="#">Employee Types</a></li>
 	<li class="breadcrumb-item active">Insert</li>
 </ol>
 <div class="card">
