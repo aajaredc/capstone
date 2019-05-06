@@ -152,17 +152,20 @@
 			<div class="table-responsive">
 				<table id="selectmenuitemsTable" width="100%" cellspacing="0">
 					<?php
+					$rowcounter = 0; // row counter
 						$sqlselectc = "SELECT * from menutype";
 						$resultc = $db->prepare($sqlselectc);
 						$resultc->execute();
 						echo '<tr>';
 						while ($rowc = $resultc->fetch()) {
 							echo '<th valign="top" align="center">' . $rowc['menutypename'] . '<br />';
-							echo '<table>';
+							echo '<table style="width: 100%;">';
 							$sqlselectp = "SELECT * from menuitem WHERE menutypekey = :bvtypekey";
 							$resultp = $db->prepare($sqlselectp);
 							$resultp->bindvalue(':bvtypekey', $rowc['menutypekey']);
 							$resultp->execute();
+
+							$rowcounter = $rowcounter + 1;
 
 							while ($rowp = $resultp->fetch()) {
 								$orderdetailcount = 0;
@@ -185,13 +188,17 @@
 								echo '<input type="hidden" name="orderkey" value="' . $formfield['fforderkey'] . '" />';
 								echo '<input type="hidden" name="menuitemkey" value="' . $rowp['menuitemkey'] . '" />';
 								echo '<input type="hidden" name="orderitemprice" value="' . $rowp['menuitemprice'] . '" />';
-								echo '<input style="width: 100%;" type="submit" name="ODEnter" value="' .$rowp['menuitemname'] . '" ';
+								echo '<input style="height: 52px; width: 100%;" type="submit" name="ODEnter" value="' .$rowp['menuitemname'] . '" ';
 								if ($rowp['menuitemcount'] < 1 || ($rowp['menuitemcount'] - $orderdetailcount) < 1) { echo 'disabled'; }
 								echo '/>';
 								echo '</form>';
 								echo '</td></tr>';
 							}
 							echo '</table></th>';
+							if ($rowcounter == 3) {
+								echo '</tr>';
+								$rowcounter = 0;
+							}
 						}
 						echo '</tr>';
 					?>

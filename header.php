@@ -9,7 +9,7 @@
 		echo '<script>document.location.replace("signin.php");</script>';
 		// If javascript doesn't work, just prompt a message
 		echo '<p>You are not signed in. Click <a href="signin.php">here</a> to sign in.</p>';
-	} 
+	}
 
 
 ?>
@@ -33,6 +33,12 @@
 		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css"/>
  		<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
 		<link type="text/css" href="styles/main.css" rel="stylesheet">
+
+		<!-- chart.js -->
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
+		<link type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.css" rel="stylesheet">
 
 		<!-- Icon -->
 		<link rel="icon" href="images/logo-transparent.png">
