@@ -1,7 +1,7 @@
 <?php
 /* CREATE A CONNECTION TO THE SERVER */
-    $dsn = 'mysql:host=localhost;dbname=groupa19_ezcheezy';
-    $username = 'groupa19_user';
+    $dsn = 'mysql:host=jcaruso.site;dbname=jaredca3_groupa19_ezcheezy';
+    $username = 'jaredca3_user';
     $password = 'password';
 try{
     $db = new PDO($dsn, $username, $password);

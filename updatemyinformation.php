@@ -10,6 +10,8 @@
 		$resulte = $db->prepare($sqlselecte);
 		$resulte->bindValue('bvemployeekey', $_SESSION['employeekey']);
 		$resulte->execute();
+		$rowe = $resulte->fetch();
+		$formfield['pay'] = $rowe['employeepay'];
 
 		// If the user has clicked the update button:
 		if (isset($_POST['update'])) {
@@ -26,26 +28,22 @@
 			$formfield['email'] = $_POST['email'];
 			$formfield['password1'] = $_POST['password1'];
 			$formfield['password2'] = $_POST['password2'];
-			while ($rowe = $resulte->fetch()) {
+
 				$formfield['username'] = $rowe['employeeusername'];
-				$formfield['pay'] = $rowe['pay'];
 				$formfield['typekey'] = $rowe['employeetypekey'];
-			}
+
 		} else {
 			// If the user has just opened the page:
-			while ($rowe = $resulte->fetch()) {
-				$formfield['username'] = $rowe['employeeusername'];
-				$formfield['typekey'] = $rowe['employeetypekey'];
-				$formfield['firstname'] = $rowe['employeefirstname'];
-				$formfield['lastname'] = $rowe['employeelastname'];
-				$formfield['phone'] = $rowe['employeephone'];
-				$formfield['address'] = $rowe['employeeaddress'];
-				$formfield['city'] = $rowe['employeecity'];
-				$formfield['state'] = $rowe['employeestate'];
-				$formfield['zip'] = $rowe['employeezip'];
-				$formfield['email'] = $rowe['employeeemail'];
-				$formfield['pay'] = $rowe['employeepay'];
-			}
+			$formfield['username'] = $rowe['employeeusername'];
+			$formfield['typekey'] = $rowe['employeetypekey'];
+			$formfield['firstname'] = $rowe['employeefirstname'];
+			$formfield['lastname'] = $rowe['employeelastname'];
+			$formfield['phone'] = $rowe['employeephone'];
+			$formfield['address'] = $rowe['employeeaddress'];
+			$formfield['city'] = $rowe['employeecity'];
+			$formfield['state'] = $rowe['employeestate'];
+			$formfield['zip'] = $rowe['employeezip'];
+			$formfield['email'] = $rowe['employeeemail'];
 		}
 ?>
 <ol class="breadcrumb">
