@@ -2,6 +2,11 @@
 
 Capstone for Group A, 2019
 
+Username: rusty
+Password: Password1
+
+------
+
 EZ Cheezy is needing a website to perform certain tasks. There will be a front end website
 created for viewing by the general populace. This will be created using designs given by the Digital Arts
 department. In addition to the front end site, there will also be a back end site. This back end site will
